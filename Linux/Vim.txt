@@ -1,7 +1,7 @@
 /* 
- * add a backtick ` to indicate this is very important
+ * add a backtick ` to indicate the importance
  * [ Ctrl+x ] both click Ctrl and x
- * [ 5>> or 5~>~> ] click x after do clicking Ctrl
+ * [ :! or :~! ] input ! after inputing :
  * n[] or n~[]  normally n is a number
  * n * []  n times inputs, e.g. 3 * [ > ]  is [ >>> ]
  * [?] it's an option, normally the selection will list below
@@ -20,7 +20,7 @@ if you sure the origin file is safe, you can rm -rf the swp file manually
 set nu " show line numbers
 set autoindent " auto indent
 set ruler " show status at Bottom-Right
-set showmode show "--INSET--" or "--REPLACE--" at Bottom-Left
+set showmode  " show --INSET-- or --REPLACE-- at Bottom-Left
 set hlsearch " high light search, vice versus [ :set nohlsearch ]
 set tabstop=4   " The width of a TAB is set to 4.
                 " Still it is a \t. It is just that
@@ -51,7 +51,7 @@ syntax on " syntax
 ` [ a ] insert from next char
 ` [ A ] insert from last char of this line
 ` [ i ] insert from this char (which the cursor holds)
-` [ I ] insert from the first char of this line
+` [ I ] insert from the start of this line
 ` [ o ] insert a line below this line
 ` [ O ] insert a line above this line
 ` [ r ] replace a char ( which the cursor holds)
@@ -92,13 +92,13 @@ syntax on " syntax
 [ Ctrl+u ] half page up
 [ Shift++ ] next line
 [ - ]   previous line
-` [ 0 Home ]  home, the first char of this line, same as :1
-` [ $ End ] end, the last char of this line
+` [ 0 Home ]  home, the start of this line, same as :1
+` [ $ End ] end, the end of this line
 
 [ : ] number  = move to line n,  :3 move to line 3
-[ H ] the first char of the first line (full file)
-[ M ] the first char of the middle line
-[ L ] the first char of the last line
+[ H ] the start of the first line (full file)
+[ M ] the start of the middle line
+[ L ] the start of the last line
 
 
 
