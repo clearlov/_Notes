@@ -1,3 +1,13 @@
+/* 
+ * add a backtick ` to indicate this is very important
+ * [ Ctrl+x ] both click Ctrl and x
+ * [ 5>> or 5~>~> ] click x after do clicking Ctrl
+ * n[] or n~[]  normally n is a number
+ * n * []  n times inputs, e.g. 3 * [ > ]  is [ >>> ]
+ * [?] it's an option, normally the selection will list below
+ */
+ 
+ 
 do "ls -a", you'll find ".filename.swp" the temporary file.
 if you sure the origin file is safe, you can rm -rf the swp file manually
 [-] ~/.viminfo  the log of vim [-]
@@ -34,17 +44,7 @@ syntax on " syntax
 [!] short cuts [!]
 [ Ctrl+s ] lock the screen
 [ Ctrl+q ] unlock the screen
-/* 
- * add a backtick ` to indicate this is very important
- * [ Ctrl+x ] both click Ctrl and x
- * [ 5>> or 5~>~> ] click x after do clicking Ctrl
- * n[] or n~[]  normally n is a number
- * n * []  n times inputs, e.g. 3 * [ > ]  is [ >>> ]
- * [?] it's an option, normally the selection will list below
- */
 
-
- 
  
 [+] command mode[+]
 [-] to edite mode [-]
