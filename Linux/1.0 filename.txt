@@ -1,0 +1,32 @@
+[!] dev [!]
+hd[a-z]  
+
+[!] d [!]
+[ SWAP ] swap file, like virtual memory in Windows
+	
+
+[ /bin ]  hundreds of command and tool
+[ /dev ]  devices (drives)
+	[ /dev/usb ]   usb drives 
+[+] [ /home ] for uses, like C:\Users in windows [+]
+[ /lost+found ]  like \Recycled in windows
+[ /mnt ] mount another disk or floppy
+	mount /mnt/cdrom   mount cd into /mnt/cdrom
+[ /proc ]  you can view data in memory
+[ /sbin ]  system's command and tool
+[+] /usr for software's installation [+]
+[ /usr/bin ]  installed command and tool
+[ /usr/sbin ]  installed system comand and tool 
+[ /usr/include /usr/lib  /usr/share ] shared links
+[ /usr/local ] for software's installation
+[ /usr/src ]  Linux source
+[ /boot ]  system boot up
+	128M  is enough (normally it)
+	
+[ /etc ] configurations
+[ /lib ]  static lib
+[ /root ]  user root's directory (the others are under /home)
+[+]  /var  for  variable  [+]
+[ /var/log ]  system logs
+[ /var/spool ]   news,email,print queue
+
