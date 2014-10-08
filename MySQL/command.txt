@@ -1,0 +1,44 @@
+[-] grant privileges [-]
+	> GRANT <?> ON <DB>.<TB> TO <USERNAME>@<HOST> INDETIFIED BY "<PASSWD>"
+		[ ALL ] all privileges | (select,delete,update,create,drop,rule,insert)
+		[ SELECT,DELETE .... ] one or some of all privileges
+		<DB> <TB> : you can use * to mean all
+		<HOST> :  normally it's localhost
+	> FLUSH PRIVILEGES;
+[-] drop user [-]
+	> DROP USER <USERNAME>@<HOST>
+
+[+] GROUP BY [+]
+	[-] Q: calculate the population of each province [-]
+	> SELECT province, count(*) FROM tb GROUP BY province;
+`	> SELECT province, count(*) as nu FROM tb GROUP BY province ORDER BY nu DESC
+`   > SELECT province, count(*) FROM tb GROUP by 1 ORDER BY 2 DESC;
+	[-] Q: A field birth(int) in tb, list the staffs' birthdays in each month[-]
+	> SELECT MONTH(birth) AS month, COUNT(*) AS nu FROM tb 
+	> GROUP BY month ORDER BY nu DESC;
+`   > SELECT MONTH(birth), COUNT(*) FROM tb GROUP BY 1 ORDER BY 2 DESC;
+
+[+] SELECT multiple tables [+]
+	[-] GROUP BY [-]
+	> SELECT tb1.date, tb2.profit,
+	> MIN(tb3.price) AS min,
+	> MAX(tb3.price) - MIN(tb3.price) + 1 AS range,
+	> FROM tb1, tb2, tb3 
+	> WHERE tb1.id = tb2.id AND tb2.id = tb3.id
+	> GROUP BY tb1.date, tb2.profit
+	> ORDER BY range DESC
+	[-] JOIN [-]
+	> SELECT fld1 FROM tb1 LEFT JOIN tb2 ON (tb1.id = tb2.id)
+[+] UNION and UNION ALL [+]
+	[-] UNION : merge the same lines together [-]
+	> (SELECT flds FROM tb WHERE $where) 
+	> UNION
+	> (SELECT flds FROM tb WHERE $where)
+	> ORDER BY fld DESC LIMIT $limit, $offset
+	[-] UNION ALL : keep repeated lines [-]
+	> (SELECT flds FROM tb WHERE $where ORDER BY $order)
+	> UNION
+	> (SELECT flds FROM tb WHERE $where)
+	> LIMIT $limit, $offset
+	
+	
