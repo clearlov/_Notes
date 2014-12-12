@@ -1,0 +1,198 @@
+纯PHP代码的，文件末尾的 PHP 代码段结束标记【?>】可以不要，有些情况下当使用 include 或者 require 时省略掉会更好些，这样不期望的空白符就不会出现在文件末尾，之后仍然可以输出响应标头。在使用输出缓冲时也很便利，就不会看到由包含文件生成的不期望的空白符。但是如果代码中包含 html代码，那么不能省略！
+
+
+抽象类
+//1.定义一些方法，子类必须完全实现这个抽象中所有的方法  
+//2.不能从抽象类创建对象，它的意义在于被扩展  
+//3.抽象类通常具有抽象方法，方法中没有大括号  
+//4.抽象方法不必实现具体的功能，由子类来完成  
+//5.在子类实现抽象类的方法时，其子类的可见性必须大于或等于抽象方法的定义  
+//6.抽象类的方法可以有参数，也可以为空  
+//7.如果抽象方法有参数，那么子类的实现也必须有相同的参数个数  
+
+//如果要使用接口，必须定义接口类中的所以方法少一个都不可以（abstract除外）。  
+//这样如果在一个大项目中不管别人怎么去做下面的方法，但是他必须实现本接口中的所有方法才可以!  
+
+ 他们的不同点：
+
+1。抽象类中可以有非抽象的方法而接口中只能够有抽象的方法！
+
+2。一个类可以继承多个接口，而一个类只能继承一个抽象类！
+
+3。接口的使用方式通过implements关键字进行，抽象类则是通过继承extends关键字进行！
+
+
+一个Door 一定具有 open He close功能，而此时又增加一个 报警功能，alert，那么会报警的门，依旧是门，但是门不都会报警，
+
+abstract 类表示是这个物质p【门】，
+interface 用来给们增加功能 
+
+abstract class Door{
+   abstract open();
+   abstract close();
+}
+
+interface Door{
+   public function alert();
+}
+
+
+
+
+
+
+
+
+array_key_exists('b', $array)  判断键名
+function_exists('func',【是否默认调用__autoload，默认为true】);
+class_exists('class',【是否默认调用__autoload，默认为true】);
+property_exists($class, 'func_or_const');  判断一个类是否存在一个函数名，或者变量、常量
+
+class myClass {
+    public $mine;
+    private $xpto;
+    static protected $test;
+
+    static function test() {
+        var_dump(property_exists('myClass', 'xpto')); //true
+    }
+}
+
+var_dump(property_exists('myClass', 'mine'));   //true
+var_dump(property_exists(new myClass, 'mine')); //true
+var_dump(property_exists('myClass', 'xpto'));   //true, as of PHP 5.3.0
+var_dump(property_exists('myClass', 'bar'));    //false
+var_dump(property_exists('myClass', 'test'));   //true, as of PHP 5.3.0
+
+ 
+
+匿名函数
+echo preg_replace_callback('~-([a-z])~', function ($match) {
+    return strtoupper($match[1]);
+}, 'hello-world');
+// 输出 helloWorld
+
+$greet = function(&$var){$var ++;};
+$s=1;
+$greet($s);
+echo $s;  // 输出2
+
+如果匿名函数内用外部变量，需要用 function($var..) use ($var_out){}
+$result = 0;
+
+$one = function(){ var_dump($result); };
+$two = function() use ($result){ var_dump($result); };
+$three = function() use (&$result){ var_dump($result); };
+
+$result++;
+
+$one();    // outputs NULL: $result is not in scope
+$two();    // outputs int(0): $result was copied
+$three();    // outputs int(1)
+?>
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+$a = &$b;   表示 $a指向$b， $a和$b完全一样，对$b进行修改，同时会对$a进行修改
+
+function func(&$var){$var++;}
+$a=1;
+func($a);
+echo $a;  // 这时候 $a = 2;
+
+如果被指向的参数，再次指向新的元素，那么指向不再改变
+$a = 1; 
+$c = 2;
+$b = & $a;   // 这时候，$b = $a = 1
+$a = & $c;  // 再次执行，此时 $a = 2; 而 $b 还是 为 1
+
+$arr = array(1,2,3,4);
+foreach($arr as &$value){
+    $value = $value * 2;
+}
+此时  $arr = array(2,3,6,8);
+unset($value);  // 可以注销掉引用，数组最后一个元素的 $value 引用在 foreach 循环之后仍会保留。建议使用 unset() 来将其销毁。
+
+ 
+
+${$n}  等价于  $$n
+${'pre'.$n}
+
+ 
+
+<?php
+
+$text = <<<END
+
+<table> 
+    <tr> 
+        <td> 
+             $outputdata 
+        </td> 
+     </tr> 
+</table>
+
+END;
+
+?>
+
+ 
+
+
+允许的强制转换有：
+(int), (integer) - 转换为整形 integer
+(bool), (boolean) - 转换为布尔类型 boolean
+(float), (double), (real) - 转换为浮点型 float
+(string) - 转换为字符串 string
+(array) - 转换为数组 array
+(object) - 转换为对象 object
+(unset) - 转换为 NULL (PHP 5)
+
+empty(true)    ==>  false
+empty(0)     ==> true
+empty("0")   ==> true
+empty(-1)  ==> false
+empty("-1")  ==> false
+if(0)   ==> false
+if("0")   ==>  false
+if(-1)   ==> true
+if("-1")  ==> true
+is_null('')  ==> false
+is_null([])  ==> false
+is_null(false)  ==> false
+is_null(0) ==> false
+is_null("0")  ==> false
+
+
+isset()  对值为null的，返回false
+isset(NULL)  ==> false
+$arr = ['a'=>null];
+isset($arr['a'])  ==> false
+array_key_exists('a', $arr)  ==>  true
+
+
+http://www.php.net/manual/zh/types.comparisons.php
+ 
+
+Loose Comparisons with  ==
+
+0 == 所有字符串（包括空字符串）、null、false，不等于空数组、-1
+
+"" == -1   ==> false
+"" == []   ==> false
+"0"  == null  ==> false
+0 == null   ==> true
+0 == false  ==> true
+0 == -1  ==> false
+0 == "0"  ==> true
+0 == []  ==> false
+0 == "" ==> true
+0 == "string"  ==> true
+"0"  == "string"  ==> false

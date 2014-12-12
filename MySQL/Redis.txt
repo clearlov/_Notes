@@ -1,0 +1,41 @@
+|+ KEYS +|
+/**
+ * http://redis.io/commands/scan
+ * sql> keys *    
+ * The SCAN command and the closely related commands SSCAN, HSCAN and ZSCAN are used in order to incrementally iterate over a collection of elements.
+	SCAN iterates the set of keys in the currently selected Redis database.
+	SSCAN iterates elements of Sets types.
+	HSCAN iterates fields of Hash types and their associated values.
+	ZSCAN iterates elements of Sorted Set types and their associated scores.
+ */
+sql> scan 0
+
+sql> flushdb     remove all keys of current db
+sql> flushall    remove all keys
+
+|~ ~|
+|+ LIST +| 2D array   ==> push pop
+微博关注列表、粉丝列表、消息队列
+
+|+ HASH +| 
+酒店价格
+Key RatePlay+RoomType  ==> Price
+
+
+
+|+ SET +|  unsorted and unrepeatable
+
+
+|+ ZSET +| sorted and unrepeatable
+典型的比如那些在线游戏的排行榜，比如一个Facebook的游戏，根据得分你通常想要：
+- 列出前100名高分选手
+- 列出某用户当前的全球排名
+
+|+ STRING +|
+
+|~ ~|
+
+
+
+|~ ~|
+|+ Master-Slave +|

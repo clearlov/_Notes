@@ -10,15 +10,15 @@
  
 do "ls -a", you'll find ".filename.swp" the temporary file.
 if you sure the origin file is safe, you can rm -rf the swp file manually
-[-] ~/.viminfo  the log of vim [-]
+/, ~/.viminfo  the log of vim ,/
 
-[!] set [!]
+/! set !/
 /* 
  * vim /etc/vimrc and add the strings below 
  * you can also use :set xxx in vim command mode
  */
 set nu " show line numbers
-set autoindent " auto indent
+"set autoindent " auto indent
 set ruler " show status at Bottom-Right
 set showmode  " show --INSET-- or --REPLACE-- at Bottom-Left
 set hlsearch " high light search, vice versus [ :set nohlsearch ]
@@ -41,13 +41,17 @@ syntax on " syntax
 [ :set bg=] dark or light  = set background colod
 
 
-[!] short cuts [!]
+/! short cuts !/
 [ Ctrl+s ] lock the screen
 [ Ctrl+q ] unlock the screen
-
+[ :!! ]  repeat last system command
+[ :!~↑ ] select a previous system command
+[ :~↑ ] select a previous command
+[ zi ] enclose all fold indents
+[ zM ] close all fold indents
  
-[+] command mode[+]
-[-] to edite mode [-]
+/. command mode./
+/, to edite mode ,/
 ` [ a ] insert from next char
 ` [ A ] insert from last char of this line
 ` [ i ] insert from this char (which the cursor holds)
@@ -57,7 +61,7 @@ syntax on " syntax
 ` [ r ] replace a char ( which the cursor holds)
 ` [ R ] replace when the cursor moves
 
-[-] store [-]
+/, store ,/
 ` [ :w ] store it to disk
 ` [ :w! ] forced to store changes to -r--(read only) file
 [ :w ] filename  = store to filename, then turn back to this file
@@ -71,7 +75,7 @@ syntax on " syntax
 ` [ :w !sudo tee % ] save a read-only file ( % means current file)
 
 
-[-] n to indicates n times [-]
+/, n to indicates n times ,/
 [ k ↑ ] up 
 [ l → space ] right
 [ j ↓ ] down
@@ -132,7 +136,7 @@ n[ yy ] copy n lines below
 ` [ J ] remove the EOL char of this line
 
 
-[-] search and replace [-]
+/, search and replace ,/
 ` [ /str ] search 'str' below the cursor
 ` [ /str~N ?str ] search 'str' above, /str~N is very useful
 ` [ :noh ] cancle the search
@@ -157,7 +161,7 @@ n[ yy ] copy n lines below
 
 
 
-[-] selection[-]
+/, selection,/
 [ v ] select the chars that the cursor moved
 [ V ] select the lines where the selection holds or this line
 [ Ctrl+v ] block selection
@@ -176,7 +180,7 @@ n[ yy ] copy n lines below
 
 [ % ] move to the outer brackets
 
-[-] edite multiple files [-]
+/, edite multiple files ,/
 vim filename1 filename2 ...   /* open multiple files to buffer */
 [ :n ] turn to next file (filename2 or next)
 [ :2n ] turn to the file next to next file
@@ -190,8 +194,13 @@ vim filename1 filename2 ...   /* open multiple files to buffer */
 [ :sp ] filename  = separate both this file and filename in one windows
 [ :vsp ] filename = separate vertically 
 ` [ :set diff ] ~ [ :vsp ] filename  =  show difference between these files
+[ :resize +1  Ctrl+w+\+ ]  =  resize  horizontal size (expend)
+[ :resize -1  Ctrl+w+\- ]  = resize horizontal size (shorten)
+[ :vertical resize +1 ]  = vertically resize +1
+[ :vertical resize -1 ]
 
-[-] Tab [-]
+
+/, Tab ,/
 [ > ] insert a tab before first char of this line
 n * [ > ] do insert a tab n times 
 [ < ] remove a tab before the first not-tab char

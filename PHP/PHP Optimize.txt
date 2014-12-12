@@ -1,0 +1,1 @@
+推荐用Yahoo的YSlow和Google的Page Speed分析前端的问题，再用Valgrind的Callgrind分析低层的后端性能，用XDebug分析用户空间PHP的性能。此外，他还顺带手指出了读写网前端的性能问题。

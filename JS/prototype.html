@@ -1,0 +1,65 @@
+<script>
+
+function Jujube(yield){
+	this.yield = yield;
+	
+	// method of object Jujube
+	this.Boil = function(){
+		console.log(this.yield + ' this.Boil will kill Jujube.prototype.Boil');
+	}
+}
+
+// method of class Jujube
+Jujube.Boil = function(){
+	console.log('Class::Boil static');
+}
+
+// method of prototype Jujube
+Jujube.prototype.Pastry = function(){
+	console.log(this.yield + ' Jujube Pastry.');
+}
+
+Jujube.prototype.Boil = function(){
+	console.log('prototype boil will not run, because of this.Boil');
+}
+
+var j = new Jujube(100);
+/******************************************************************************
+* the sequence of new a function
+	var j = {};   // initial an object j 
+	j.__proto__ = Jujube.prototype;
+	Jujube.call(j);  // constructs a j
+* which means that j.__proto__ === Jujube.prototype in FF and Chrome
+******************************************************************************/
+
+j.Boil();  
+Jujube.Boil();
+j.Pastry();
+j.Boil();  //100 this.Boil will kill Jujube.prototype.Boil
+Jujube.prototype.Pastry = null;  // to destroy a prototype
+
+
+
+/* A.prototype = new B();   A clone B */
+function Cucumber(){
+}
+Cucumber.prototype = new Jujube();
+var c = new Cucumber(300);  // 300 this.Boil will kill Jujube.prototype.Boil
+c.Boil;     
+
+
+/* C.prototype = new B();  if C and B both have the same methods, it doesn't override. */
+function Pumpkin(yield){
+	this.yield = yield;
+	this.Boil = function(){
+		console.log('Pumpkin ' + this.yield + ' Pumpkin');
+	}
+}
+Pumpkin.prototype = new Jujube(500);
+var p = new Pumpkin(800);
+p.Boil();  // 800 Pumpkin
+
+j.Boil.call(p);  //800 this.Boil will kill Jujube.prototype.Boil
+Jujube.Boil.call(p);  // Class::Boil static
+
+</script>

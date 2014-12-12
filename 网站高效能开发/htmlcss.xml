@@ -1,0 +1,560 @@
+<?xml version="1.0"?>
+<!-- 这个样式必须是同个域名下，否则无效 -->
+<?xml-stylesheet type="text/xsl" href="o.xsl"?>
+<GUIDE title="V-Get! HTML/CSS 编译规则">
+<p class="revision"><a href="http://e.v-get.com/z/o/htmlcss.xml" target="_blank">HTML+CSS 历史</a></p>
+  <OVERVIEW>
+   <CATEGORY title="备注注释">
+        <SUMMARY>
+		<p style="color:#f00">V-Get!前端代码坚持 简化 -&gt; 性能 -&gt; 可读性，可能有些规则和国际标准冲突，不过冲突部分都不会造成任何执行或者bug问题。这种冲突是编程习惯的因素导致，不同的编程习惯，V-Get!代码标准坚持大方向统一，小习惯上自主的原则。</p>
+		<ul>
+		<li><code>版本说明</code>：若同名函数性质或使用方法改变，版本第一位数改变；</li>
+		<li>若同名函数性质未改变，但是添加了一些使用和功能，版本第二位数改变；</li>
+		<li>若同名函数性质和功能未改变，只是优化了部分代码，版本第三位数改变；</li>
+		</ul>
+          
+        </SUMMARY>
+    </CATEGORY>
+
+  </OVERVIEW>
+<CATEGORY title="公用样式">
+<STYLEPOINT title="方位基础">
+      <SUMMARY>
+        <ul>
+		<li><em>t</em> ： 上（静态方位）</li>
+		<li><em>r</em> ： 右（静态方位）</li>
+		<li><em>b</em> ： 下（静态方位）</li>
+		<li><em>l</em> ： 左（静态方位）</li>
+		<li><em>c</em> ： 中（静态方位）</li>
+		<li><em>w</em> ： $w内部主体、w$悬浮的某个部件（.wt 代表上悬浮；.wn 代表悬浮目录）</li>
+		<li><em>v</em> ： 核心主体 </li>
+		<li><em>n</em> ： 目录</li>
+		<li><em>o</em> ： 当前触发</li>
+		<li><code>.p</code> ： {float:left}</li>
+		<li><code>.o</code> ： {clear:both}</li>
+        <li><code>.q</code> ： {float:right}</li>
+		<li><code>.fo</code> ： {text-align:center}</li>  
+		<li><code>.fq</code> ： {text-align:right}</li>
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+          
+        </DECISION>
+      </BODY>
+    </STYLEPOINT>
+   <STYLEPOINT title="默认标签">
+      <SUMMARY>
+        <ul>
+          <li><code>*</code> ： {margin:0;padding:0;}</li>
+		  <li><code>*</code><em>:focus</em> ： {outline: none}</li>
+		  <li><code>body</code> ：  {font:12px/1.5 arial,\5b8b\4f53,sans-serif;-webkit-text-size-adjust:none;}</li>
+          <li><code>ul</code> ： {list-style-position:outside;list-style-type:none}</li>
+		  <li><code>ul li</code> ： {list-style:none}</li>
+		  <li><code>li</code> ： {line-height:22px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;_width:100%}</li>
+		  <li><code>.a</code> ： {display:block}</li>
+		  <li><code>.a a</code> ： {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;float:left;text-align:center;text-decoration:none;line-height:22px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;_width:100%}</li>
+		  <li><code>.al li</code> ： {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;float:left;text-align:center;line-height:22px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;_width:100%}</li>
+		  
+		  <li><code>.ai h3</code> ： {line-height:22px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;_width:100%}</li>
+		  <li><code>.al</code> ： {display:block}</li>
+		  <li><code>a.ct h2</code> ： {line-height:22px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis;_width:100%}</li>
+		
+		  <li><code>p</code> ： {line-height:22px;}</li>
+		  <li><code>a</code> ： {color:#122E67;text-decoration:none;cursor:pointer}</li>
+		  <li><code>a</code><em>:hover</em> ： {text-decoration:underline;color:#C00}</li>
+		  <li><code>img</code> ： {border:0;vertical-align:middle}</li>
+		  <li><code>fieldset</code> ： {border:0;display:block;border-top:1px solid #DDD}</li>
+		  <li><code>select</code> ： {vertical-align:middle}</li>
+		  <li><code>input</code> ： {vertical-align:middle}</li>
+		  
+		  <li><code>textarea</code> ： {resize:none}</li>
+		  <li><code>.u h1</code> ： {display:none}</li>
+		  <li><code>h2</code> ： {font-size:14px}</li>
+		  <li><code>h3</code> ： {font-size:12px;line-height:22px;height:22px}</li>
+		  <li><code>h4</code> ： {font-size:12px;position:relative;height:32px;line-height:32px;display:block}</li>
+		  <li><code>h4 a</code><em>:hover</em> ： {text-decoration:none}</li>
+		  <li><code>#na a</code> ： {display:inline-block;float:left;text-align:center}</li>
+          <li><code>a.ct h2</code> ： {overflow:hidden;text-overflow:ellipsis;white-space:nowrap}</li>
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+          
+        </DECISION>
+      </BODY>
+    </STYLEPOINT>
+	
+	<STYLEPOINT title="网站结构">
+      <SUMMARY>
+        <ul>
+		
+		
+		<li><code>.w</code> ： 全部 wrap</li>
+		<li><code>.t</code> ： 顶部</li>
+		<li><code>.u</code> ： .t .n 之间logo最外层</li>
+		<li><code>.i</code> ： logo位置</li>
+		<li><code>.g</code> ： .u 右侧</li>
+		<li><code>.n</code> ： 目录 navigate</li>
+		<li><code>.v</code> ： .l .c .r 核心内容的外围主体 </li>
+		<li><code>.l</code> ： 左侧 </li>
+		<li><code>.c</code> ： 中间核心内容 </li>
+		<li><code>.r</code> ： 右侧 </li>
+		<li><code>.b</code> ： 最下，底部footer </li>
+		<li><code>.e</code> ： 网站登录弹出框</li>
+		<li><code>.z</code> ： 网站客服等弹出框</li>
+		
+		
+		 
+        </ul>
+      </SUMMARY>
+    </STYLEPOINT>
+	
+	<STYLEPOINT title="f 字体">
+      <SUMMARY>
+        <ul>
+		<li><code style="color:#333">.f0</code> ： f0 就是body默认字体色</li>
+		
+		<li><code style="color:#3b5998">.f1</code> ： f1 默认链接色</li>
+		<li><code style="color:#666">.f2, a.f2</code> ： f2 input 颜色等</li>
+		<li><code style="color:#888">.f3, a.f3</code> ： f3 灰色小字</li>
+		<li><code style="color:#f00">.f4, a.f4</code> ： </li>
+		<li><code style="color:#f60">.f5, a.f5</code> ： </li>
+		<li><code style="color:#feb612">.f6, a.f6</code> ： </li>
+		<li><code style="color:#080">.f7, a.f7</code> ：  </li>
+		<li><code style="color:#08f">.f8, a.f8</code> ： </li>
+		<li><code style="color:#80f">.f9, a.f9</code> ：</li>
+
+		
+		<li><code style="background:#f7f7f7">.fb</code> ： 背景，用于表格等灰色背景 {background:#f7f7f7}</li>
+        <li><code>.fo</code> ： 文字居中 {text-align:center}</li>  
+		<li><code>.fq</code> ： 文字居右 {text-align:right}</li>
+		<li><code>.fg1 - .fg9</code> ： 文章标题前，1推荐（一次阅读/） 2 热帖 3 爆料（可能是谣言）4纯图片 5原创 6付费采用  7精华（） 8 优秀（查询类，常用） 9置顶</li>
+		 
+		 
+		 
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+          
+        </DECISION>
+      </BODY>
+    </STYLEPOINT>
+
+	<STYLEPOINT title="p 相对位置">
+      <SUMMARY>
+        <ul>
+		<li><code>.ph</code> ： {display:none}</li> 
+        <li><code>.ph</code> ： {overflow:hidden}</li>  
+		<li><code>.po</code> ： {position:relative}</li>
+		<li><code>.pr</code> ： {position:absolute;right:0;top:0;}</li>
+		<li><code>.pg</code> ： 常用分页页码最外层div {height:30px;line-height:28px;text-align:right}</li>
+		<li><code>.pg a</code> ： 分页链接 {padding:0 5px}</li>
+		<li><code>.pg a.po</code> ： 分页当前页 {text-decoration:none;color:#666}</li>
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+         
+        </DECISION>
+      </BODY>
+    </STYLEPOINT>
+	
+	
+	
+   </CATEGORY>
+  <CATEGORY title="统一规则">
+   
+    <STYLEPOINT title="使用小写字符">
+      <SUMMARY>
+       除了<code>text/CDATA</code>外，无论是HTML标签、class、id，还是css样式表，都一律使用小写字符，即使是颜色也必须使用小写字符。
+      </SUMMARY>
+      <BODY>
+        <BAD_CODE_SNIPPET>
+          &lt;!-- 不建议用大写标签 --&gt;
+          &lt;A HREF="/"&gt;Home&lt;/A&gt;
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          &lt;!-- 建议用纯小写标签 --&gt;
+          &lt;img src="V-Get.com" alt="V-Get.com"&gt;
+        </CODE_SNIPPET>
+        <BAD_CODE_SNIPPET>
+          /* 不建议用大写字符表示颜色 */
+          color: #E5E5E5;
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          /* 用小写字符表示颜色 */
+          color: #e5e5e5;
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+
+    <STYLEPOINT title="用 TODO 注释">
+      <SUMMARY>
+       使用 【<code>TODO</code> (作者)：做什么 】注释代替 <code>@@</code>等，如果作者就一个人，就在文章顶部注释一下，内部不需要再注释了。
+      </SUMMARY>
+      <BODY>
+        
+        <CODE_SNIPPET>
+          {# TODO(E维科技): 重新访问 #}
+          &lt;center&gt;Test&lt;/center&gt;
+        </CODE_SNIPPET>
+        
+        <CODE_SNIPPET>
+          &lt;!-- TODO: 去除选项 --&gt;
+          &lt;ul&gt;
+            &lt;li&gt;Apples&lt;/li&gt;
+            &lt;li&gt;Oranges&lt;/li&gt;
+          &lt;/ul&gt;
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+	<STYLEPOINT title="属性使用双引号">
+      <SUMMARY>
+        <p>HTML标签属性和CSS字体等属性，一律使用双引号，而不是单引号。</p>
+		<p style="color:#f60">尽管谷歌样式标准建议使用单引号，而不是双引号，但是无论是谷歌官网样式、W3.org官网样式等，都是使用双引号，而非单引号。而在HTML中标准都是双引号，所有统一样式表和HTML都用双引号。</p>
+      </SUMMARY>
+      <BODY>
+        <BAD_CODE_SNIPPET>
+          &lt;!-- 不建议： --&gt;
+          &lt;a class='maia-button maia-button-secondary'&gt;Sign in&lt;/a&gt;
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          &lt;!-- 建议： --&gt;
+          &lt;a class="maia-button maia-button-secondary"&gt;Sign in&lt;/a&gt;
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+  </CATEGORY>
+
+
+  <CATEGORY title="HTML 规则">
+    <STYLEPOINT title="Document Type">
+      <SUMMARY>
+        使用HTML5 语法 <code>&lt;!DOCTYPE html&gt;</code>，表示所有网页，用 &gt; 代替 /&gt;结尾。并且要把成对的HTML标签写全，如果<a href="htmlcss.xml?showone=%E5%8F%AF%E7%9C%81%E7%95%A5%E6%A0%87%E7%AD%BE#%E5%8F%AF%E7%9C%81%E7%95%A5%E6%A0%87%E7%AD%BE">可省略标签</a>的尽量省略。
+      </SUMMARY>
+      <BODY>
+        <p>用<code>&lt;br&gt;</code>代替<code>&lt;br /&gt;</code></p>
+		<p>用<code>&lt;hr&gt;</code>代替<code>&lt;hr /&gt;</code></p>
+		<p>用<code>&lt;input&gt;</code>代替<code>&lt;input /&gt;</code></p>
+      </BODY>
+    </STYLEPOINT>
+    <STYLEPOINT title="class/id 命名">
+      <SUMMARY>
+      <p>虽然CSS用 下划线 _  命名 class 和 ID 是没有错误的（历史版本有错），在CSS样式中，禁止使用下划线命名 class 和 id，使用中划线作为分割符。 如 class="css-style" id="css-style"</p>
+      <p>JS操作 class / id 节点，一律用下划线作为分隔符，禁止用中划线。如 class="js_operate_node" id="js_operator_node"</p>
+      <p>任何标签，name 其后 ，id一律紧随标签，class跟后；如 &lt;input name="name" id="id" class="class" type="text"&gt;  &lt;div class="class"&gt;</p>
+      </SUMMARY>
+      <BODY>
+        <p></p>
+      </BODY>
+    </STYLEPOINT>
+	
+	<STYLEPOINT title="可省略标签">
+      <SUMMARY>
+	  <p>根据代码最简化原则，可以根据《<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html#syntax-tag-omission" target="_blank">HTML5 specification</a>》省略部分标签</p>
+        <p><code>&lt;/li&gt;</code> ： 当其后紧跟下一个 <code>&lt;li&gt;</code> 标签，或者这是其父节点最后一个元素（如 <code>&lt;/ul&gt;</code> 或 <code>&lt;/ol&gt;</code>）</p><p><code>&lt;/dd&gt;</code> ： 当其后紧跟下一个 <code>&lt;dd&gt;</code> 标签，或者这是其父节点最后一个元素（如 <code>&lt;/dl&gt;</code>）</p><p><code>&lt;/p&gt;</code> 当其后紧跟 <code>&lt;address&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;aside&gt;</code>, <code>&lt;blockquote&gt;</code>, <code>&lt;div&gt;</code>, <code>&lt;dl&gt;</code>, <code>&lt;fieldset&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;form&gt;</code>, <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>, <code>&lt;h4&gt;</code>, <code>&lt;h5&gt;</code>, <code>&lt;h6&gt;</code>, <code>&lt;header&gt;</code>, <code>&lt;hgroup&gt;</code>, <code>&lt;hr&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;menu&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;pre&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;table&gt;</code>, 或者<code>&lt;ul&gt;</code> 标签，或者这是其父节点最后一个元素</p><p><code>&lt;/rt&gt;</code> ： 当其后紧跟 <code>&lt;rt&gt;</code> 或 <code>&lt;rp&gt;</code> ，或者这是其父节点最后一个元素</p><p><code>&lt;/rp&gt;</code> ： 当其后紧跟 <code>&lt;rt&gt;</code> 或 <code>&lt;rp&gt;</code> ，或者这是其父节点最后一个元素</p><p><code>&lt;/optgroup&gt;</code> ： 当其后紧跟 <code>&lt;optgroup&gt;</code>，或者这是其父节点最后一个元素</p><p><code>&lt;/option&gt;</code> ： 当其后紧跟 <code>&lt;option&gt;</code>，或者这是其父节点最后一个元素（如 <code>&lt;select&gt;</code>）</p><p><code>&lt;tbody&gt;</code> ：  只要 <code>&lt;thead&gt;</code> 、 <code>&lt;tfoot&gt;</code> 不存在，或者没有被省略，就可以不写  <code>&lt;tbody&gt;</code> 和  <code>&lt;/tbody&gt;</code></p><p><code>&lt;/tbody&gt;</code> ： 与 <code>&lt;tbody&gt;</code> 一起省略</p><p><code>&lt;/tr&gt;</code> ：  当其后紧跟 <code>&lt;tr&gt;</code>，或者这是其父节点最后一个元素（如 <code>&lt;tbody&gt;</code> 或 省略了<code>&lt;tbody&gt;</code> 的 <code>&lt;table&gt;</code> ）</p><p><code>&lt;/td&gt;</code> ： 当其后紧跟 <code>&lt;td&gt;</code>，或者这是其父节点最后一个元素（如 <code>&lt;tr&gt;</code>）</p><p><code>&lt;/th&gt;</code> ：  当其后紧跟 <code>&lt;th&gt;</code>，或者这是其父节点最后一个元素（如 <code>&lt;tr&gt;</code>）</p>
+      </SUMMARY>
+      <BODY>
+        <BAD_CODE_SNIPPET>
+          &lt;!-- 不符合条件的省略 --&gt;
+          &lt;title&gt;Test&lt;/title&gt;
+          &lt;article&gt;This is only a test.
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          &lt;!-- 符合条件的省略 --&gt;
+          &lt;ul&gt;
+            &lt;li&gt;Moe
+            &lt;li&gt;Larry
+            &lt;li&gt;Curly
+          &lt;/ul&gt;
+        
+          &lt;table&gt;
+            &lt;thead&gt;
+              &lt;tr&gt;
+                &lt;th scope="col"&gt;Income
+                &lt;th scope="col"&gt;Taxes
+            &lt;tbody&gt;
+              &lt;tr&gt;
+                &lt;td&gt;$ 5.00
+                &lt;td&gt;$ 4.50
+          &lt;/table&gt;
+       
+          &lt;article&gt;This is only a test.&lt;/article&gt;
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+	
+    <STYLEPOINT title="图片必须要加alt">
+      <SUMMARY>多媒体、图片一律要加<code>canvas</code> 或者 <code>alt</code> 注释，而且还要指定图片宽度<code>width</code>和高度<code>height</code></SUMMARY>
+      <BODY>  
+        <BAD_CODE_SNIPPET>
+          &lt;!-- 没有alt注释，不建议 --&gt;
+          &lt;img src="spreadsheet.png"&gt;
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          &lt;!-- 有宽度、高度、alt，合格 --&gt;
+          &lt;img src="spreadsheet.png" width="200" height="200" alt="Spreadsheet screenshot."&gt;
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+
+    <STYLEPOINT title="删除CSS/JS的type属性">
+      <SUMMARY>
+        删除CSS/JS的<code>type</code>属性
+      </SUMMARY>
+      <BODY>
+        <p>
+          即使不指定 <code>type</code>属性，在旧版浏览器也是正常的。HTML 把
+          <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#attr-style-type"><code>text/css</code></a>
+          and
+          <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#attr-script-type"><code>text/javascript</code></a> 当作默认设置，不需要再写。
+        </p>
+        <BAD_CODE_SNIPPET>
+          &lt;!-- 不建议： --&gt;
+          &lt;link rel="stylesheet" href="//tu.v-get.com/i.css"
+            type="text/css"&gt;
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          &lt;!-- 建议： --&gt;
+          &lt;link rel="stylesheet" href="//tu.v-get.com/i.css"&gt;
+        </CODE_SNIPPET>
+        <BAD_CODE_SNIPPET>
+          &lt;!-- 不建议： --&gt;
+          &lt;script src="//tu.v-get.com/i.js"
+            type="text/javascript"&gt;&lt;/script&gt;
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          &lt;!-- 建议： --&gt;
+          &lt;script src="//tu.v-get.com/i.js"&gt;&lt;/script&gt;
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+  </CATEGORY>
+
+
+  <CATEGORY title="CSS 样式">
+   
+    <STYLEPOINT title="符合W3C标准">
+      <SUMMARY>
+        使用符合 <a href="http://jigsaw.w3.org/css-validator/" target="_blank">W3C
+          CSS validator</a> 验证标准的样式和HTML
+      </SUMMARY>
+      <BODY>
+        <p>当然正常情况下很多情况都无法全部满足W3C标准，如果遇到个别自定义需求情况，可以不必完全遵守。
+        </p>
+      </BODY>
+    </STYLEPOINT>
+	<STYLEPOINT title="IE Hack">
+      <SUMMARY>
+        写 IE Hack 一定要先写标准的，之后根据IE版本从小到大写Hack
+      </SUMMARY>
+      <BODY>
+<CODE_SNIPPET>
+*html .class{}    /* ie6 */
+.class{_width:200px}   /* ie 6 */
+*+html .class{}    /* ie7 */
+</CODE_SNIPPET>
+<p><code>*+html</code> 对IE7的HACK 必须保证HTML顶部有如下声明：<code>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"　"http://www.w3.org/TR/html4/loose.dtd"&gt;</code></p>
+<CODE_SNIPPET>
+*+html 与 *html 是IE特有的标签, firefox 暂不支持.而*+html 又为 IE7特有标签.
+#wrapper { width: 120px; }  /* FireFox */
+*html #wrapper { width: 80px;}  /* ie6 fixed  */
+*+html #wrapper { width: 60px;}  /* ie7 fixed, 注意顺序  */
+</CODE_SNIPPET>
+<CODE_SNIPPET>
+.class{width:200px !important}  /* ie7 8 9 ff */
+</CODE_SNIPPET>
+<p>随着IE7对<em>!important</em>的支持, <em>!important</em> 方法现在只针对IE6的HACK.(注意写法.记得该声明位置需要提前.)</p>
+<CODE_SNIPPET>
+#wrapper{width: 100px!important; IE7+FF   width: 80px; IE6 }
+</CODE_SNIPPET>
+<CODE_SNIPPET>.class{*width:200px}  /* ie7 ie6 （不支持ie8） */
+* .class{}   /* ie8 7 6  （支持ie8） */
+.class{width:200px\0/}  /* ie8 ie9 */
+.class{width:200px\9}  /* ie8 ie9 */
+:root .class{width:200px\9\0} /* ie9 */
+</CODE_SNIPPET>
+<p>IE不认得min-这个定义，但实际上它把正常的width和height当作有min的情况来使。这样问题就大了，如果只用宽度和高度，
+正常的浏览器里这两个值就不会变，如果只用min-width和min-height的话，IE下面根本等于没有设置宽度和高度。
+比如要设置背景图片，这个宽度是比较重要的。要解决这个问题，可以这样：</p>
+<CODE_SNIPPET>
+#box { width: 80px; height: 35px;}
+html&gt;body #box{ width: auto; height: auto; min-width: 80px; min-height: 35px;}
+</CODE_SNIPPET>
+<p>然后CSS这样设计：</p>
+<CODE_SNIPPET>
+#container{
+   min-width: 600px;
+   width:expression(document.body.clientWidth &lt; 600? &#34;600px&#34;: &#34;auto&#34; );
+}
+</CODE_SNIPPET>
+<p>第一个min-width是正常的；但第2行的width使用了Javascript，这只有IE才认得，这也会让你的HTML文档不太正规。它实际上通过Javascript的判断来实现最小宽度。</p>
+      </BODY>
+    </STYLEPOINT>
+  
+    <STYLEPOINT title="浏览器Hack">
+      <SUMMARY>
+       写 Firefox Chrome 等 Hack 一定要先写标准的，之后写 -moz ，再接着 -webkit（-moz 必须在 -webkit 前面）
+      </SUMMARY>
+      <BODY>
+        <CODE_SNIPPET>
+          background: fuchsia;
+          border: 1px solid;
+          -moz-border-radius: 4px;
+          -webkit-border-radius: 4px;
+          border-radius: 4px;
+          color: black;
+          text-align: center;
+          text-indent: 2em;
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+   <STYLEPOINT title="合并选择器分行">
+      <SUMMARY>
+        如果多个选择器有共同属性，最好要分行写每个选择器
+      </SUMMARY>
+      <BODY>
+      
+        <BAD_CODE_SNIPPET>
+          /* 不建议： */
+          a:focus, a:active {
+            position: relative; top: 1px;
+          }
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          /* 建议： */
+          h1,
+          h2,
+          h3 {font-weight:normal;line-height:1.2}
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+  </CATEGORY>
+
+  <CATEGORY title="CSS 精简">
+   <STYLEPOINT title="合并样式">
+      <SUMMARY>
+        如果几个标签、class或者id 样式一样，就应该合并。
+      </SUMMARY>
+      <BODY>
+        <BAD_CODE_SNIPPET>.red {color:#f00;text-align:center;font-size:14px;font-family:"微软雅黑";line-height:24px;height:24px}
+.yellow {color:#ff0;text-align:center;font-size:14px;font-family:"微软雅黑";line-height:24px;height:24px}
+#blue {color:#00f;text-align:center;font-size:14px;font-family:"微软雅黑";line-height:24px;height:24px}
+.green p {color:#0f0;text-align:center;font-size:14px;font-family:"微软雅黑";line-height:24px;height:24px}
+        </BAD_CODE_SNIPPET>
+		<CODE_SNIPPET>
+.red, .yellow, #blue, .green p {color:#f00;text-align:center;font:normal 14px/24px "微软雅黑";height:24px}
+.yellow {color:#ff0}
+#blue {color:#00f}
+.green p {color:#0f0}
+		</CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+
+    <STYLEPOINT title="0无单位">
+      <SUMMARY>
+        CSS中，0 不需要再设置单位（如px、pt等）。
+      </SUMMARY>
+      <BODY>
+        <CODE_SNIPPET>
+          margin: 0;
+          padding: 0;
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+    <STYLEPOINT title="0.省略法">
+      <SUMMARY>
+       CSS中，省略所有 [-1,1] 之间的小数点前面的0
+      </SUMMARY>
+      <BODY>
+        <CODE_SNIPPET>
+font-size: .8em;
+margin-left: -.3px;
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+    <STYLEPOINT title="颜色缩写">
+      <SUMMARY>
+        CSS颜色只能有3个字符和6个字符颜色表达法，如果颜色出现RGB字符同时重复，就缩写成3个字符。
+      </SUMMARY>
+      <BODY>
+        <BAD_CODE_SNIPPET>
+          /* 不建议： */
+          color: #eebbcc;
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          /* 下面等价于 #eebbcc */
+          color: #ebc;
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+    <STYLEPOINT title="简略注释">
+      <SUMMARY>
+       对私有化命名尽量名称和模块相符，而如果使用缩略命名，就需要在后面加个小注释。
+      </SUMMARY>
+      <BODY>
+        <p>对于多人开发的网站，命名必须要有标准。而命名尽量追求精简+易读，如果有些缩略的命名，尽量在尾部加上一个小注释，让其他人熟悉。</p>
+        <CODE_SNIPPET>
+          .adw-help {} /* AdWords */
+          #maia-note {} /* Maia */
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+<STYLEPOINT title="去除尾部分号">
+      <SUMMARY>
+	  <p>尽管为了扩展其他样式，在样式表尾部添加;分号是被谷歌样式标准认可（虽然在执行上，加不加效果完全一样），但是根据代码精简原则，V-Get!样式表标准不建议这样做，尽量将尾部 ;} 的分号删除。</p><p>为了不和国际标准冲突，而这种属性冲突并不影响程序执行，只是对不同阅读习惯的人写法习惯不同，对此V-Get!标准中，程序员可自行选择。</p>
+      </SUMMARY>
+      <BODY>
+        <BAD_CODE_SNIPPET>
+          /* 谷歌样式标准： */
+          .test {
+            display: block;
+            height: 100px;
+          }
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          /* V-Get! 样式标准： */
+          .test{display:block;height:100px}
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+	
+	<STYLEPOINT title="样式空格">
+      <SUMMARY><p>尽管在谷歌样式标准中建议，在属性冒号: 前不要加空格，属性冒号后加空格，但是V-Get!代码标准不建议加空格</p><p>同时在选择器后，即大括号 { 前 ，谷歌标准建议加个空格，而V-Get!标准不建议加空格。</p><p>为了不和国际标准冲突，而这种属性冲突并不影响程序执行，只是对不同阅读习惯的人写法习惯不同，对此V-Get!标准中，程序员可自行选择。</p>
+      </SUMMARY>
+      <BODY>
+        <BAD_CODE_SNIPPET>
+          /* 谷歌样式标准： */
+          h3 {
+            font-weight: bold;
+          }
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          /* V-Get样式标准 */
+          h3{font-weight:bold}
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+    
+
+    <STYLEPOINT title="链接禁用引号">
+      <SUMMARY>
+        禁止在背景图片地址、导入css链接等上加引号。
+      </SUMMARY>
+      <BODY>
+      
+        <BAD_CODE_SNIPPET>
+          /* 不建议： */
+          @import url("//tu.v-get.com/i.css");
+        </BAD_CODE_SNIPPET>
+        <CODE_SNIPPET>
+          /* 建议： */
+          @import url(//tu.v-get.com/i.css);
+        </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+  </CATEGORY>
+<p align="right"><a href="http://e.v-get.com/">E.V-Get.com</a></p>
+</GUIDE>

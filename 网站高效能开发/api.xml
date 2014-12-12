@@ -1,0 +1,169 @@
+<?xml version = '1.0'?>
+<!-- 这个样式必须是同个域名下，否则无效 -->
+<?xml-stylesheet type="text/xsl" href="o.xsl"?>
+<GUIDE title="API 规范">
+<p class="revision"><a href="#">Luexu.com</a></p>
+  <OVERVIEW>
+
+   <CATEGORY title="Comment">
+        <SUMMARY>
+		<p><em>bol</em> 布尔数； <em>int</em> 整数； <em>flt</em> 浮点； <em>str</em> 字符串； <em>obj</em> 对象； <em>arr</em> 数组；</p>
+		<p><em>a:o</em> 对象数组； <em>i:p</em> 正整数； <em>i:n</em> 负整数；</p>
+		<ul>
+        <li><a href="http://www.luexu.com/rules/all.xml#%E4%BF%9D%E7%95%99%E6%96%87%E4%BB%B6%E5%90%8D" target="_blank">API 保留路径</a></li>
+		</ul>
+          
+        </SUMMARY>
+    </CATEGORY>
+
+  </OVERVIEW>
+  
+
+<CATEGORY title="参数命名">
+   <STYLEPOINT title="小写+下划线">
+      <SUMMARY>
+        <ul>
+        <li>传递的链接只准用小写+下划线，作为参数</li>
+        <li>POST/GET的传递变量，只准用小写+下划线</li>
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+          <p>所有form 表单的模式一律是，客户端 -> 服务器端  ：Content-Type:application/x-www-form-urlencoded</p>
+        </DECISION>
+      </BODY>
+    </STYLEPOINT>
+    
+</CATEGORY>
+
+
+
+<CATEGORY title="客户端传输">
+   <STYLEPOINT title="优先GET">
+      <SUMMARY>
+        <ul>
+        <li><code>GET可以被缓存：</code>GET 请求可以被浏览器和服务器端缓存，而POST两个都不可以。</li>
+        <li><code>GET不用上传：</code>Get是用来从服务器上获得数据，而Post是用来向服务器上传递数据。</li>
+        <li><code>GET需要urlencode：</code> Get限制Form表单的数据集的值必须为ASCII字符；而Post支持整个ISO10646字符集。 </li>
+        <li><code>GET变量是是字符串：</code>  Get将表单中数据的按照variable=value的形式，添加到action所指向的URL后面，并且两者使用“?”连接，而各个变量之间使用“&amp;”连接；Post是将表单中的数据放在form的数据体中，按照变量和值相对应的方式，传递到action所指向URL。</li>
+        <li><code>GET效率高：</code> Get 方式传输的数据量非常小，一般限制在 2 KB 左右，但是执行效率却比 Post 方法好；</li>
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+          <p>所有form 表单的模式一律是，客户端 -> 服务器端  ：Content-Type:application/x-www-form-urlencoded</p>
+        </DECISION>
+      </BODY>
+    </STYLEPOINT>
+    
+    <STYLEPOINT title="安全和上传用POST">
+      <SUMMARY>
+        <ul>
+        <li><code>POST更安全：</code>Get是不安全的，因为在传输过程，数据被放在请求的URL中，而如今现有的很多服务器、代理服务器或者用户代理都会将请求URL记录到日志文件中，然后放在某个地方，这样就可能会有一些隐私的信息被第三方看到。另外，用户也可以在浏览器上直接看到提交的数据，一些系统内部消息将会一同显示在用户面前。Post的所有操作对用户来说都是不可见的。 </li>
+        <li><code>大文件用POST</code>Get传输的数据量小，这主要是因为受URL长度限制；而Post可以传输大量的数据，所以在上传文件只能使用Post（当然还有一个原因，将在后面的提到）。 </li>
+        <li><code>多次提交</code>除非你肯定你提交的数据可以一次性提交，否则请尽量用 Post 方法 </li>
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+          <p>所有form 表单的模式一律是，客户端 -> 服务器端  ：Content-Type:application/x-www-form-urlencoded</p>
+        </DECISION>
+      </BODY>
+    </STYLEPOINT>
+    
+</CATEGORY>
+
+<CATEGORY title="服务器端返回">
+   <STYLEPOINT title="Json">
+      <SUMMARY>
+        <ul>
+        <li><code>输出Json头：</code>服务器端 -> 客户端 ：Content-Type:application/json;charset=utf-8</li>
+        <li><code>UpIn：</code>update 和 insert 权限</li>
+        <li><code>Del：</code>delete 权限</li>
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+          <p>子站没必要用到 suid，避免过分知道总公司权限</p>
+        </DECISION>
+      </BODY>
+    </STYLEPOINT>
+</CATEGORY>
+
+
+<CATEGORY title="客户端传输">
+   <STYLEPOINT title="优先GET">
+      <SUMMARY>
+        <ul>
+
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+         
+        </DECISION>
+      </BODY>
+    </STYLEPOINT>
+    
+       <STYLEPOINT title="GET 保留变量">
+      <SUMMARY>
+        <ul>
+        <li><code>t：</code>缓存获取</li>
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+          <p>一个字母的变量，一律作为保留变量！一般传递的内部参数，一律用s开头，如 sk sh sf st</p>
+        </DECISION>
+      </BODY>
+    </STYLEPOINT>
+    
+    <STYLEPOINT title="文档规范">
+      <SUMMARY>
+        <ul>
+        <li><code>Json 接口：</code> 【http_methods 调用方式】 【cache_microseconds 缓存时间】 【param_optional 可选参数】 【param_required 必须参数】 【func_return 函数返回】</li>
+        
+        </ul>
+      </SUMMARY>
+      <BODY>
+         <CODE_SNIPPET>
+{
+    "class_name": {
+        "func_name": {
+            "http_methods" : "GET",  // GET 或 POST
+            // "cache_microseconds" : 10000000,  // 缓存时间间隔（不要用过期日期，避免服务器客户端时间不同步），单位毫秒，如果是post，就是0
+            "param_optional": {  // 可选参数
+                "pg": {
+                    "param_type": "int"
+                }, 
+                "sk": {
+                    "param_type": ""
+                }
+            }, 
+            "param_required": {  // 必须参数
+                "u": {
+                    "param_type": "string"
+                },
+            }, 
+            "func_return": {   // 函数返回
+                "u": {
+                    "param_type": "string"
+                }, 
+                "sh": {
+                    "param_type": "string"
+                }
+               
+            }, 
+            "func_return_is_arr": 1  // 返回的是否是数组
+        }
+      /* 省略 */
+ 
+}
+          </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+    
+</CATEGORY>
+
+
+</GUIDE>

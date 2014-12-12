@@ -1,4 +1,4 @@
-[!] Basic Terminal Shortcuts [!]
+/! Basic Terminal Shortcuts !/
 [ Ctrl+L clear]  Clear the terminal
 [ Ctrl+D ]  Logout
 [ Ctrl+p ¡ü ] last command
@@ -18,7 +18,7 @@
 
 
 
-[!] Basic Terminal Navigation [!]
+/! Basic Terminal Navigation !/
 ` [ ln ] source-file target-file  =  physical link
 ` [ ln ] -s source-file target-file  =  symbolic link
 
@@ -55,24 +55,27 @@
 [ touch ] filename =  update the changed date of a file
 
 
-[!] search [!]
-[-] find is fast search [-]
+/! search !/
+/, whereis ,/
+` [whereis] <APPLICATION>   = search the application's location
+	e.g. whereis PHP  /  whereis MySQL
+/, find is fast search ,/
 ` [ find -name ] "filename"  
 ` [ find -name ] "text"  =  search for files who start with the word text
 ` [ find -name ] "*text" =  files end with text
 [ find ~ -size +2M ]  search files bigger than 2M
 
 [ find -name ] "filetype" -atime +5  =  access time more than or exactly 5
-[ find ] [?] [ -type d ]  find directories, e.g. find /var-name "log" -type d 
+[ find ] [?] [ -type d ]  find directories, e.g. find /var -name "log" -type d 
    [ -type f ]  find files
 
 
-[-] locate is slow search [-]
+/, locate is slow search ,/
 [ locate ] text  =  search the content of all the files
 [ locate ] filename =  search for a file
 [ sudo updatedb ]  update database of files
 
-[-] search for text in file [-]
+/, search for text in file ,/
 ` [ grep -r ] text directory/  = search for file names with occurrence of the text
 
 [ grep ] text filename [?]  =  search for text in file
@@ -92,7 +95,7 @@
 [ halt ] halt the computer
 
 
-[-] file permission [-]
+/, file permission ,/
 0(-) no privilege
 1 executable
 2 writeable
@@ -122,7 +125,7 @@ d---------       /* first char 'd' indicates it's a directory */
 	
 [ chgrp ] <GROUP-NAME> <FILENAME>
 
-[-] archive and compress [-]
+/, archive and compress ,/
 [ tar ] [?] save.tar folder/   or  compressed.tar
 	-c  =  creates an archive
 	-v  =  verbose
@@ -146,11 +149,11 @@ d---------       /* first char 'd' indicates it's a directory */
 		-x  =  decompress
 		-a  =  compress
 	
-[+] execute programs in the bg or fg [+]
+/. execute programs in the bg or fg ./
 add an '&' at the end of a command, to execute in bg
 	e.g. 
 	
-[!] chain command [!]
+/! chain command !/
 [ ; ] chain commands
 	e.g. ll -a; echo "Vince";
 	e.g. find -type f | while read i; do echo "$i"; done

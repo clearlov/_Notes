@@ -1,0 +1,110 @@
+exit/die
+exit and die are equivalent.
+
+This intrinsic terminates the current script. If expression designates a string, that string is written to STDOUT (¡ì¡ì). If expression designates an integer, that represents the script's exit status code. Code 255 is reserved by PHP. Code 0 represents "success". The exit status code is made available to the execution environment. If expression is omitted or is a string, the exit status code is zero. exit does not have a resulting value.
+
+exit performs the following operations, in order:
+
+Writes the optional string to STDOUT (¡ì¡ì).
+Calls any functions registered via the library function register_shutdown_function (¡ìxx) in their order of registration.
+Invokes destructors (¡ì¡ì) for all remaining instances.
+
+
+
+
+
+$v = TRUE;
+isset($v)     // results in TRUE
+$v = NULL;
+isset($v)     // results in FALSE
+$v1 = TRUE; $v2 = 12.3; $v1 = NULL;
+isset($v1, $v2, $v3)  // results in FALSE
+
+unset($v1, $v2, $v3);
+
+
+list($min, $max, $avg) = array(0, 100, 67);
+  // $min is 0, $max is 100, $avg is 67
+list($min, $max, $avg) = array(2 => 67, 1 => 100, 0 => 0);
+  // same as example above
+list($min, , $avg) = array(0, 100, 67);
+  // $min is 0, $avg is 67
+list($min, $max, $avg) = array(0, 2 => 100, 4 => 67);
+  // $min is 0, $max is unset, $avg is 100
+list($min, list($max, $avg)) = [0, [1 => 67, 99, 0 => 100], 33];
+  // $min is 0, $max is 100, $avg is 67
+  
+  
+  
+  From within a class, self::m refers to the member m in that class, whereas parent::m refers to the closest member m in the base-class hierarchy, not including the current class. From within a method, static::m refers to the member m in the class that corresponds to the class inheritance context in which the method is called. This allows late static binding. Consider the following scenario:
+  
+  class Base
+{
+  public function b()
+  {
+    static::f();  // calls the most appropriate f()
+  }
+  public function f() { ... }
+}
+class Derived extends Base
+{
+  public function f() { ... }
+}
+$b1 = new Base;
+$b1->b(); // as $b1 is an instance of Base, Base::b() calls Base::f()
+$d1 = new Derived;
+$d1->b(); // as $d1 is an instance of Derived, Base::b() calls Derived::f()
+
+
+
+Semantics
+
+The ** operator produces the result of raising the value of the left-hand operand to the power of the right-hand one. If either or both operands have non-numeric types, their values are converted to type int or float, as appropriate. If both operands have non-negative integer values and the result can be represented as an int, the result has type int; otherwise, the result has type float.
+
+2**3;   // int with value 8
+2**3.0;   // float with value 8.0
+"2.0"**"3"; // float with value 8.0
+
+
+
+
+
+Semantics
+
+Operator < represents less-than, operator > represents greater-than, operator <= represents less-than-or-equal-to, and operator >= represents greater-than-or-equal-to.
+
+The type of the result is bool.
+
+The operands are processed using the following steps, in order:
+
+If either operand has the value NULL, then if the other operand has type string, the NULL is converted to the empty string (""); otherwise, the NULL is converted to type bool.
+If both operands are non-numeric strings or one is a numeric string and the other a leading-numeric string, the result is the lexical comparison of the two operands. Specifically, the strings are compared byte-by-byte starting with their first byte. If the two bytes compare equal and there are no more bytes in either string, the strings are equal and the comparison ends; otherwise, if this is the final byte in one string, the shorter string compares less-than the longer string and the comparison ends. If the two bytes compare unequal, the string having the lower-valued byte compares less-than the other string, and the comparison ends. If there are more bytes in the strings, the process is repeated for the next pair of bytes.
+If either operand has type bool, the other operand is converted to that type. The result is the logical comparison of the two operands after conversion, where FALSE is defined to be less than TRUE.
+If the operands both have arithmetic type, string type, or are resources, they are converted to the corresponding arithmetic type (¡ì¡ì and ¡ì¡ì). The result is the numerical comparison of the two operands after conversion.
+If both operands have array type, if the arrays have different numbers of elements, the one with the fewer is considered less-than the other one¡ªregardless of the keys and values in each¡ª, and the comparison ends. For arrays having the same numbers of elements, if the next key in the left-hand operand exists in the right-hand operand, the corresponding values are compared. If they are unequal, the array containing the lesser value is considered less-than the other one, and the comparison ends; otherwise, the process is repeated with the next element. If the next key in the left-hand operand does not exist in the right-hand operand, the arrays cannot be compared and FALSE is returned. For array comparison, the order of insertion of the elements into those arrays is irrelevant.
+If only one operand has object type, that compares greater-than any other operand type.
+If only one operand has array type, that compares greater-than any other operand type.
+If the operands have different object types, the result is always FALSE.
+If the operands have the same object type, the result is determined by comparing the lexically first-declared instance property in each object. If those properties have object type, the comparison is applied recursively.
+These operators associate left-to-right.
+
+Examples
+
+"" < "ab"       // result has value TRUE
+"a" > "A"       // result has value TRUE
+"a0" < "ab"     // result has value TRUE
+"aA <= "abc"    // result has value TRUE
+// -----------------------------------------
+NULL < [10,2.3] // result has value TRUE
+TRUE > -3.4     // result has value FALSE
+TRUE < -3.4     // result has value FALSE
+TRUE >= -3.4    // result has value TRUE
+FALSE < "abc"   // result has value TRUE
+// -----------------------------------------
+10 <= 0         // result has value FALSE
+10 >= "-3.4"    // result has value TRUE
+"-5.1" > 0      // result has value FALSE
+// -----------------------------------------
+[100] < [10,20,30] // result has value TRUE (LHS array is shorter)
+[10,20] >= ["red"=>0,"green"=>0] // result has value FALSE, (key 10 does not exists in RHS)
+["red"=>0,"green"=>0] >= ["green"=>0,"red"=>0] // result has value TRUE (order is irrelevant)

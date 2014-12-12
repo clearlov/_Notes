@@ -1,0 +1,8 @@
+SEE Install_Base.txt
+
+
+
+/! Nginx !/
+cd nginx
+./configure --prefix=
+/! PHP !/

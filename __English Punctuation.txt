@@ -1,0 +1,50 @@
+/* 
+ * add a backtick ` to indicate the importance
+ * [ Ctrl+x ] both click Ctrl and x
+ * [ :! or :~! ] input ! after inputing :
+ * n[] or n~[]  normally n is a number
+ * n * []  n times inputs, e.g. 3 * [ > ]  is [ >>> ]
+ * [?] it's an option, normally the selection will list below
+ * [?=memcheck]  it's an optioin, the default value is memcheck
+ * [?=\^preg]  \d+  
+ * <UPPER_CASE> it's a parameter
+ */
+ 
+|~ range ~|
+[1,99]  	==>  1 <= x <= 99
+[1,]     	==>  1 <= x
+[1,50,99]   ==>  1 <= x <=99, 	  suggest x = 50
+[1,50+,99]   ==>  1 <= x <=99, 	  suggest x = 50+
+[<1+,99]		==>  MIN <  x <= 99,  MIN < 1, and suggest MIN = 1+
+[1,99<]		==>  1 <= x < MAX,    MAX >99, and suggest MAX = 99
+
+
+`  backquote/backtick
+~  tilde
+!  exclamation point
+-- dash
+-  hyphen
+.  period / dot / full stop
+, comma
+# pound
+...   dots/ellipsis
+&  ampersand
+/  slash
+// slash-slash / comment
+\  backslash
+: colon
+;  semicolon
+?  question mark
+'  apostrophe
+
+|  vertical bar / vertical virgule
+
+[]  square brackets
+[  open bracket
+]  close bracket
+()  parentheses
+(  open paren / open parenthesis
+)  close paren / close parenthesis
+{}
+{  open brace  / open curly
+} close brace / close curly
