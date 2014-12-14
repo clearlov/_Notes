@@ -1,5 +1,7 @@
-# initialized empty git respository, to create a .git file under the tempotory
-# create a `master` branch as default
+/** 
+ * initialized empty git respository, to create a .git file under the tempotory
+ * create a `master` branch as default
+ */
 
 sh# git reset [ LOG ]     restore to history edition
 sh# git reset --
@@ -10,12 +12,12 @@ sh# git reset --
 /**
  * ~/.gitconfig
  */
-sh# git config --global user.name "Vince-Well"
+sh# git config --global user.name "Vince Well"
 sh# git config --global user.email "vince.i.well@gmail.com"
 /**
  * [ CWD ]/.git/config
  */
-sh# git config --local user.name "Vince-Well"
+sh# git config --local user.name "Vince Well"
 sh# git config --local user.email "vince.i.well@gmail.com"
 
 
@@ -54,32 +56,33 @@ sh# git remote add origin git@code.csdn.net:Vince_Well/git_pc.git
 sh# git push -u origin master
 
 
-# clone
-git clone git@code.csdn.net:luxin6/youzi100.git
+sh# git clone git@code.csdn.net:luxin6/youzi100.git
 
 
-# list branchs of local, asterisk indicates the current branch
-git branch
+/** list branchs of local, asterisk indicates the current branch
+ *		-a  list all branchs (local + remote)
+ *		-r	list remote branchs
+ */
+sh# git branch
 
-# create a branch for local
-git branch [ BRANCH_NAME ]
+/* create a branch for local */
+sh# git branch [ BRANCH_NAME ]
 
-# switch to branch 
-git checkout [ BRANCH_NAME ]
+/* switch to branch */
+sh# git checkout [ BRANCH_NAME ]
 
-# create a branch and switch to it
-git checkout -b [ BRANCH_NAME ]
+/* create a branch and switch to it */
+sh# git checkout -b [ BRANCH_NAME ]
 
-# delete a branch
-git branch -d [ BRANCH_NAME ]
+/* delete a branch */
+sh# git branch -d [ BRANCH_NAME ]
 
-# list branchs of remote server
-git branch -r
-
-# merge a branch
-git merge [ BRANCH_NAME ]
+/* merge a branch */
+sh# git merge [ BRANCH_NAME ]
 
 
+sh# git status -s
+|[
 #   
 #  ?? index.php       // ??  means it hasn't been `git add` yet
 #  A  README.md       // A   means it has been `git add`
@@ -89,81 +92,91 @@ git merge [ BRANCH_NAME ]
 #                     //         commit, it'll commit last `git add` version. 
 #  MM glaciation.html // MM  after commit a modified file and before push it,
 #                     //         you modify it once again
-git status -s
+]|
 
-
-# list the changed lines detailly
+/* list the changed lines detailly */
+sh# git diff
+|[
 #  +++  README.md
 #  ---  hello.php
 # 
-git diff
+]|
 
-# list the changed lines that cached by `git add`  
-git diff --cached
+/* list the changed lines that cached by `git add` */
+sh# git diff --cached
 
-# list the  the changes 
-git diff HEAD
+/* list the  the changes */
+sh# git diff HEAD
 
-#list the stat, you'll see:
+/* list the stat, you'll see: */
+sh# git diff --stat
+|[
 # 1 files changed, 1 insertions(+), 0 deletions(-)
-git diff --stat
+]|
+
+/* add files into cache */
+sh# git add [ FILE_OR_FOLDER ] [ FILE_OR_FOLDER ] ...
 
 
-# add files into cache
-git add [ FILE_OR_FOLDER ] [ FILE_OR_FOLDER ] ...
+/* DANGEROUS: remove files from cache and disk */
+sh# git rm [ FILE_OR_FOLDER ] [ FILE_OR_FOLDER ] ...
 
+/* only remove files from cache */
+sh# git rm --cached [ FILE ]
 
-# DANGEROUS: remove files from cache and disk
-git rm [ FILE_OR_FOLDER ] [ FILE_OR_FOLDER ] ...
-
-# only remove files from cache
-git rm --cached [ FILE ]
-
-# rename a file in disk and then `git add` cache it 
-git mv [ FILENAME_OLD ] [ FILENAME_NEW ]
-
-
-
-# -m "Comments"
-git commit -m "comments"
-
-# automaticlly cache (`git add`) modified files before commit
-git commit -am "Comments"
+/* rename a file in disk and then `git add` cache it */ 
+sh# git mv [ FILENAME_OLD ] [ FILENAME_NEW ]
 
 
 
+/* -m "Comments" */
+sh# git commit -m "comments"
+
+/* automaticlly cache (`git add`) modified files before commit */
+sh# git commit -am "Comments"
+
+/**
+ * http://www.oschina.net/translate/git-fetch-and-merge?cmp
+ * git pull [REMOTE_BRANCH, such as origin] [LOCAL_BRANCH,
+ * such as master, use git branch to see it]
+ * uses git fetch and git commit to replace git pull
+ */
+sh# git fetch [ HOSTNAME ?=origin ] [ BRANCH ?=master ]
+sh# git merge [ HOSTNAME ?=origin ] [ BRANCH ?=master ]
 
 
-# git pull [REMOTE_BRANCH, such as origin] [LOCAL_BRANCH,
-# such as master, use git branch to see it]
-# uses git fetch and git commit to replace git pull
-git fetch
-git push [REMOTE_BRANCH, such as origin] [LOCAL_BRANCH, such as master, use git branch to see it]
+sh# git push [REMOTE_BRANCH, such as origin] [LOCAL_BRANCH, such as master, use git branch to see it]
 
-# add a tag to code when the version is stable
-git tag -a [ VERSION NOTICE]
+/* add a tag to code when the version is stable */
+sh# git tag -a [ VERSION NOTICE]
 
-# show log
-# use :q or :G to quit or to the end
-#   --online make the log compact   
-#   --graph
-git log --oneline --graph
+/**
+ * show log
+ * use :q or :G to quit or to the end
+ *   --online make the log compact
+ *   --graph 
+ */
+sh# git log --oneline --graph
 
-# show tags
-git log --online --decorate --graph
+/* show tags */
+sh# git log --online --decorate --graph
 
 
-# list depositories of remote
-#   -v     show the git links, you might see
+/**
+ * list depositories of remote 
+ * -v     show the git links, you might see
+ */
+sh# git remote -v
+|[
 #  origin  git@xxxxxx/xxx.git (fetch)    // a git addr. for fetch
 #  origin  git@xxxxxx/xxx.git (push)     // a git addr. for push
-git remote -v
+]|
 
-# add a remote depository
-#   create a depository on web, you'll get a git link
-#     something like  `git@github.com:vince/well.git`
-#     git remote add git@github.com:vince/well.git
-
-git remote add 
+/** add a remote depository
+ * create a depository on web, you'll get a git link
+ * something like  `git@github.com:vince/well.git`
+ * git remote add git@github.com:vince/well.git
+ */
+sh# git remote add 
 
 

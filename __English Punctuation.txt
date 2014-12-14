@@ -7,6 +7,7 @@
  * [?] it's an option, normally the selection will list below
  * [?=memcheck]  it's an optioin, the default value is memcheck
  * [?=\^preg]  \d+  
+ * [ A ?> B ?> C ]     if A return A; elseif B return B; elseif C return C;
  * <UPPER_CASE> it's a parameter
  */
  
