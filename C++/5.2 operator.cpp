@@ -1,3 +1,22 @@
+
+class Condo{
+	private:
+		short condominium;
+	public:
+		Condo(short units):condominium(units){}
+		void operator ++(){   // ++Condo
+			return ++condominium;
+		}
+		void operator ++(int){  // Condo++
+			return condominium += 10;
+		}
+		Condo * operator ->(){   // Condo->func()  or Condo->val;
+			return this;   
+		}
+};
+
+/*****************************************************************************/
+
 class StringBad{
 	public:
 		char *str = new char[];

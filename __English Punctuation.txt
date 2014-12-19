@@ -16,8 +16,8 @@
 [1,]     	==>  1 <= x
 [1,50,99]   ==>  1 <= x <=99, 	  suggest x = 50
 [1,50+,99]   ==>  1 <= x <=99, 	  suggest x = 50+
-[<1+,99]		==>  MIN <  x <= 99,  MIN < 1, and suggest MIN = 1+
-[1,99<]		==>  1 <= x < MAX,    MAX >99, and suggest MAX = 99
+[,1+,99]		==>  MIN <  x <= 99,  MIN < 1, and suggest MIN = 1+
+[1,99,]		==>  1 <= x < MAX,    MAX >99, and suggest MAX = 99
 
 
 `  backquote/backtick

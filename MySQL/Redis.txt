@@ -26,6 +26,9 @@ sql> flushall    remove all keys
 微博关注列表、粉丝列表、消息队列
 
 |+ HASH +| 
+/**
+ * hset hget hmget hmset hincrby hexists hdel hlen hkeys hvals hgetall	
+ */
 酒店价格
 Key RatePlay+RoomType  ==> Price
 
