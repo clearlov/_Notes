@@ -1,0 +1,49 @@
+http://liuxun.org/blog/nginx/
+http://liuxun.org/blog/nginx-jia-gou-zong-lan/
+http://liuxun.org/blog/nginx-gong-zuo-jin-cheng-mo-xing/
+
+Preface
+This article is not professional. Even now I'm still not so clear about the process and thread from memory to CPU. Okay, forget it -- it's the reason that I am using English -- Only let few Chinese understand it.. ah
+So keep these keywords in mind : NOT-professional, WORSE-English-grammar, Primary and Zhuangbility(Chinglish, which means ostentatious).
+
+Okay, Here we go.
+No matter you are a skilled programmer or just work in it for a few days. U must know the web server Apache, a part of LAMP. I am used to LAMP from 2012 to 2013. I knowed nothing about that how the fucking PHP works with Apache. On Sep. 5th, I forwarded a micro-blog titled "Should PHP run as a CGI script or as an Apache module?" (http://weibo.com/1651714954/BlBIdhHYf). That gave me just a little bit idea about CGI (Actually, I am still not clear what's the hell it is. Anyway, I know PHP-FPM to manage it later) and Apache module.
+
+What if you restart Nginx when you modified php.ini after turning Apache to Nginx? I guess, probably you would. 
+Nginx runs PHP by php-fpm (normally), and Apache by module(default, you may change it to CGI, but I mean normally, we'll use the default setting).
+PHP-FPM(which said to manage fastcgi) is quite different with Apache module. PHP-FPM(for CGI) is  using TCP prototype for the connecting between PHP and Nginx (they must be allocated in different process). Apache module is a part of Apache ( I guess they share the same process though I am still bind to process and thread).
+So you'd better restart Apache(module connecting) or restart PHP-FPM(fastcgi management tool) when you change PHP.ini.
+
+Process Thread QPS TPS
+Actually, I really dont want to know Process, Thread, QPS and TPS this period. It's junk to me now. Since Sep., these words appear to my eyes frequently.
+And this week, a lot of niubility (Chinglish too, a word to express excellent and professional) guys said these words once and once again. It promotes me have some idea about them. PS: Go study in Talents' groups is necessary.
+sh# vim /etc/nginx/nginx.conf or cat it, you'll see:
+/**
+ * Nginx runs a Master Process and multiple worker_process(es)
+ * It said worker process is single thread, Each worker process can handle about 1000QPS. --> I'm not sure.
+ * Application Layer and Presentation Layer : 
+ */
+worker_process 1;    
+events{
+	worker_connections 1024;
+}
+
+upstream backend {   // ht_proxy, for load balancing
+}
+
+location ~ \.php${
+	fastcgi_ .....      // ht_fastcgi, the process of PHP-FPM
+}
+
+Process of Nginx
+Nginx runs a Master Process (with root permission) and several Worker Processes (with non-root perm.). It may also runs proxy cache process.
+sh$ ps -Af | grep nginx
+
+
+The Following sentences quotes from the origin articles:
+通常推荐：如果负载模式是CPU密集型，例如处理大量TCP/IP协议，使用SSL，或者压缩数据等，nginx worker进程应该和CPU核心数相匹配；如果是磁盘密集型，例如从存储中提供多种内容服务，或者是大量的代理服务，worker的进程数应该是1.5到2倍的CPU核心数。一些工程师基于独立存储单元的数目来决定worker进程数，虽然这个方法的有效性取决于磁盘存储配置的类型，。
+
+master进程负责下列工作: 读取和校验配置文件 创建、绑定、关闭套接字 启动、终止、维护所配置数目的worker进程 不中断服务刷新配置文件 不中断服务升级程序（启动新程序或在需要时回滚） 重新打开日志文件 编译嵌入Perl脚本 Worker进程接受、处理来自客户端的连接，提供反向代理和过滤功能以及其他nginx所具有的所有功能。由于worker进程是web服务器每日操作的实际执行者，所以对于监控nginx实例行为，系统管理员应该保持关注worker进程。
+
+Nginx缓存简介 Nginx在文件系统上使用分层数据存储实现缓存。缓存主键可配置，并且可使用不同特定请求参数来控制缓存内容。缓存主键和元数据存储在共享内存段中，缓存加载进程、缓存管理进程和worker进程都能访问。目前不支持在内存中缓存文件，但可以用操作系统的虚拟文件系统机制进行优化。每个缓存的响应存储到文件系统上的不同文件，Nginx配置指令控制存储的层级（分几级和命名方式）。如果响应需要缓存到缓存目录，就从URL的MD5哈希值中获取缓存的路径和文件名。
+将响应内容缓存到磁盘的过程如下：当nginx从后端服务器读取响应时，响应内容先写到缓存目录之外的一个临时文件。nginx完成请求处理后，就将这个临时文件重命名并移到缓存目录。如果用于代理功能的临时目录位于另外一个文件系统，则临时文件会被拷贝一次，所以建议将临时目录和缓存目录放到同一个文件系统上。如果需要清除缓存目录，也可以很安全的删除文件。一些第三方扩展可以远程控制缓存内容，而且整合这些功能到主发布版的工作已经列入计划。

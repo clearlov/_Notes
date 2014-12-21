@@ -20,6 +20,10 @@
 [1,99,]		==>  1 <= x < MAX,    MAX >99, and suggest MAX = 99
 
 
+|~ Shorts ~|
+ioo   is out of 
+
+
 `  backquote/backtick
 ~  tilde
 !  exclamation point

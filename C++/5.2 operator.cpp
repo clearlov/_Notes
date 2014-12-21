@@ -1,18 +1,59 @@
 
 class Condo{
 	private:
-		short condominium;
+		int condominium;
 	public:
-		Condo(short units):condominium(units){}
-		void operator ++(){   // ++Condo
+		Condo(int units):condominium(units){}
+		int getCondominium(){
+			return condominium;
+		}
+		int operator ++(){   // ++Condo
 			return ++condominium;
 		}
-		void operator ++(int){  // Condo++
+		int operator ++(int){  // Condo++
 			return condominium += 10;
 		}
-		Condo * operator ->(){   // Condo->func()  or Condo->val;
+		
+		/*
+			Condo c;
+			c.getCondominium();	   
+		    c->getCondominium();  // reload operator ->
+		 */
+		Condo * operator ->(){   
 			return this;   
 		}
+		Condo & operator +=(Condo c){
+			condominium += c.getCondominium();
+			return *this;
+		}
+		char operator[](int n){
+			const char * str = "Vince-Well";
+			const int len = strlen(str);
+			//ioo = is_out_len_
+			bool ioo_len = n > (len - 1);
+			return ioo_len ? '\0' : *(str + n);
+		}
+		/**
+		 * size_t = unsigned int in C++
+		 * Condo *c = new(50) Condo;
+		 * delete c;
+		 */
+		void * operator new(size_t sz, char init = '\0'){
+			char *pregnancy = new char[sz];
+			*pregnancy = init;
+			return pregnancy;
+		}
+		
+		void operator delete(void *p){
+			char * condom = (char *) p;   // cast any-type point p to (char *)
+			delete [] condom;
+		}
+		
+		operator int(){
+			
+		}
+		
+		
 };
 
 /*****************************************************************************/
