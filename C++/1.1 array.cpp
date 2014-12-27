@@ -1,3 +1,51 @@
+/**
+ * int *p[n]       ==  *(p[n])
+		int a = 100, b= 200;
+		int *p[2] = {&a, &b};
+		char *pp[] = {"Vince", "Well"};
+		char **p = pp;
+ * int (*p)[n]
+		int a[1][2] = {{100, 200}};
+		int (*p)[2] = a;
+ * int (*p)()
+		int origin(int x){return x;}
+		int (*pfunc)(int);
+		pfunc = origin;   // pfunc = &origin;
+		int c = (*pfunc)(100);   // c = 100
+ * int **p
+ */
+
+
+
+/**
+ * int accent[3][2] = {{100,111}, {222,333}, {444,555}};
+		*********** accent -> x00
+		100		111		222		333		444		555
+		x00		x04		x08		x12		x16		x20
+ * int accent[3][2] = {*p0 -> x00, *p1 -> x08, *p2 -> x16};
+		int *p0 = (int *)accent;    // -> x00
+		int *p1 = p0 + 2;   // (int *)accent + 2   -> x08
+		int *p2 = p1 + 2;   // -> x16
+ * int accent[3][2] = {(*p)[0] -> x00, (*p)[1] -> x08, (*p)[2] -> x16 };   
+		accent = x00
+		(*p)[0]
+ */
+int accent[3][2] = {100,111,222,333,444,555};
+
+/**
+ *@ (*P) points to accent = x00, is an array with [2] elements
+ * Same as:
+
+ *@  (*p)[0] -> x00  (*p)[1] -> x02   (*p)[2] -> x04
+ *@ *(*p) = (*p)[0] = *(x00) = 100
+ *@ *(*p + 1)  =  
+ */
+int (*p)[2] = accent;
+
+
+
+
+
 int a1[2];   // declaration, a1={1,2} or a1[0]=1; a1[1]=2;
 
 int a2[2] = {1,2};  //initializing arrays

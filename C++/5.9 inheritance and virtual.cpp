@@ -91,14 +91,14 @@ recall(r2);
  
  
 
-class Copper
+class Base
 {
 public:
 	void smelt(){ cout << "smelt" << endl; }
 	virtual void forge(){ cout << "forge" << endl; }
 };
 
-class Brass :   public Copper, 
+class Derived :   public Base, 
                 protected std::string, 
                 private std::valarray<int>
 {
@@ -108,15 +108,32 @@ public:
 	virtual void forge(){ cout << "re-forge" << endl; }
 };
 
+/*************************** Base = Derived ***********************************/
+Base base;
+Derived derived;
+/*1*/ 	base = * dynamic_cast<Base *>(&derived);
+
+/*2*/ 	base = derived;
+// derived = base;  ERROR!!!
+/************************  Base points to Derived  ****************************/
+Base* base;
+Derived derived;
+/*1*/ 	base = new Derived();
+/*2*/ 	base = dynamic_cast<Base *>(&derived);
+/*3*/  	base = &derived;   
+/************************  B=D, B ****************************/
+base.smelt();  // smelt
+base.forge();  // re-forge
 
 
-
-Copper * copper = new Brass();
-copper->smelt();   // smelt
-copper->forge();   // re-smelt
-
-
-
+/************************  Derived points to Base  ****************************/
+Base base;
+Derived* derived;
+/*1*/ 	derived = static_cast<Derived *>(&base);
+/*2*/ 	derived = &base;
+/*3*/	derived = new Base();
+Derived.smelt();   // re-smelt
+Derived.forge();	// re-forge
 
 
 class AbstractClass

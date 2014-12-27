@@ -1,3 +1,48 @@
+int digit = 8;
+char * digital = (char *)&digit;
+int figure = *(int *)digital;       // figure = 8
+
+
+struct Fig{ int dab;};
+
+Fig f = {100};
+char * glut = (char *) &f;
+Fig f2 = *(Fig *)glut;      // f2.dab = 100
+
+
+struct Fatality{ int fatalism, fatalist, fatally;}
+Fatality fatal[] = {{1,2,3},{5,8,0}};
+char * fate = (char *) &fatal;
+Fatality * fated = (Date *) fate;  // * fated = {{1,2,3},{5,8,0}}
+
+ 
+/******************************************************************************/
+ofstream ofs("fatalness.txt", ios::binary);
+ofs << fate;
+ifstream ifs("fatalness.txt", ios::binary);
+short len = sizeof(Fatality) / sizeof(int);
+
+/**
+ * char * fate2 = new char [sizeof(Fatality)];
+ * ifs.read(fate2, sizeof(Fatality));
+ * delete [] fate2;
+ */
+Fatality ft;
+for(int i=0; i<len; i++){
+	ifs.read((char *)&ft[i], sizeof(ft));
+}
+
+
+
+/******************************************************************************/
+
+
+
+
+
+
+
+
 void
 bool [false, true] 1-byte
 short int / signed short int [-2^(2*8-1), 2^(2*8-1)] 2-bytes

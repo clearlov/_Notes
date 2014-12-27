@@ -7,12 +7,7 @@ class Condo{
 		int getCondominium(){
 			return condominium;
 		}
-		int operator ++(){   // ++Condo
-			return ++condominium;
-		}
-		int operator ++(int){  // Condo++
-			return condominium += 10;
-		}
+
 		
 		/*
 			Condo c;
@@ -51,6 +46,22 @@ class Condo{
 		
 		operator int(){
 			
+		}
+		
+				int operator ++(){   // ++Condo
+			return ++condominium;
+		}
+		int operator ++(int){  // Condo++
+			return condominium += 10;
+		}
+		
+		friend istream & operator >> (istream & i_stream, Condo & condo){
+			i_stream >> condo.condominium;
+			return i_stream;
+		}
+		friend ostream & operator << (ostream & o_stream, Condo & condo){
+			o_stream << "Condominium: " << condo.condominium << endl;
+			return o_stream;
 		}
 		
 		

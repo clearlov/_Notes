@@ -3,8 +3,23 @@ class Copper;  //forward declaration
 class Brass{
 private:
     Copper * copper;
+	char * alloy = new char[20];
 public:
     void forge(Copper & cp);
+	friend istream & operator >>(istream & i_stream, Brass & brass);
+	friend ostream & operator <<(ostream & o_stream, Brass & brass);
+}
+
+istream & Brass::operator >>(istream & i_stream, Brass & brass){
+	i_stream >> brass.alloy;
+	return i_stream;
+}
+
+ostream & Brass::operator <<(ostream & o_stream, Brass & brass){
+	o_stream << brass.alloy;
+	return o_stream;
+}
+
 
 class Copper{
 private:
