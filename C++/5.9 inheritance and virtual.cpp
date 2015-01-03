@@ -1,42 +1,7 @@
 /**
- * DerivedClass: public BaseClass ==>
- * DerivedClass: private BaseClass ==> public/protected/private turns to private
- * DerivedClass: protected BaseClass ==> public/protected turns to protected
- 
- ** Sequence to call BaseClass's construct/destruct function   *****************
- * 	1. Calls default BaseClass's construct method first. If there are more than 
-		one BaseClass, call them via the seq. of declared.
-		class Derived: public Base1, public Base2{    	// via here
-			Derived(int x): Base2(x), Base1(x);       	// not here
-		};
-	2. Calls BaseClass's construct method in Derived Class. Call them via the 
-		sequence of declared.
-		class Derived{
-			Base5 b5;
-			Base6 b6;
-		};
-	3. Calls Derived class's construct method
-	7. destruct of 3
-	8. destruct of 2
-	9. destruct of 1
-	Sumary:
-		class Base5{
-				Base4 b4;
-		};
-		class Derived: public Base1, public Base2, public Base3{	// VIA HERE
-				Base5 b5;  			 // not declared in inheritance
-			public:
-				Derived(int i):Base3(i+1), Base1(i), Base2{}   		// NOT HERE
-				~Derived(){}
-		};
-		==> 
-		Base1::Base1() --> Base2::Base2() --> Base3::Base3() 
-		--> Base1::Base1(i) --> Base2::Base2(i) --> Base3::Base3(i+1)
-		--> Base4::Base4() --> Base5::Base5()
-		--> Derived:Derived(i)
-		--> Derived::~Derived()
-		--> Base5::~Base5() --> Base4::~Base4()
-		--> Base3::~Base3() --> Base2::~Base2() --> Base1::~Base1()
+ * DerivedClass: public B1Class ==>
+ * DerivedClass: private B1Class ==> public/protected/private turns to private
+ * DerivedClass: protected B1Class ==> public/protected turns to protected
  */
 
 class Recollect{
@@ -54,7 +19,9 @@ class Recollect{
 };
  
  
-class Remembrance : private Recollect    // private inherit
+class Remembrance : private Recollect,    // private inherit
+					protected std::string, 
+					private std::valarray<int>
 {
 	private:
 	public:
@@ -88,65 +55,94 @@ Remebrance r2(100);
 recall(r2);
  
  
- 
+/**
+ * static, inline and construct function can't be a virtual function
+ * destruct function can be a virtual function
+ */ 
  
 
-class Base
-{
-public:
-	void smelt(){ cout << "smelt" << endl; }
-	virtual void forge(){ cout << "forge" << endl; }
+class B{
+	public:
+	const char *polymer;
+	B(const char *p="p-B"):polymer(p){}
+	void polymorphism(){
+		cout << "p()-B" << endl;
+	}
+	virtual void polymorphism(const char *p){
+		cout << "p(\"" << p << "\")-B" << endl;
+	}
+	virtual ~B(){}
 };
 
-class Derived :   public Base, 
-                protected std::string, 
-                private std::valarray<int>
-{
-public:
-    using std::valarray<int>::min;
-	void smelt(){ cout << "re-smelt" << endl; }    // redefine smelt()
-	virtual void forge(){ cout << "re-forge" << endl; }
-};
-
+class D: public B{
+	public:
+	D(const char*p = "p-D"):polymer(p){}
+	void polymorphism(){
+		cout << "p()-D" << endl;
+	}
+	virtual void polymorphism(const char *P){
+		cout << "p(\"" << p << "\")-D" << endl;
+	}
+	virtual ~D(){delete polymer;}
+} 
+					
 /*************************** Base = Derived ***********************************/
-Base base;
-Derived derived;
-/*1*/ 	base = * dynamic_cast<Base *>(&derived);
+D d;
+/*1*/ 	B b = * dynamic_cast<B *>(&d);
 
-/*2*/ 	base = derived;
-// derived = base;  ERROR!!!
+/*2*/ 	B b = d;
+// derived = b1;  ERROR!!!
 /************************  Base points to Derived  ****************************/
-Base* base;
-Derived derived;
-/*1*/ 	base = new Derived();
-/*2*/ 	base = dynamic_cast<Base *>(&derived);
-/*3*/  	base = &derived;   
+D d;
+/*1*/ 	B* b_p = new D();
+/*2*/ 	B* b_p = dynamic_cast<B *>(&d);
+/*3*/  	B* b_p = &derived;   
 /************************  B=D, B ****************************/
-base.smelt();  // smelt
-base.forge();  // re-forge
+b.polymorphism();   		b_p->polymorphism();			// p()-B
+b.polymorphism("Vince"); 	b_p->polymorphism("Vince");		// p("Vince")-D
 
 
-/************************  Derived points to Base  ****************************/
-Base base;
-Derived* derived;
-/*1*/ 	derived = static_cast<Derived *>(&base);
-/*2*/ 	derived = &base;
-/*3*/	derived = new Base();
-Derived.smelt();   // re-smelt
-Derived.forge();	// re-forge
+/************************  Derived points to B1  ****************************/
+B b;
+/*1*/	D d = * static_cast<D *>(&b);
+/*1*/ 	D* d_p = static_cast<D *>(&b);
+/*2*/ 	D* d_p = &b;
+/*3*/	D* d_p = new B();
+d.polymorphism();	d_p->polymorphism();				// p()->D
+d_p->polymorphism("Vince");								// p("Vince")-D
 
 
-class AbstractClass
-{
-private:
-    std:string phrase;
-public:
-AbstractClass(): phrase("illustrate"){}
-virtual ~AbstractClass() = 0;  // pure virtual destructor
-virtual void Method();
-}
 
-class Panacea : virtual public AbstractClass
-{
 
-}
+class B{
+	public:
+	const char * homonym = "B";
+};
+class Ba: public B{
+	public:
+	const char * homonym = "Ba";
+};
+class Bb: public B{
+	public:
+	const char * homonym = "Bb";
+};
+class D: public Ba, public Bb{
+	public:
+	const char * homonym = "D";
+	void parallel(){
+		cout << Ba::homonym << endl;
+		cout << Bb::homonym << endl;
+		cout << this->homonym << endl;
+	}
+};
+
+D d;
+d.parallel();
+
+
+
+
+
+
+
+

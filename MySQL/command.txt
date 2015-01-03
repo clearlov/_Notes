@@ -21,6 +21,10 @@ sql> show character set;   /* SHOW COLLATION;  */
 sql> show variables like 'character%';
 sql> show variables like 'collation%';
 
+|~ Basic ~|
+LIMIT row_count
+LIMIT offset, row_count
+LIMIT row_cout OFFSET offset
 
 |~ grant privileges ~|
 sql> grant [ PRIVILEGES ] on [ DB ].[ TB ] to [ USERNAME ]@[ HOST =localhost] identified by "[ PASSWD ]"

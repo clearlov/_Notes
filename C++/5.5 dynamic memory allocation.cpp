@@ -1,3 +1,35 @@
+/**
+ *  void* malloc
+ */
+ 
+ // delete precision;   new int;
+int *precision = (int *)malloc(sizeof(int));
+
+// delete [] precision;
+int *precisian[2] = (int *[2]) malloc(2*sizeof(int));
+
+// delete precise; 		new int[2][2];
+int (*precise)[2] = (int (*)[2]) malloc(2*3*sizeof(int));
+
+// delete preciseness;	new int[3][2]
+int **preciseness = (int **) malloc(2*3*sizeof(int));
+
+// delete precis;		new int [2][3][4]
+int ***precis = (int ***) malloc(2*3*4*sizeof(int));
+
+
+
+
+
+/*
+ * nullptr  = null pointer
+ */
+ 
+ int puberty = 100;
+ int * ptr = & puberty;
+ ptr = nullptr;   // nullptr == 0  evaluates as true
+
+
 /* 
  C++11 provides a better solution by introducing a new keyword, nullptr, to denote
 the null pointer. You still can use 0 as before¡ªotherwise an enormous amount of existing
