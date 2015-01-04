@@ -1,10 +1,6 @@
 c < log(n) < n < n*log(n) < n^2 < n^3 < 2^n < 3^n < n!
 /**
- * 
- * Asymptotic Notation: 
-		O(big)  Big O Notation
-		¦¨() 
-		¦¸(less)
+ *	
  * 	O(c): Constant
 	O(lb(n)): Logarithmic
 	O(n):	Linear run once each elements
@@ -43,7 +39,7 @@ Only concern about for block. It moves n-i+1 elements in each ins() cycle.
 		p(1) + p(2) ... + p(n+1) = 0
  
  *  What if p(i) = 1/n+1 (equal probability)
-		E = [n+1]?[i=1](n-i+1) * p(i)
+		E = [n+1]âˆ‘[i=1](n-i+1) * p(i)
 		  = 1/n+1 * (n + n-1 + n-1 ... + 0)
 		  = n/2
 		  = O(n)
@@ -51,7 +47,7 @@ Only concern about for block. It moves n-i+1 elements in each ins() cycle.
 		E = (1.5/n+1)*n + (0.5/n+1)*n-1 + .. 
 
  */
-E_ins =  [n+1]?[i=1](n-i+1) * p(i)
+E_ins =  [n+1]âˆ‘[i=1](n-i+1) * p(i)
 
 
 

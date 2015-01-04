@@ -10,7 +10,12 @@
  * [ A ?> B ?> C ]     if A return A; elseif B return B; elseif C return C;
  * <UPPER_CASE> it's a parameter
  */
- 
+
+|~ Commentory ~|
+
+->> concur:  returns ->> by-product
+	e.g. var arr=[1,2,3]; arr.pop();  // 3 ->> arr = [1,2]
+
 |~ range ~|
 [1,99]  	==>  1 <= x <= 99
 [1,]     	==>  1 <= x
@@ -28,8 +33,11 @@ lg(n) = log_10(n)
 ∑ (Sigma)
 	[n]∑[i=1](1/i) = 1 + 1/2 + 1/3 ... 1/n
 	[n+1]∑[i=i](n-i+1) = n + (n-1) + (n-2) ... 0
-Etime = 
-[n+1]∑[i=i]p(i)(n-i+1)
+Etime = [n+1]∑[i=i]p(i)(n-i+1)
+|- Asymptotic Notation -|
+O() : Big O Notation : e.g. n/2  2*n  100*n+200  ==> O(n)
+Θ() : Theta Notation
+Ω() : Big Omega Notation
 
 |~ Shorts ~|
 ioo   is out of 
