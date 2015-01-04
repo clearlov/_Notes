@@ -3,8 +3,8 @@
  * create a `master` branch as default
  */
 
-sh# git reset [ LOG ]     restore to history edition
-sh# git reset --
+sh$ git reset [ LOG ]     restore to history edition
+sh$ git reset --
 
 
 |~ INIT ~|
@@ -12,25 +12,25 @@ sh# git reset --
 /**
  * ~/.gitconfig
  */
-sh# git config --global user.name "Vince Well"
-sh# git config --global user.email "vince.i.well@gmail.com"
+sh$ git config --global user.name "Vince Well"
+sh$ git config --global user.email "vince.i.well@gmail.com"
 /**
  * [ CWD ]/.git/config
  */
-sh# git config --local user.name "Vince Well"
-sh# git config --local user.email "vince.i.well@gmail.com"
+sh$ git config --local user.name "Vince Well"
+sh$ git config --local user.email "vince.i.well@gmail.com"
 
 
 
 
 |- Generate Keygen -|
-sh# rm -f ~/.ssh/id_rsa*
-sh# ssh-keygen -t rsa -C "vince.i.well@gmail.com"
-sh# cat ~/.ssh/id_rsa.pub
+sh$ rm -f ~/.ssh/id_rsa*
+sh$ ssh-keygen -t rsa -C "vince.i.well@gmail.com"
+sh$ cat ~/.ssh/id_rsa.pub
 
 
 
-sh# vim ~/.ssh/config
+sh$ vim ~/.ssh/config
 |[
 #GitLab
 Host gitlab
@@ -44,44 +44,42 @@ HostName github.com
 User think
 IdentityFile ~/.ssh/id_github
 ]|
-sh# 
+
+sh$ git init
+
+sh$ git status -s
+sh$ git add ....
+sh$ git commit -m "COMMENT"
+sh$ git remote add origin git@code.csdn.net:Vince_Well/git_pc.git
+sh$ git push -u origin master
 
 
-sh# git init
-
-sh# git status -s
-sh# git add ....
-sh# git commit -m "COMMENT"
-sh# git remote add origin git@code.csdn.net:Vince_Well/git_pc.git
-sh# git push -u origin master
-
-
-sh# git clone git@code.csdn.net:luxin6/youzi100.git
+sh$ git clone git@code.csdn.net:luxin6/youzi100.git
 
 
 /** list branchs of local, asterisk indicates the current branch
  *		-a  list all branchs (local + remote)
  *		-r	list remote branchs
  */
-sh# git branch
+sh$ git branch
 
 /* create a branch for local */
-sh# git branch [ BRANCH_NAME ]
+sh$ git branch [ BRANCH_NAME ]
 
 /* switch to branch */
-sh# git checkout [ BRANCH_NAME ]
+sh$ git checkout [ BRANCH_NAME ]
 
 /* create a branch and switch to it */
-sh# git checkout -b [ BRANCH_NAME ]
+sh$ git checkout -b [ BRANCH_NAME ]
 
 /* delete a branch */
-sh# git branch -d [ BRANCH_NAME ]
+sh$ git branch -d [ BRANCH_NAME ]
 
 /* merge a branch */
-sh# git merge [ BRANCH_NAME ]
+sh$ git merge [ BRANCH_NAME ]
 
 
-sh# git status -s
+sh$ git status -s
 |[
 #   
 #  ?? index.php       // ??  means it hasn't been `git add` yet
@@ -95,7 +93,7 @@ sh# git status -s
 ]|
 
 /* list the changed lines detailly */
-sh# git diff
+sh$ git diff
 |[
 #  +++  README.md
 #  ---  hello.php
@@ -103,37 +101,37 @@ sh# git diff
 ]|
 
 /* list the changed lines that cached by `git add` */
-sh# git diff --cached
+sh$ git diff --cached
 
 /* list the  the changes */
-sh# git diff HEAD
+sh$ git diff HEAD
 
 /* list the stat, you'll see: */
-sh# git diff --stat
+sh$ git diff --stat
 |[
 # 1 files changed, 1 insertions(+), 0 deletions(-)
 ]|
 
 /* add files into cache */
-sh# git add [ FILE_OR_FOLDER ] [ FILE_OR_FOLDER ] ...
+sh$ git add [ FILE_OR_FOLDER ] [ FILE_OR_FOLDER ] ...
 
 
 /* DANGEROUS: remove files from cache and disk */
-sh# git rm [ FILE_OR_FOLDER ] [ FILE_OR_FOLDER ] ...
+sh$ git rm [ FILE_OR_FOLDER ] [ FILE_OR_FOLDER ] ...
 
 /* only remove files from cache */
-sh# git rm --cached [ FILE ]
+sh$ git rm --cached [ FILE ]
 
 /* rename a file in disk and then `git add` cache it */ 
-sh# git mv [ FILENAME_OLD ] [ FILENAME_NEW ]
+sh$ git mv [ FILENAME_OLD ] [ FILENAME_NEW ]
 
 
 
 /* -m "Comments" */
-sh# git commit -m "comments"
+sh$ git commit -m "comments"
 
 /* automaticlly cache (`git add`) modified files before commit */
-sh# git commit -am "Comments"
+sh$ git commit -am "Comments"
 
 /**
  * http://www.oschina.net/translate/git-fetch-and-merge?cmp
@@ -141,14 +139,21 @@ sh# git commit -am "Comments"
  * such as master, use git branch to see it]
  * uses git fetch and git commit to replace git pull
  */
-sh# git fetch [ HOSTNAME ?=origin ] [ BRANCH ?=master ]
-sh# git merge [ HOSTNAME ?=origin ] [ BRANCH ?=master ]
+sh$ git fetch [ HOSTNAME ?=origin ] [ BRANCH ?=master ]
+/* git log -p master..origin/master */
+sh$ git log -p [ BRANCH ]..[ HOSTNAME ]/[ REMOTE_BRANCH ]  
+/* git merge origin/master */
+sh$ git merge [ HOSTNAME ?=origin ]/[ BRANCH ?=master ]
 
+/**
+ * pull remote branch and combine to local branch 
+ */
+sh$ git pull --rebase [ HOSTNAME ] [ REMOTE_BRANCH ]:[ LOCAL_BRANCH ]
 
-sh# git push [REMOTE_BRANCH, such as origin] [LOCAL_BRANCH, such as master, use git branch to see it]
+sh$ git push [REMOTE_BRANCH, such as origin] [LOCAL_BRANCH, such as master, use git branch to see it]
 
 /* add a tag to code when the version is stable */
-sh# git tag -a [ VERSION NOTICE]
+sh$ git tag -a [ VERSION NOTICE]
 
 /**
  * show log
@@ -156,17 +161,17 @@ sh# git tag -a [ VERSION NOTICE]
  *   --online make the log compact
  *   --graph 
  */
-sh# git log --oneline --graph
+sh$ git log --oneline --graph
 
 /* show tags */
-sh# git log --online --decorate --graph
+sh$ git log --online --decorate --graph
 
 
 /**
  * list depositories of remote 
  * -v     show the git links, you might see
  */
-sh# git remote -v
+sh$ git remote -v
 |[
 #  origin  git@xxxxxx/xxx.git (fetch)    // a git addr. for fetch
 #  origin  git@xxxxxx/xxx.git (push)     // a git addr. for push
@@ -177,6 +182,6 @@ sh# git remote -v
  * something like  `git@github.com:vince/well.git`
  * git remote add git@github.com:vince/well.git
  */
-sh# git remote add 
+sh$ git remote add 
 
 

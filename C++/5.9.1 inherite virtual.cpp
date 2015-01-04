@@ -48,3 +48,29 @@
 		~B2     => B2::~B2() --> B9::~B9()
  */
  
+
+class Breakdown: public Delude, virtual public Cough{
+
+};
+class Blackout: public Coma, virtual public Delusion {
+
+};
+class Exclusion{
+};
+class Anaemia: 	public Blackout, public Breakdown, virtual public Exclusion{
+		
+};
+/*
+ * Mark 
+	*: inherit virtual base class
+		*1:blackout
+		*2:breakdown
+	|: inherit base class
+ *******************************************************************************
+	Coma	Delusion    		   Delude	  Cough
+	  |      *1 *2      			*1 *2       |         
+		Blackout(1)    Exclusion  	Breakdown(2)
+			|                 			|
+				        Anaemia
+ *******************************************************************************
+ */
