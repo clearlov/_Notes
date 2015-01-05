@@ -29,7 +29,7 @@ void ins(List* l, int i, T v){
 	l->n++;
 };
 ]|
-Only concern about for block. It moves n-i+1 elements in each ins() cycle. 
+Only concern about "for block". It moves n-i+1 elements in each ins() cycle. 
 /**
  * Solve Average moving times:
 	Assume:

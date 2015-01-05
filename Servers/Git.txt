@@ -1,11 +1,10 @@
-/** 
+/**
  * initialized empty git respository, to create a .git file under the tempotory
  * create a `master` branch as default
  */
 
 sh$ git reset [ LOG ]     restore to history edition
 sh$ git reset --
-
 
 |~ INIT ~|
 |- add global configure -|
