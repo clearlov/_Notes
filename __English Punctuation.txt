@@ -39,6 +39,10 @@ O() : Big O Notation : e.g. n/2  2*n  100*n+200  ==> O(n)
 Θ() : Theta Notation
 Ω() : Big Omega Notation
 
+
+|- sets -|
+∈ : belong to; is set of
+
 |~ Shorts ~|
 ioo   is out of 
 

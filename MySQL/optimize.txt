@@ -36,7 +36,7 @@ Take the last 900010 rows in id order and returns the first 10.
 E = [n]∑[o=1](o+row_count) * p(o)
 Known:
 	row_count = [10,30] is a very tiny number
-	n is an extremely big number
+	n is an extremely huge number
 Assume:
 	p(o) = 1/n
 Solve:

@@ -47,17 +47,44 @@
 		~B3->B1 => B3::~B3() --> B1::~B1()
 		~B2     => B2::~B2() --> B9::~B9()
  */
- 
 
-class Breakdown: public Delude, virtual public Cough{
-
-};
-class Blackout: public Coma, virtual public Delusion {
-
+class Hypoxia{
+	const char *oxygen;
+	public:
+	Hypoxia(const char*o):oxygen(o){
+		cout << "Hypoxia from " << this->oxygen << endl;
+	}
+	virtual ~Hypoxia(){delete oxygen;cout << "~Hypoxia" << endl;}
 };
 class Exclusion{
+	Hypoxia hypoxia("Exclusion");
+	public:
+	Exclusion(){
+		
+		cout << "Exclusion" << endl;
+	}
+	virtual ~Exclusion(){cout << "~Exclusion" << endl;}
 };
-class Anaemia: 	public Blackout, public Breakdown, virtual public Exclusion{
+class Delude{
+
+	public:
+	Delude(){cout << "Delude" << endl;}
+	virtual ~Delude(){cout << "~Delude" << endl;}
+};
+class Delusion{
+
+};
+class Cough{
+
+};
+class Breakdown: public Cough, virtual public Delusion, virtual public Delude{
+
+};
+class Blackout: public Coma, virtual public Delusion, virtual public Delude {
+
+};
+
+class Anaemia: 	public Blackout, protected Breakdown, virtual private Exclusion{
 		
 };
 /*
@@ -74,3 +101,8 @@ class Anaemia: 	public Blackout, public Breakdown, virtual public Exclusion{
 				        Anaemia
  *******************************************************************************
  */
+
+ 
+ 
+ 
+ 

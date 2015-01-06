@@ -1,31 +1,31 @@
-/, Uses absolute path to include/require a file. ,/
+Uses absolute path to include/require a file.
 	e.g.  include __DIR__ . '/../../vince.php';
-/, Uses low-case to write PHP constants and type-convert functions ,/
+Uses low-case to write PHP constants and type-convert functions
 	e.g. true  false  null  
 	(int)  (bool)  (float)  (double)  (real)  (array)  (object)
-/, Uses upper-case to express self-defined constants; ,/
+Uses upper-case to express self-defined constants;
 	e.g. define('VINCE_NUM', 100); const VINCE_CLASS_NUM = 1;
-/, Omits the last end of PHP delimiter ('?>') in pure PHP files; ,/
-/, Uses PHP_EOL to replace '\r\n' ,/
-/, Excepts "\r\n", using single quotation to quote string. ,/
+Omits the last end of PHP delimiter ('?>') in pure PHP files;
+Uses PHP_EOL to replace '\r\n'
+Excepts "\r\n", using single quotation to quote string.
 	e.g. echo 'I am Vince Well.', PHP_EOL;
-/, In order not to match the system functions, don't use underline to name variables and parameters ,/
+In order not to match the system functions, don't use underline to name variables and parameters
 	e.g. PHP system functions $_GET $_POST __unset __construct ...
 
-/, Uses exit() , Exit() and die() are equivalent. ,/
+Uses exit() , Exit() and die() are equivalent.
 	e.g. $fp=fopen('./readme.md','r') or exit('Error');
 
-/, Release memory-costed array or string (read from a large file) a.s.a.p. Evaluates a value to null instead of unset() it, because unset() only destroys the value of a variable, but not release memory  ,/
+Release memory-costed array or string (read from a large file) a.s.a.p. Evaluates a value to null instead of unset() it, because unset() only destroys the value of a variable, but not release memory 
 	e.g. $a = [.........];   $a = null;  ( DON't use unset($a)  )
 
-/, Uses $_SERVER['REQUEST_TIME'] instead of time() to get the view time  ,/
+Uses $_SERVER['REQUEST_TIME'] instead of time() to get the view time 
 		
 
-/! class !/
-/, Adds a back-slash when new a class (ext or namespace) ,/
+|~ class ~|
+Adds a back-slash when new a class (ext or namespace)
 	e.g. $mysqli = new \mysqli(....);   $tf = new \Tf\Vince\Test();	
-/, Uses upper-case start a class name (Camel case) ,/
+Uses upper-case start a class name (Camel case)
 	e.g. class VinceWell{}
-/, Prefix public and private are necessary, and don't use var to declare variables ,/
+Prefix public and private are necessary, and don't use var to declare variables
 	e.g.  public static $vinceWell;
-/, If a method c++ an be static, declare it static. Speed improvement is by a factor of 4.  ,/
+If a method c++ an be static, declare it static. Speed improvement is by a factor of 4. 
