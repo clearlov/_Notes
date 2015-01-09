@@ -1,9 +1,14 @@
+int (*)
+
+
+
+
 /**
  * int *p[n]       ==  *(p[n])
 		int a = 100, b= 200;
 		int *p[2] = {&a, &b};
-		char *pp[] = {"Vince", "Well"};
-		char **p = pp;
+		int **pp = p;
+		char *pace[] = {"Vince", "Well"};
  * int (*p)[n]
 		int a[1][2] = {{100, 200}};
 		int (*p)[2] = a;
@@ -40,7 +45,7 @@
 
  */
 int (*accented())[2]{
-	// int (*accentuate)[2] = new int[2][3][4];
+	// int (*accentuate)[2] = new int[2][3][4];   int accentuate[][2];
 	int (*accentuate)[2] = (int (*)[2]) malloc(3*2*sizeof(int));
 	//int **accentuate = (int **) malloc(3*2*sizeof(int));
 	int accent[3][2] = {111,222,333,444,555,666};
@@ -48,9 +53,6 @@ int (*accented())[2]{
 	accentuate = accent;
 	return accentuate;
 }
-
-
-
 
 
 /**
@@ -78,7 +80,27 @@ int (*emphasis)[3][4] = emphasize();
 
 
 
-
+/**
+ * There is no array parameters, it's a pointer in deed.
+ */
+void sedimantary(int aspect[3]){   // int *
+	cout << sizeof(aspect);   // 8 --> int *, not 12
+	
+}
+void hydropower(int (&diverse)[3]){    // a 3 elements array argument
+	cout << sizeof(a);  // 12 --> int (&)[3]
+}
+void craft(int (&fossil)[3][2]){
+	int (*clay)[2] = fossil;  // it works,  int *[2] to int *[2]
+	int **clay = fossil;      // Error: int *[2] to int **
+}
+int extinct[3] = {100,200,300};  // sizeof(extinct) = 12
+int impact[10] = {0,1,2,3,4,5,6,7,8,9};
+cout << sizeof(impact);  // 40
+sedimantary(extinct);   // it works, int *aspect = impact;
+sedimantary(impact);  	// it works, int *aspect = impact;
+hydropower(extinct);	// it works, int (&)[3] to int [3]
+hydropower(impact); 	// Error: int(&)[3] to int[10]
 
 
 

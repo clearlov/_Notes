@@ -3,18 +3,19 @@
 		align to the largest number with sequence
 		2 1 1 	= 4 = 2 [11]
 		1 1 2 	= 4 = [11] 2
-		1 2 1 	= 6 = [10] 2 [10]
-		1 2 1 1 = 6 = [10] 2 [11]
-		1 4 1 2 = 12 = [1000] 4 [102]
-		1 4 3 2 = 16 = [1000] 4 [30] [200]
+		1 2 1 	= 6 = [1@] 2 [1@]
+		1 2 1 1 = 6 = [1@] 2 [11]
+		1 4 1 2 = 12 = [1@@@] 4 [1@2]
+		1 4 3 2 = 16 = [1@@@] 4 [3@] [2@@]
  */
 
-struct Allergic{	// 32 = [40000] 8 [10004] [40000]
-	int wound;			// 0x7f..00		4 bytes + 4
-	const char* victim;	// 0x7f..08		8 bytes --> largest number
-	char respirate;		// 0x7f..10		1 bytes
-	int rodent;			// 0x7f..14
-	int sneezy;			// 0x7f..18
+struct Allergic{	// 32 = [4@@@@] 8 [1@24] [4@@@@]
+	int wound;			// 0x7f..a0		4 bytes + 4
+	const char* victim;	// 0x7f..a8		8 bytes --> largest number
+	char respirate;		// 0x7f..b0		1 + 1
+	short advantageous;	// 0x7f..b2
+	int rodent;			// 0x7f..b4
+	int sneezy;			// 0x7f..b8
 };				
 Allergic allergic = {4, "victimize", 'V', 400, 444};
 struct Allergic allergic = {4, "victimize", 'V', 400, 444}; 	// C-Style
@@ -37,6 +38,29 @@ struct Avian avian = allergic;
 Brutal *avian = &allergic;
 
 
+
+/**
+ * Assign the packing alignment in Struct and Union
+ *	#pragma pack([ BYTES ?=8 ]);
+		[ BYTES ]: 2^0, 2^1, 2^2, ?=2^3, 2^4 ...
+ */
+
+#pragma pack(2)
+struct Allergic{     // 22 = [1@][8][1@][2][4][4]
+	int wound;
+	const char* victim;
+	char respirate;
+	short advantageous;
+	int rodent;
+	int sneezy;
+}
+ 
+#pragma pack(4)
+struct Allergic{	// 24 = [1@@@][8][1@2][4][4]
+} 
+ 
+ 
+ 
 
 /**
  * sizeof(union..)
