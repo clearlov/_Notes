@@ -1,38 +1,38 @@
-sh# sudo yum update
-sh# sudo yum -y install gcc gcc-c++ autoconf automake zlib zlib-devel openssl openssl¨Cdevel pcre pcre-devel make cmake
-
-cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-sudo ntpdate us.pool.ntp.org
-
-sh# vim /etc/selinux/config
-/* change SELINUX=enforcing to */
-SELINUX=permissive
-
-
-
-|~ configure firewall to allow port 3306 for remote connecting ~|
-|+ firewalld.service in CentOS7 +|
-/* allow mysql */
-sh# sudo firewall-cmd --add-service http --permanent
-sh# sudo firewall-cmd --add-service https --permanent
-sh# sudo firewall-cmd --add-service mysql --permanent
-/*sh# sudo firewall-cmd --zone=public --remove-port=80/tcp */
-sh# sudo firewall-cmd --zone=public --add-port=80/tcp --permanent
-sh# sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent
-sh# sudo firewall-cmd --zone=public --add-port=3306/tcp --permanent
-
-
-/* 
-|+ iptables in CentOS6.5  +|
-http://blog.163.com/zhangjie_0303/blog/static/9908270620115159570547/
-see the ports 
-sh# netstat -nat
-sh# sudo iptables -L -n
-sh# vim /etc/sysconfig/iptables
--A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
--A INPUT -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT
-sh# service iptables restart
-sh# sudo iptables -L -n
-sh# chkconfig iptables on 
-*/
-
+sh# sudo yum update
+sh# sudo yum -y install gcc gcc-c++ autoconf automake zlib zlib-devel openssl openssl¨Cdevel pcre pcre-devel make cmake
+
+cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+sudo ntpdate us.pool.ntp.org
+
+sh# vim /etc/selinux/config
+/* change SELINUX=enforcing to */
+SELINUX=permissive
+
+
+
+|~ configure firewall to allow port 3306 for remote connecting ~|
+|+ firewalld.service in CentOS7 +|
+/* allow mysql */
+sh# sudo firewall-cmd --add-service http --permanent
+sh# sudo firewall-cmd --add-service https --permanent
+sh# sudo firewall-cmd --add-service mysql --permanent
+/*sh# sudo firewall-cmd --zone=public --remove-port=80/tcp */
+sh# sudo firewall-cmd --zone=public --add-port=80/tcp --permanent
+sh# sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent
+sh# sudo firewall-cmd --zone=public --add-port=3306/tcp --permanent
+
+
+/* 
+|+ iptables in CentOS6.5  +|
+http://blog.163.com/zhangjie_0303/blog/static/9908270620115159570547/
+see the ports 
+sh# netstat -nat
+sh# sudo iptables -L -n
+sh# vim /etc/sysconfig/iptables
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT
+sh# service iptables restart
+sh# sudo iptables -L -n
+sh# chkconfig iptables on 
+*/
+

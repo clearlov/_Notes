@@ -1,65 +1,65 @@
-How to learn web architecture from A to Z?
-
-Why I always ask some programmers how to be a web architect? Because I think this job is cool. But I learnt so much Javascript/HTML/CSS/Photoshop, I found that I know nothing about architecture. I walked on the wrong way before. So I asked for over a half year. I asked BD basic architecture programmers and them who work for `architecture`. I found it's a little bit different. So I asked two funny and famous PHP programmers. It doesn't mean that I would be an architect
-. But I think it's useful for both of us to learn PHP in the right way. If you want to be an web architect, please work in a firm that holds more than 500 programmers by any means (Said Demon). Otherwise, just learn it for fun (My purpose).
-==> Txs to Demon(Super Senior PHPer, He only said `Learn well basic knowledge and worked in a company that more than 500 staffs. ==> I asked, what's the hell basic knowledge? He replied: Just the basic knowledge....  Okay, I think he said something I can agree more.`), 
-	HZG(Basic Architect of BD), 
-	Luruance(you'll can't miss his blog when you search something about PHP), 
-
-1. 	LNMP   ==> e.g. Logs, fastcgi/fastcgi_pass access_log   InnoDB/MyISAM
-				Yaf / Yii / Laravel
-		Q: Why Nginx works better than Apache?
-		Q: Configures multicore Nginx, events, proxy_pass, sendfile/tcp_*
-		Q: What's Overtime and its affection?
-		Q: Configures Proxy and Reverse Static Server
-		Q: Configures for innodb/myisam (e.g. key_bufer/query_cache/sort_buffer/innodb_buffer_pool_size/innodb_flush_log_at_trx_commit/innodb_log_buffer_size/back_log/table_open_cache/thread_cache_size/innodb_lock_wait_timeout)
-		Q: What's `show status/profile` in MySQL
-		Q: MySQL backup (Binlog, Multi-IDC, Cold/Hot Backup)
-		Q: Master and Slave Database (binlog_format  slow_log/explain/index)
-		Q: What is PHP OOP(Abstract Factory, Viewer, Singleton, Observer, CommandChain, Responsibility Chain, Adapter), SPL, MVC
-		Q: How to use mod_php/fastcgi/PHP-FPM, and how to calculate the number of process for them? 
-		Q: What's Data Drift?
-2. 	HTML: YSlow / Page Speed
-	Web Serv: 
-		Apache AB  => 
-		http_load  => throughout capability and load (Linux Only)
-		LoadRunner => imitate millions or billions users run simultaneously
-	PHP: Xdebug xhprof
-    C:  Valgrind Callgrind
-    MySQL: 	---> query log analysis
-			mysqlsla => slow query log
-			mk-query-digest  => query log
-		
-			innotop  => real time watch in servers
-			sysbench => performance of different hardware and OS and MySQL
-			mysqladmin => MySQL performance counters increment and Server run status
-			vmstat => system loads
-			drtace => system level performance analyses
-			
-			mpstat => CPU usage
-			oprofile => where inside MySQL or Kernel CPU time is spent
-			filefrag => fragmentation of the file
-			fincore => watchs the given file is cached in OS cache
-			iostat => IO problems
-			iohist => IO response time
-			
-			mk-table-checksum  => useful for Data Drift
-			
-			tcprstat  => monitors TCP requests, statistics about low-level response times
-			mysqldumper => backup  ==> like mysqldump 
-			xtrabackup  => every day using data nonblocking backup
-			
-3.  Deep understanding about HTML Protocol: 
-	HTTP Status and the reasons 
-	    Q: what's the difference between the changes of Cache-Control/Expires in http status 302?
-		Q: 502 indicates Bad Gateway, normally the invalid from PHP(not Nginx)
-
-4. 	Linux  ==> e.g. shell, awk/sed/watch/tcpdump/starce/ldd/ar/perl
-
-5. 	Cache/NoSQL  ==> Redis/Memcached, MongoDB
-6.	protobuf/thrift
-7. 	Zend Engine and extends PHP with C. e.g. zval/hashtable/gc
-8. 	Extends Nginx + Lua
-9. 	B-Tree/rb-tree/skiplist/lsm-tree/trie-tree, multi-process/multi-thread programming
-10. Destructs Chinese Words / machine learning skills  ===> Damn it! Are you kidding me?
+How to learn web architecture from A to Z?
+
+Why I always ask some programmers how to be a web architect? Because I think this job is cool. But I learnt so much Javascript/HTML/CSS/Photoshop, I found that I know nothing about architecture. I walked on the wrong way before. So I asked for over a half year. I asked BD basic architecture programmers and them who work for `architecture`. I found it's a little bit different. So I asked two funny and famous PHP programmers. It doesn't mean that I would be an architect
+. But I think it's useful for both of us to learn PHP in the right way. If you want to be an web architect, please work in a firm that holds more than 500 programmers by any means (Said Demon). Otherwise, just learn it for fun (My purpose).
+==> Txs to Demon(Super Senior PHPer, He only said `Learn well basic knowledge and worked in a company that more than 500 staffs. ==> I asked, what's the hell basic knowledge? He replied: Just the basic knowledge....  Okay, I think he said something I can agree more.`), 
+    HZG(Basic Architect of BD), 
+    Luruance(you'll can't miss his blog when you search something about PHP), 
+
+1.     LNMP   ==> e.g. Logs, fastcgi/fastcgi_pass access_log   InnoDB/MyISAM
+                Yaf / Yii / Laravel
+        Q: Why Nginx works better than Apache?
+        Q: Configures multicore Nginx, events, proxy_pass, sendfile/tcp_*
+        Q: What's Overtime and its affection?
+        Q: Configures Proxy and Reverse Static Server
+        Q: Configures for innodb/myisam (e.g. key_bufer/query_cache/sort_buffer/innodb_buffer_pool_size/innodb_flush_log_at_trx_commit/innodb_log_buffer_size/back_log/table_open_cache/thread_cache_size/innodb_lock_wait_timeout)
+        Q: What's `show status/profile` in MySQL
+        Q: MySQL backup (Binlog, Multi-IDC, Cold/Hot Backup)
+        Q: Master and Slave Database (binlog_format  slow_log/explain/index)
+        Q: What is PHP OOP(Abstract Factory, Viewer, Singleton, Observer, CommandChain, Responsibility Chain, Adapter), SPL, MVC
+        Q: How to use mod_php/fastcgi/PHP-FPM, and how to calculate the number of process for them? 
+        Q: What's Data Drift?
+2.     HTML: YSlow / Page Speed
+    Web Serv: 
+        Apache AB  => 
+        http_load  => throughout capability and load (Linux Only)
+        LoadRunner => imitate millions or billions users run simultaneously
+    PHP: Xdebug xhprof
+    C:  Valgrind Callgrind
+    MySQL:     ---> query log analysis
+            mysqlsla => slow query log
+            mk-query-digest  => query log
+        
+            innotop  => real time watch in servers
+            sysbench => performance of different hardware and OS and MySQL
+            mysqladmin => MySQL performance counters increment and Server run status
+            vmstat => system loads
+            drtace => system level performance analyses
+            
+            mpstat => CPU usage
+            oprofile => where inside MySQL or Kernel CPU time is spent
+            filefrag => fragmentation of the file
+            fincore => watchs the given file is cached in OS cache
+            iostat => IO problems
+            iohist => IO response time
+            
+            mk-table-checksum  => useful for Data Drift
+            
+            tcprstat  => monitors TCP requests, statistics about low-level response times
+            mysqldumper => backup  ==> like mysqldump 
+            xtrabackup  => every day using data nonblocking backup
+            
+3.  Deep understanding about HTML Protocol: 
+    HTTP Status and the reasons 
+        Q: what's the difference between the changes of Cache-Control/Expires in http status 302?
+        Q: 502 indicates Bad Gateway, normally the invalid from PHP(not Nginx)
+
+4.     Linux  ==> e.g. shell, awk/sed/watch/tcpdump/starce/ldd/ar/perl
+
+5.     Cache/NoSQL  ==> Redis/Memcached, MongoDB
+6.    protobuf/thrift
+7.     Zend Engine and extends PHP with C. e.g. zval/hashtable/gc
+8.     Extends Nginx + Lua
+9.     B-Tree/rb-tree/skiplist/lsm-tree/trie-tree, multi-process/multi-thread programming
+10. Destructs Chinese Words / machine learning skills  ===> Damn it! Are you kidding me?
 ... 

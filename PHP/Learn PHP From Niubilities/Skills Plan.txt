@@ -1,35 +1,35 @@
-1h a day
-
-Nov. 25 - Dec. 25
-	Tools
-		* Apache AB、http_load、LoadRunner
-		* xhprof
-		* Callgrind
-		* MySQL tools
-		
-	Yii2 / Yaf / Phacon / Laravel / Symfony
-		* MVC
-		* difference
-	|Linux
-		
-Jan. 1  - Feb. 1
-	Polymer
-	LNMP
-		access_log  error_log ...
-		mod_php/fastcgi/PHP-FPM
-		* deep understanding about php-cgi process
-		configurations (my.cnf / php.ini / httpd.conf  ==> every configs)
-			key_bufer/query_cache/sort_buffer/innodb_buffer_pool_size/innodb_flush_log_at_trx_commit/innodb_log_buffer_size/back_log/table_open_cache/thread_cache_size/innodb_lock_wait_timeout
-	Redis
-	|Linux
-	
-Feb. 10  - Mar. 10
-	HTTP Status
-	Protobuf / Thrift
-	Zend PHP with C/C++
-	|Linux
-
-Mar. 25  -  Apr. 25
-	Swoole
-	|MySQL
-	|Linux
+1h a day
+
+Nov. 25 - Dec. 25
+    Tools
+        * Apache AB、http_load、LoadRunner
+        * xhprof
+        * Callgrind
+        * MySQL tools
+        
+    Yii2 / Yaf / Phacon / Laravel / Symfony
+        * MVC
+        * difference
+    |Linux
+        
+Jan. 1  - Feb. 1
+    Polymer
+    LNMP
+        access_log  error_log ...
+        mod_php/fastcgi/PHP-FPM
+        * deep understanding about php-cgi process
+        configurations (my.cnf / php.ini / httpd.conf  ==> every configs)
+            key_bufer/query_cache/sort_buffer/innodb_buffer_pool_size/innodb_flush_log_at_trx_commit/innodb_log_buffer_size/back_log/table_open_cache/thread_cache_size/innodb_lock_wait_timeout
+    Redis
+    |Linux
+    
+Feb. 10  - Mar. 10
+    HTTP Status
+    Protobuf / Thrift
+    Zend PHP with C/C++
+    |Linux
+
+Mar. 25  -  Apr. 25
+    Swoole
+    |MySQL
+    |Linux

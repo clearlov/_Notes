@@ -1,34 +1,34 @@
-int a[] = {2,4,2,45,72,1,3};
-int len = sizeof(a) / sizeof(int);
-/**
- * C++ sort()
- * Best:   O(n-1)
- */
-#include <algorithm>
-sort(a, a+len);
-
-bool compare(int a, int b){ return a<b;}
-sort(a, a+len, compare);
-
-
-/! Bubble Sort !/
-/**
- * Bubble Sort             Time-Memory
- * Best/Avg:               O(n) - O(1)
- * Worst:                  O(n^2) - O(1)
- * Describe: compare each closed two numbers to the end, it'll move the biggest 
- *   number to the end. Then repeat it (ignore the last number), to move second 
- *   biggest number to second from the end. Do repeat n times.
- */
- 
- int temp = 0;
- for(int i = 0; i < len; i++){
-	for(int j =0; j < len - 1 - i; j++){
-		if(a[j] > a[j+1]){
-			temp = a[j];
-			a[j] = a[j+1];
-			a[j+1] = temp;
-		}
-	}
- }
+int a[] = {2,4,2,45,72,1,3};
+int len = sizeof(a) / sizeof(int);
+/**
+ * C++ sort()
+ * Best:   O(n-1)
+ */
+#include <algorithm>
+sort(a, a+len);
+
+bool compare(int a, int b){ return a<b;}
+sort(a, a+len, compare);
+
+
+/! Bubble Sort !/
+/**
+ * Bubble Sort             Time-Memory
+ * Best/Avg:               O(n) - O(1)
+ * Worst:                  O(n^2) - O(1)
+ * Describe: compare each closed two numbers to the end, it'll move the biggest 
+ *   number to the end. Then repeat it (ignore the last number), to move second 
+ *   biggest number to second from the end. Do repeat n times.
+ */
+ 
+ int temp = 0;
+ for(int i = 0; i < len; i++){
+    for(int j =0; j < len - 1 - i; j++){
+        if(a[j] > a[j+1]){
+            temp = a[j];
+            a[j] = a[j+1];
+            a[j+1] = temp;
+        }
+    }
+ }
  

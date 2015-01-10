@@ -1,4 +1,4 @@
-|~ ~|
-typeof(NaN) === 'number';
-NaN !== NaN;
-isNaN(NaN);   // true
+|~ ~|
+typeof(NaN) === 'number';
+NaN !== NaN;
+isNaN(NaN);   // true

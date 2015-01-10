@@ -1,26 +1,26 @@
-|~ Process ~|
-
-|[
-/*
-* The task state array is a strange "bitmap" of
-* reasons to sleep. Thus "running" is zero, and
-* you can test for combinations of others with
-* simple bit tests.
-*/
-static const char * const task_state_array[] = {
-	"R (running)", /* 0, Runnint or in queue */
-	"S (sleeping)", /* 1, interruptible sleep */
-	"D (disk sleep)", /* 2, uninterruptible sleep */
-	"T (stopped)", /* 4 */
-	"t (tracing stop)", /* 8 */
-	"X (dead)", /* 16 */
-	"Z (zombie)", /* 32 */
-};
-]|
-sh$ kill -SIGSTOP [ PID ]
-sh$ kill -SIGCONT [ PID ]
-
-
-|+ Inter Process Communication +|
-|+ Tube +|
+|~ Process ~|
+
+|[
+/*
+* The task state array is a strange "bitmap" of
+* reasons to sleep. Thus "running" is zero, and
+* you can test for combinations of others with
+* simple bit tests.
+*/
+static const char * const task_state_array[] = {
+    "R (running)", /* 0, Runnint or in queue */
+    "S (sleeping)", /* 1, interruptible sleep */
+    "D (disk sleep)", /* 2, uninterruptible sleep */
+    "T (stopped)", /* 4 */
+    "t (tracing stop)", /* 8 */
+    "X (dead)", /* 16 */
+    "Z (zombie)", /* 32 */
+};
+]|
+sh$ kill -SIGSTOP [ PID ]
+sh$ kill -SIGCONT [ PID ]
+
+
+|+ Inter Process Communication +|
+|+ Tube +|
 |~ Thread ~|

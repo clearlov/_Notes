@@ -1,3 +1,3 @@
-integer
-float
+integer
+float
 double
