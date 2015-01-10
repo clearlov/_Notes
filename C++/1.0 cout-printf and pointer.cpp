@@ -1,25 +1,29 @@
 /*******************************************************************************
+ * 
+	printf()
+		%p	=	address
+		%d	=	digit(int)				%u	=	usigned int
+		%s	=	string					%c	=	char
+		%f	=	float					%e	=	float in exponential format
+		%g	=	the shorter one in length between %e and %f
+		%x	=	hexadecimal int			%o	=	octal int
+		%lu	=	32-bit unsigned int		%llu=	64-bit unsigned int
+		
  * DON'T USE "cout <<" to print address, otherwise, you'll get lost.
+ * Cast "& char" to "(void *)&char" to print its address, otherwise it'll print 
+	a pointer "char * rarely = &char"
+	Notice: String
+		cout << &char;    		===>   	printf("%s", &char);
+		cout << (void *)&char 	===>	printf("%p", &char);
  */
 const char* essential = "colonial";
 char colony = *essential;
-cout << &colony;  // c▒      @, Damn it! it's not an address!!!
-printf("%p", &colony);   // it's the address 'c' in "colonial";
+cout << &colony;  // c▒      @, Damn it! it's pointer-like, but not an address!
+cout << (void *)&colony;  // it's the address 'c' in "colonial";
 
-struct Glacial{		// [11@@][4][1@@@]
-	char glaciation;
-	char glacier;
-	int glace;
-	char cave;
-};
+printf("&s", &colony);	// c▒      @
+printf("%p", &colony);   // same as "cout << (void *)&char"
 
-Glacial glacial = {'A','B','C','D'};
-
-cout << &glacial.glaciation << endl;// 【AB▒▒C】don't use "cout" to print addr.
-printf("%p", &glacial.glaciation); // address, bingo
-cout << &glacial.glacier << endl;	// 【B▒▒C】don't use "cout" to print addr.	 
-cout << &glacial.glace << endl;  	// 0x7f..a0
-cout << &glacial.cave<< endl;		// 【D】don't use "cout" to print addr.
 /******************************************************************************/
 
 
@@ -42,8 +46,8 @@ const int *meteorite = & expsure;
 // int *marin = &exposure;  ERROR: const int* to int*
 // int *transplant = meteorite;   ERROR: const int* to int*
 
+printf("%p %p", &exposure, meteorite);  // 0x7f..00		0x7f..00
 
-cout << &exposure << " " << meteorite;  // 0x7f..00		0x7f..00
 /**
  * const_cast from "const T*" to "T *", it works, but not suggest.
  * it'll makes const T * changeable, but const T unchangeable

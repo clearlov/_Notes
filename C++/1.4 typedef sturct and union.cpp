@@ -29,12 +29,12 @@ typedef struct {								// C-Style
 Abnormality abnormality = allergic;	//Abnormality *abnormality = &allergic;
 Seizure seizure = &allergic;  // Seizure *seizure = allergic;
 
-typedef struct Avian{							// C-Style
+typedef struct avian{							// C-Style
 	int subtle;
 	const char* slight;
 	char 
 } Brutal;
-struct Avian avian = allergic;
+struct avian bird = allergic;
 Brutal *avian = &allergic;
 
 
