@@ -1,68 +1,66 @@
-/. translates to excutable machine code ./
-# g++ vince.cpp -o vince     /* compile vince.cpp output to vince */
-# ./vince       /* run vince */
-# g++ vince.o -o vince  /* compile assembler code object to machine code*/
-
-/. -On (n=0-3)to optimize the compile ./
-/*
- 0 no optimization
- 1 default optimization, jump or delay Back Stack
- 2 
- 3 
- */
-# g++ vince.cpp -o vince -O1
-
-/. -E  preprocessed ./
-/*
- * It'll preprocessed the origin cpp 
- * e.g. replace global const (#define ) to its value
- */
-# g++ -E vince.cpp -o vince.i
-
-/. -S translate to assembler code ./
-/*
- * translate vince.i (or vince.cpp) to assembler code  ( to file vince.s)
- */
-# g++ -S vince.i -o vince.s
-
-
-/. -c translate to not linked source file  ./
-/*
- * Compile or assemble the source files, but do not link.  
- * The linking stage simply is not done.  
- * The ultimate output is in the form of an object file for each source file.
- * By default, the object file name for a source file is made by replacing 
- * the suffix .c, .i, .s, etc., with .o.
- * Unrecognized input files, not requiring compilation or assembly, are ignored.
- */
- # g++ -c vince.s   /* same as  g++ -c vince.s -o vince.o  */
- 
- /! makefile !/
- /*
-  * multiple files 
-  * hd1.h => hd1.cpp    hd2.h => hd2.cpp
-  * main.cpp (run functions in both hd1.cpp and hd2.cpp)
-  */
-/, compile with shell ,/
-# g++ -c hd1.cpp
-# g++ -c hd2.cpp
-# g++ -c main.cpp
-# g++ main.o hd1.o hd2.o -o run
-# ./run
-/, makefile ,/
-# vim makefile
----------------
-out: main.o hd1.o hd2.o
-    g++ main.o hd1.o hd2.o -o run
-main.o: main.cpp hd1.h hd2.h   /*  main.cpp include hd1.h and hd2.h */
-    g++ -c main.cpp   /* but -c not need declare heads anymore */
-hd1.o: hd1.cpp hd1.h
-    g++ -c hd1.cpp
-hd2.o: hd2.cpp hd2.h
-    g++ -c hd2.cpp
-clean:
-    rm -rf *.o run
----------------
-# make    /* do makefile */
-# ./run 
+|+ translates to excutable machine code +|
+sh$ g++ -std=c++11 
+
+|+ -On (n=0-3)to optimize the compile +|
+/*
+ 0 no optimization
+ 1 default optimization, jump or delay Back Stack
+ 2 
+ 3 
+ */
+# g++ vince.cpp -o vince -O1
+
+|+ -E  preprocessed +|
+/*
+ * It'll preprocessed the origin cpp 
+ * e.g. replace global const (#define ) to its value
+ */
+# g++ -E vince.cpp -o vince.i
+
+|+ -S translate to assembler code +|
+/*
+ * translate vince.i (or vince.cpp) to assembler code  ( to file vince.s)
+ */
+# g++ -S vince.i -o vince.s
+
+
+|+ -c translate to not linked source file  +|
+/*
+ * Compile or assemble the source files, but do not link.  
+ * The linking stage simply is not done.  
+ * The ultimate output is in the form of an object file for each source file.
+ * By default, the object file name for a source file is made by replacing 
+ * the suffix .c, .i, .s, etc., with .o.
+ * Unrecognized input files, not requiring compilation or assembly, are ignored.
+ */
+ # g++ -c vince.s   /* same as  g++ -c vince.s -o vince.o  */
+ 
+|~ makefile ~|
+ /*
+  * multiple files 
+  * hd1.h => hd1.cpp    hd2.h => hd2.cpp
+  * main.cpp (run functions in both hd1.cpp and hd2.cpp)
+  */
+|- compile with shell -|
+# g++ -c hd1.cpp
+# g++ -c hd2.cpp
+# g++ -c main.cpp
+# g++ main.o hd1.o hd2.o -o run
+# +|run
+|- makefile -|
+# vim makefile
+---------------
+out: main.o hd1.o hd2.o
+	g++ main.o hd1.o hd2.o -o run
+main.o: main.cpp hd1.h hd2.h   /*  main.cpp include hd1.h and hd2.h */
+	g++ -c main.cpp   /* but -c not need declare heads anymore */
+hd1.o: hd1.cpp hd1.h
+	g++ -c hd1.cpp
+hd2.o: hd2.cpp hd2.h
+	g++ -c hd2.cpp
+clean:
+	rm -rf *.o run
+---------------
+# make    /* do makefile */
+# +|run 
 # make clean  /*  do rm -rf *.o run   */

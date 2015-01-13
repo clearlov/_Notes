@@ -1,67 +1,67 @@
-c < log(n) < n < n*log(n) < n^2 < n^3 < 2^n < 3^n < n!
-/**
- *    
- *     O(c): Constant
-    O(lb(n)): Logarithmic
-    O(n):    Linear run once each elements
-    O(n*log(n)): 
-    O(n^2): Quadratic run n times each elements
-    O(n^3): Cubic
-    O(2^n): Exponential
-    O(3^n):
-    O(n!): Factorial
-
- */
-|~ Time Complexity ~|
-|[
-template<typename T>
-struct List{
-    T val[255];
-    int n;
-};
-template<typename T>
-void ins(List* l, int i, T v){
-    assert(l->n != 255 && l > 0 && i <= l->n);
-    for(int j=l->n; j>=i; j--){
-        l->val[j] = l->val[j-1];             //  n - i + 1
-    }
-    l->val[i] = v;
-    l->n++;
-};
-]|
-Only concern about "for block". It moves n-i+1 elements in each ins() cycle. 
-/**
- * Solve Average moving times:
-    Assume:
-        probabilities p(i)
-    Known: 
-        n-i+1
-        p(1) + p(2) ... + p(n+1) = 0
- 
- *  What if p(i) = 1/n+1 (equal probability)
-        E = [n+1]∑[i=1](n-i+1) * p(i)
-          = 1/n+1 * (n + n-1 + n-1 ... + 0)
-          = n/2
-          = O(n)
-    What if p(1) = 1.5/n+1, p(2) = 0.5/n+1, others are 1/n+1
-        E = (1.5/n+1)*n + (0.5/n+1)*n-1 + .. 
-
- */
-E_ins =  [n+1]∑[i=1](n-i+1) * p(i)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+c < log(n) < n < n*log(n) < n^2 < n^3 < 2^n < 3^n < n!
+/**
+ * 
+ *  O(c): Constant
+    O(lb(n)): Logarithmic
+    O(n):   Linear run once each elements
+    O(n*log(n)): 
+    O(n^2): Quadratic run n times each elements
+    O(n^3): Cubic
+    O(2^n): Exponential
+    O(3^n):
+    O(n!): Factorial
+
+ */
+|~ Time Complexity ~|
+|[
+template<typename T>
+struct List{
+    T val[255];
+    int n;
+};
+template<typename T>
+void ins(List* l, int i, T v){
+    assert(l->n != 255 && l > 0 && i <= l->n);
+    for(int j=l->n; j>=i; j--){
+        l->val[j] = l->val[j-1];             //  n - i + 1
+    }
+    l->val[i] = v;
+    l->n++;
+};
+]|
+Only concern about "for block". It moves n-i+1 elements in each ins() cycle. 
+/**
+ * Solve Average moving times:
+    Assume:
+        probabilities p(i)
+    Known: 
+        n-i+1
+        p(1) + p(2) ... + p(n+1) = 0
+ 
+ *  What if p(i) = 1/n+1 (equal probability)
+        E = [n+1]∑[i=1](n-i+1) * p(i)
+          = 1/n+1 * (n + n-1 + n-1 ... + 0)
+          = n/2
+          = O(n)
+    What if p(1) = 1.5/n+1, p(2) = 0.5/n+1, others are 1/n+1
+        E = (1.5/n+1)*n + (0.5/n+1)*n-1 + .. 
+
+ */
+E_ins =  [n+1]∑[i=1](n-i+1) * p(i)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

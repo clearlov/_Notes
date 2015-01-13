@@ -1,54 +1,54 @@
-|~ dev ~|
-hd[a-z]  
-
-|~ d ~|
-[ SWAP ] swap file, like virtual memory in Windows
-    
-
-[ /bin ]  hundreds of command and tool
-[ /dev ]  devices (drives)
-    [ /dev/usb ]   usb drives 
-[+] [ /home ] for uses, like C:\Users in windows [+]
-[ /lost+found ]  like \Recycled in windows
-[ /mnt ] mount another disk or floppy
-    mount /mnt/cdrom   mount cd into /mnt/cdrom
-[ /proc ]  you can view data in memory
-[ /sbin ]  system's command and tool
-/. /usr for software's installation ./
-[ /usr/bin ]  installed command and tool
-[ /usr/sbin ]  installed system comand and tool 
-[ /usr/include /usr/lib  /usr/share ] shared links
-[ /usr/local ] for software's installation
-[ /usr/src ]  Linux source
-[ /boot ]  system boot up
-    128M  is enough (normally it)
-    
-[ /etc ] configurations
-[ /lib ]  static lib
-[ /root ]  user root's directory (the others are under /home)
-/.  /var  for  variable  ./
-[ /var/log ]  system logs
-[ /var/spool ]   news,email,print queue
-
-服务器分区的方案建议： 
-分区类型      分区的实际大小 
-|~ /           2G  ~|                   
-|~ /boot        128 M  ~|              该分区存放Linux的Grub(bootloader)和内核源码。用户可通过访问/boot目录来访问该分区.换句话说，用户对/boot目录的操作就是操作该分区。(启动分区，最多只要100M左右) 
-|~ SWAP 虚拟内存 =  物理内存1 - 2倍~| 
-该分区没有对应的目录，故用户无法访问。
-Linux下的swap分区即为虚拟内存.虚拟内存用于当系统内存空间不足时，先将临时数据存放在swap分区，等待一段时间后，然后再将数据调入到内存中执行.所以说，虚拟内存只是暂时存放数据，在该空间内并没有执行。
-|~/home       1G~|              是用户的home目录所在地，这个分区的大小取决于有多少用户。如果是多用户共同使用一台电脑的话，这个分区是完全有必要的，况且根用户也可以很好 地控制普通用户使用计算机，如对用户或者用户组实行硬盘限量使用，限制普通用户访问哪些文件等。其实单用户也有建立这个分区的必要，因为没这个分区的话， 那么你只能以根用户的身份登陆系统，这样做是危险的，因为根用户对系统有绝对的使用权，可一旦你对系统进行了误操作，麻烦也就来了。 
-
-|~/opt        1G ~|
-                (附加应用程序) 
-|~/tmp        最大1G  ~|
-独立临时盘的分区，避免文件系统塞满时影响系统稳定性.这对于多用户系统或者网络服务器来说是有必要的。这样即使程序运行时生成大量的临时文件，或者用户对系统进行了错误的操作，文件 系统的其它部分仍然是安全的。因为文件系统的这一部分仍然还承受着读写操作，所以它通常会比其它的部分更快地发生问题。 
-
-
-|~/usr       60G ~|             
-linux系统存放软件的地方，如有可能应将最大空间分给它。 
-|~ /usr/local 20G  ~|
- 自已安装程序安装在此 
-
-
+|~ dev ~|
+hd[a-z]  
+
+|~ d ~|
+[ SWAP ] swap file, like virtual memory in Windows
+	
+
+[ /bin ]  hundreds of command and tool
+[ /dev ]  devices (drives)
+	[ /dev/usb ]   usb drives 
+[+] [ /home ] for uses, like C:\Users in windows [+]
+[ /lost+found ]  like \Recycled in windows
+[ /mnt ] mount another disk or floppy
+	mount /mnt/cdrom   mount cd into /mnt/cdrom
+[ /proc ]  you can view data in memory
+[ /sbin ]  system's command and tool
+/. /usr for software's installation ./
+[ /usr/bin ]  installed command and tool
+[ /usr/sbin ]  installed system comand and tool 
+[ /usr/include /usr/lib  /usr/share ] shared links
+[ /usr/local ] for software's installation
+[ /usr/src ]  Linux source
+[ /boot ]  system boot up
+	128M  is enough (normally it)
+	
+[ /etc ] configurations
+[ /lib ]  static lib
+[ /root ]  user root's directory (the others are under /home)
+/.  /var  for  variable  ./
+[ /var/log ]  system logs
+[ /var/spool ]   news,email,print queue
+
+服务器分区的方案建议： 
+分区类型      分区的实际大小 
+|~ /           2G  ~|                   
+|~ /boot        128 M  ~|              该分区存放Linux的Grub(bootloader)和内核源码。用户可通过访问/boot目录来访问该分区.换句话说，用户对/boot目录的操作就是操作该分区。(启动分区，最多只要100M左右) 
+|~ SWAP 虚拟内存 =  物理内存1 - 2倍~| 
+该分区没有对应的目录，故用户无法访问。
+Linux下的swap分区即为虚拟内存.虚拟内存用于当系统内存空间不足时，先将临时数据存放在swap分区，等待一段时间后，然后再将数据调入到内存中执行.所以说，虚拟内存只是暂时存放数据，在该空间内并没有执行。
+|~/home       1G~|              是用户的home目录所在地，这个分区的大小取决于有多少用户。如果是多用户共同使用一台电脑的话，这个分区是完全有必要的，况且根用户也可以很好 地控制普通用户使用计算机，如对用户或者用户组实行硬盘限量使用，限制普通用户访问哪些文件等。其实单用户也有建立这个分区的必要，因为没这个分区的话， 那么你只能以根用户的身份登陆系统，这样做是危险的，因为根用户对系统有绝对的使用权，可一旦你对系统进行了误操作，麻烦也就来了。 
+
+|~/opt        1G ~|
+                (附加应用程序) 
+|~/tmp        最大1G  ~|
+独立临时盘的分区，避免文件系统塞满时影响系统稳定性.这对于多用户系统或者网络服务器来说是有必要的。这样即使程序运行时生成大量的临时文件，或者用户对系统进行了错误的操作，文件 系统的其它部分仍然是安全的。因为文件系统的这一部分仍然还承受着读写操作，所以它通常会比其它的部分更快地发生问题。 
+
+
+|~/usr       60G ~|             
+linux系统存放软件的地方，如有可能应将最大空间分给它。 
+|~ /usr/local 20G  ~|
+ 自已安装程序安装在此 
+
+
 |~/var      reiserFs  2G ~|

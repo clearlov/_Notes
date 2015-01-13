@@ -1,39 +1,39 @@
-http://php.net/manual/en/configure.about.php
-
-/**
- * where to install PHP
- */
---prefix=[ DIR ]
-
-/**
- * sets the path in which to look for php.ini
- * default [ PREFIX ]/lib
- * suggest /etc
- */   
---with-config-file-path=[ DIR ]
-
-/**
- * specifies the directory where the libraries to build PHP extensions on a Unix system.
- * For 64bit systems, it's needed to specify this argument to the lib64 directory like: 
- * --with-libdir=lib64
- */
---with-libdir=[ DIR ]
-
-/**
- * default [ PREFIX ] /lib/php
- */
---with-pear=[ DIR ]
-
-
-/**
- * Enable CGI version of PHP, the CGI module will be built with support for FastCGI also
- */
---enable-cgi
-
-
-
-
-/**
- * Enable Zend Opcache in PHP 5.5.0+
- */
+http://php.net/manual/en/configure.about.php
+
+/**
+ * where to install PHP
+ */
+--prefix=[ DIR ]
+
+/**
+ * sets the path in which to look for php.ini
+ * default [ PREFIX ]/lib
+ * suggest /etc
+ */   
+--with-config-file-path=[ DIR ]
+
+/**
+ * specifies the directory where the libraries to build PHP extensions on a Unix system.
+ * For 64bit systems, it's needed to specify this argument to the lib64 directory like: 
+ * --with-libdir=lib64
+ */
+--with-libdir=[ DIR ]
+
+/**
+ * default [ PREFIX ] /lib/php
+ */
+--with-pear=[ DIR ]
+
+
+/**
+ * Enable CGI version of PHP, the CGI module will be built with support for FastCGI also
+ */
+--enable-cgi
+
+
+
+
+/**
+ * Enable Zend Opcache in PHP 5.5.0+
+ */
 --enable-opcache

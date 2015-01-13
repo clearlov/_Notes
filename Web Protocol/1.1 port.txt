@@ -1,14 +1,14 @@
-一个端口是一个16位号码
-公用端口：由IANA分配，[1,1023]
-临时端口：客户，[1024,65535]
-
-UDP 42端口 NAMESERVER  主机名服务器
-UDP 53 DOMAIN 域名服务器
-UDP 67 BOOTP Client 客户端启动协议服务
-UDP 68 BOOTP Server 服务器端启动协议服务
-UDP 69 TFTP 简单文件传输协议
-TCP 20 FTP Data 文件传输协议(数据连接)
-TCP 21 FTP Control 文件传输协议(控制连接)
-TCP 23 Telent 远程终端服务器
-TCP 25 SMTP 简单邮件传输协议
+一个端口是一个16位号码
+公用端口：由IANA分配，[1,1023]
+临时端口：客户，[1024,65535]
+
+UDP 42端口 NAMESERVER  主机名服务器
+UDP 53 DOMAIN 域名服务器
+UDP 67 BOOTP Client 客户端启动协议服务
+UDP 68 BOOTP Server 服务器端启动协议服务
+UDP 69 TFTP 简单文件传输协议
+TCP 20 FTP Data 文件传输协议(数据连接)
+TCP 21 FTP Control 文件传输协议(控制连接)
+TCP 23 Telent 远程终端服务器
+TCP 25 SMTP 简单邮件传输协议
 TCP 80 HTTP 超文本传输协议

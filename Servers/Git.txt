@@ -1,5 +1,4 @@
 /**
- 
  * initialized empty git respository, to create a .git file under the tempotory
  * create a `master` branch as default
  */
@@ -58,8 +57,8 @@ sh$ git clone git@code.csdn.net:luxin6/youzi100.git
 
 
 /** list branchs of local, asterisk indicates the current branch
- *        -a  list all branchs (local + remote)
- *        -r    list remote branchs
+ *		-a  list all branchs (local + remote)
+ *		-r	list remote branchs
  */
 sh$ git branch
 

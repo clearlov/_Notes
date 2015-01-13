@@ -1,18 +1,18 @@
-|- Uses low-case and underline to name database and table names, and only low-case to field names -|
-    e.g. CREATE DATEBASE vince_db;   
-         CREATE TABLE vince_tb(
-            id INT(11) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-            vinceip VARBINARY(16) NOT NULL DEFAULT 0
-         );
-|- Be careful about the reserved words of MySQL -|
-    status    datetime
-|- Don't use one character field name, because it reserves for Vince-Well -|
-    i ==> a primary key int id, INT(11) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
-    h ==> head title, VARCHAR(75)
-    d ==> description, VARCHAR(255)
-    k ==> keywords, VARCHAR(60)
-    f ==> file-text, TEXT
-    t ==> current time, INT(11) UNSIGNED
-    o ==> a kinda sequence algorithmic, TINYINT/SMALLINT/INT...
-    v ==> stamp or promotion, TINYINT(4) UNSIGNED NOT NULL DEFAULT 0
-    
+|- Uses low-case and underline to name database and table names, and only low-case to field names -|
+	e.g. CREATE DATEBASE vince_db;   
+		 CREATE TABLE vince_tb(
+			id INT(11) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+			vinceip VARBINARY(16) NOT NULL DEFAULT 0
+		 );
+|- Be careful about the reserved words of MySQL -|
+	status	datetime
+|- Don't use one character field name, because it reserves for Vince-Well -|
+	i ==> a primary key int id, INT(11) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+	h ==> head title, VARCHAR(75)
+	d ==> description, VARCHAR(255)
+	k ==> keywords, VARCHAR(60)
+	f ==> file-text, TEXT
+	t ==> current time, INT(11) UNSIGNED
+	o ==> a kinda sequence algorithmic, TINYINT/SMALLINT/INT...
+	v ==> stamp or promotion, TINYINT(4) UNSIGNED NOT NULL DEFAULT 0
+	

@@ -1,31 +1,31 @@
-|~ Err ~|
-502 Bad Gateway + 504 Gateway Time-out
-|+ Nginx => /var/log/nginx/error.log +|
-|- 502 -|
-[error] 27600#0: *78887 recv() failed (104: Connection reset by peer) while reading response header from upstream, 
-    client: 192.168.1.101, server: test.com, request: "POST /index.php HTTP/1.1", upstream: "fastcgi://unix:/dev/shm/php-fcgi.sock:", 
-    host: "test.com", referrer: "http://test.com/index.php"
-|- 504 -|
-[error] 27600#0: *78877 upstream timed out (110: Connection timed out) while reading response header from upstream, 
-    client: 192.168.1.101, server: test.com, request: "POST /index.php HTTP/1.1", upstream: "fastcgi://unix:/dev/shm/php-fcgi.sock:", 
-    host: "test.com", referrer: "http://test.com/index.php"
-    
-|+ PHP-FPM => /var/log/php/php-fpm.log +|
-WARNING:  child 25708 exited on signal 15 (SIGTERM) after 21008.883410 seconds from start
-|~ Solve ~|
-|- nginx.conf -|
-max_fail
-fail_timeout
-fastcgi_connect_timeout      180;
-fastcgi_read_timeout            600;
-fastcgi_send_timeout            600;
-|- php-fpm.conf -|
-pm.max_requests
-request_terminate_timeout
-|- php.ini -|
-max_execution_time
-
-
-
-|~ ~|
+|~ Err ~|
+502 Bad Gateway + 504 Gateway Time-out
+|+ Nginx => /var/log/nginx/error.log +|
+|- 502 -|
+[error] 27600#0: *78887 recv() failed (104: Connection reset by peer) while reading response header from upstream, 
+    client: 192.168.1.101, server: test.com, request: "POST /index.php HTTP/1.1", upstream: "fastcgi://unix:/dev/shm/php-fcgi.sock:", 
+    host: "test.com", referrer: "http://test.com/index.php"
+|- 504 -|
+[error] 27600#0: *78877 upstream timed out (110: Connection timed out) while reading response header from upstream, 
+    client: 192.168.1.101, server: test.com, request: "POST /index.php HTTP/1.1", upstream: "fastcgi://unix:/dev/shm/php-fcgi.sock:", 
+    host: "test.com", referrer: "http://test.com/index.php"
+	
+|+ PHP-FPM => /var/log/php/php-fpm.log +|
+WARNING:  child 25708 exited on signal 15 (SIGTERM) after 21008.883410 seconds from start
+|~ Solve ~|
+|- nginx.conf -|
+max_fail
+fail_timeout
+fastcgi_connect_timeout      180;
+fastcgi_read_timeout            600;
+fastcgi_send_timeout            600;
+|- php-fpm.conf -|
+pm.max_requests
+request_terminate_timeout
+|- php.ini -|
+max_execution_time
+
+
+
+|~ ~|
 php-fpm.conf(request_terminate_timeout) will override php.ini(max_execution_time)

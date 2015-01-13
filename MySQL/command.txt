@@ -1,90 +1,90 @@
-|~ Character set ~|
-_ci        char set insensible
-_cs        char set sensible
-_bin    compared with encoding
-
-|+ +|
-– character_set_client：客户端来源数据使用的字符集
-– character_set_connection：连接层字符集
-– character_set_server：默认的内部操作字符集
-    PHP mysqli_set_charset ?>  
-– character_set_database：当前选中数据库的默认字符集
-– character_set_system：系统元数据(字段名等)字符集
-– character_set_results：查询结果字符集
-
-character_set_client   | -- character_set_connection --> 
-|     [ CLIENT ]       |       [ MySQL SERVER ]        |
-character_set_results  | <-- 
-
-|+ +|
-sql> show character set;   /* SHOW COLLATION;  */
-sql> show variables like 'character%';
-sql> show variables like 'collation%';
-
-|~ Basic ~|
-LIMIT row_count
-LIMIT offset, row_count
-LIMIT row_cout OFFSET offset
-
-|~ grant privileges ~|
-sql> grant [ PRIVILEGES ] on [ DB ].[ TB ] to [ USERNAME ]@[ HOST =localhost] identified by "[ PASSWD ]"
-        [ PRIVILEGES ] all privileges | (select,delete,update,create,drop,rule,insert)
-        [ SELECT,DELETE .... ] one or some of all privileges
-        <DB> <TB> : you can use * to mean all
-        <HOST> :  normally it's localhost
-sql> flush privileges;
-|- drop user -|
-    sql> drop user <USERNAME>@<HOST>
-|- Open 3306 for remote ip -|
-/**
- * Via Grant Privileges
- * % indicates all ip 
- */
-sql> grant all privileges on *.* to root@'%' identified by "[ PASSWD ]"  with grant option;
-/**
- * Via Update
- */
-sql> use mysql; update user set host='%' where user='root';
-
-    
-    
-|+ group by +|
-|- q: calculate the population of each province -|
-    sql> select province, count(*) from tb group by province;
-`    sql> select province, count(*) as nu from tb group by province order by nu desc
-`   sql> select province, count(*) from tb group by 1 order by 2 desc;
-|- q: a field birth(int) in tb, list the staffs' birthdays in each month-|
-    sql> select month(birth) as month, count(*) as nu from tb 
-    sql> group by month order by nu desc;
-`   sql> select month(birth), count(*) from tb group by 1 order by 2 desc;
-
-|+ select multiple tables +|
-|- group by -|
-    sql> select tb1.date, tb2.profit,
-    sql> min(tb3.price) as min,
-    sql> max(tb3.price) - min(tb3.price) + 1 as range,
-    sql> from tb1, tb2, tb3 
-    sql> where tb1.id = tb2.id and tb2.id = tb3.id
-    sql> group by tb1.date, tb2.profit
-    sql> order by range desc
-    |- join -|
-    sql> select fld1 from tb1 left join tb2 on (tb1.id = tb2.id)
-|+ union and union all +|
-|- union : merge the same lines together -|
-    sql> (select flds from tb where $where) 
-    sql> union
-    sql> (select flds from tb where $where)
-    sql> order by fld desc limit $limit, $offset
-|- union all : keep repeated lines -|
-    sql> (select flds from tb where $where order by $order)
-    sql> union
-    sql> (select flds from tb where $where)
-    sql> limit $limit, $offset
-|~ ~|
-/**
- * MySQL doesn't yet support 'LIMIT & IN/ALL/ANY/SOME subquery'
- * e.g. Error:  select flds from tb where id in (select id from tb limit 9);
- */
-sql> select flds from tb where id in (select id from tb);
-sql> select flds from tb where id in (select t.id from (select id from tb limit 9) as t);
-    
+|~ Character set ~|
+_ci    	char set insensible
+_cs		char set sensible
+_bin	compared with encoding
+
+|+ +|
+– character_set_client：客户端来源数据使用的字符集
+– character_set_connection：连接层字符集
+– character_set_server：默认的内部操作字符集
+	PHP mysqli_set_charset ?>  
+– character_set_database：当前选中数据库的默认字符集
+– character_set_system：系统元数据(字段名等)字符集
+– character_set_results：查询结果字符集
+
+character_set_client   | -- character_set_connection --> 
+|     [ CLIENT ]       |       [ MySQL SERVER ]        |
+character_set_results  | <-- 
+
+|+ +|
+sql> show character set;   /* SHOW COLLATION;  */
+sql> show variables like 'character%';
+sql> show variables like 'collation%';
+
+|~ Basic ~|
+LIMIT row_count
+LIMIT offset, row_count
+LIMIT row_cout OFFSET offset
+
+|~ grant privileges ~|
+sql> grant [ PRIVILEGES ] on [ DB ].[ TB ] to [ USERNAME ]@[ HOST =localhost] identified by "[ PASSWD ]"
+		[ PRIVILEGES ] all privileges | (select,delete,update,create,drop,rule,insert)
+		[ SELECT,DELETE .... ] one or some of all privileges
+		<DB> <TB> : you can use * to mean all
+		<HOST> :  normally it's localhost
+sql> flush privileges;
+|- drop user -|
+	sql> drop user <USERNAME>@<HOST>
+|- Open 3306 for remote ip -|
+/**
+ * Via Grant Privileges
+ * % indicates all ip 
+ */
+sql> grant all privileges on *.* to root@'%' identified by "[ PASSWD ]"  with grant option;
+/**
+ * Via Update
+ */
+sql> use mysql; update user set host='%' where user='root';
+
+	
+	
+|+ group by +|
+|- q: calculate the population of each province -|
+	sql> select province, count(*) from tb group by province;
+`	sql> select province, count(*) as nu from tb group by province order by nu desc
+`   sql> select province, count(*) from tb group by 1 order by 2 desc;
+|- q: a field birth(int) in tb, list the staffs' birthdays in each month-|
+	sql> select month(birth) as month, count(*) as nu from tb 
+	sql> group by month order by nu desc;
+`   sql> select month(birth), count(*) from tb group by 1 order by 2 desc;
+
+|+ select multiple tables +|
+|- group by -|
+	sql> select tb1.date, tb2.profit,
+	sql> min(tb3.price) as min,
+	sql> max(tb3.price) - min(tb3.price) + 1 as range,
+	sql> from tb1, tb2, tb3 
+	sql> where tb1.id = tb2.id and tb2.id = tb3.id
+	sql> group by tb1.date, tb2.profit
+	sql> order by range desc
+	|- join -|
+	sql> select fld1 from tb1 left join tb2 on (tb1.id = tb2.id)
+|+ union and union all +|
+|- union : merge the same lines together -|
+	sql> (select flds from tb where $where) 
+	sql> union
+	sql> (select flds from tb where $where)
+	sql> order by fld desc limit $limit, $offset
+|- union all : keep repeated lines -|
+	sql> (select flds from tb where $where order by $order)
+	sql> union
+	sql> (select flds from tb where $where)
+	sql> limit $limit, $offset
+|~ ~|
+/**
+ * MySQL doesn't yet support 'LIMIT & IN/ALL/ANY/SOME subquery'
+ * e.g. Error:  select flds from tb where id in (select id from tb limit 9);
+ */
+sql> select flds from tb where id in (select id from tb);
+sql> select flds from tb where id in (select t.id from (select id from tb limit 9) as t);
+	
