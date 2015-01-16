@@ -1,5 +1,5 @@
 /**
- * Array.prototype.sort(sort_func = NULL)
+ * Array.prototype.sort([sort_func])
  *@return sorted array
  * each a b, a < b ==> a,b   a = b  a > b ==> b,a
  */

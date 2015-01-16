@@ -1,7 +1,7 @@
 class Prospector{
     private:
         std:string appellation;
-        int hammers;
+        mutable int hammers;  // mutable for  "const Prospector * const this"
         void prospect(int n_){hammers = n_;}
         void detect(int n_);  // inline function
     public:

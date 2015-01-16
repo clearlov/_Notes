@@ -48,6 +48,8 @@ ioo   is out of
 
 
 `  backquote/backtick
++addition   -subtraction     *multiplication /division  =assignment
+-unary minus    +unary plus
 >> right shift
 ~  tilde
 !  exclamation point

@@ -1,4 +1,62 @@
 /**
+ * T (*[const] anomalous)(T-args)       a [const] ptr to T ()
+   T (& unusual)(T-args)  // likes 'T (*const unusual)(T-args)'        
+   T *(*mutate)(T-args)
+   T (**[const] mutation)(T-args)   a [const] ptr that points to a ptr of T()
+   T (*[const] muteness[N])()       an array with N elems. pointing to T ()
+   T (*verbal()) <--> T (*)   a func rtn a ptr to T
+   T (*dumb())[N] <--> T(*)[N}  a func rtn a ptr to T[N]
+   T (*dumbbell())[N][N] <--> T(*)[N][N]   3D Array
+   T (&oral())[N] <--> T (&)[N]  a func rtn a reference to T[N]
+ */
+
+void (*facial)();  // a ptr to void() 
+extern void cosmetics();
+extern void masquerade(int masque);
+extern const int cosmetic();
+/**
+ * Functions and Static Member Functions (SMF) are functions-pointers
+    - T (*bud)() = func;   // compile coverts func to its addr. &func implicitly
+      T (*bud)() = &func;  // assign explicitly
+ */
+facial = 0;  // correct, void (*facial)() = NULL;
+facial = cosmetics; // OK, specify the addr. implicitly, compiler'll convert it
+facial = &cosmetics; // OK, specify the function's addr. explicitly
+
+facial = masquerade; // Error, 'void(*)()' to 'void(*)(int)'
+facial = cosmetic;  // Error, 'void(*)()' to 'const int()'
+
+(*facial)(); // call a ptr2func explicitly
+facial();    // call a ptr2fun implicitly
+
+
+void (**facePack)() =  &facial;
+(**facePack)();
+
+void (*mask[3])() = {facial, cosmetics, &cosmetics};//{facial,comestic,comestics}
+(*mask[0])();   // facial() = (*facial)()
+(**mask)();     // same as above
+(**(mask+1))(); // cosmetics()
+
+char (*cortex())[2]{    // char (*)[]
+    char epidermis[3][2] = {86, 105, 110, 99, 101, '\0'};  // "Vince"
+    char (*cortical)[2] = epidermis;
+    return cortical;
+}
+
+char (*cuticle)[2] = cortex();
+
+const char* (*dermis())[2]{     // const char* (*) []
+    const char* derma[1][2] = {"Vince", "Well"};
+    const char* (*corium)[2] = derma;
+    return corium;
+}
+
+const char* (*dermic)[2] = dermis();
+
+
+
+ /**
  * There's no "array argument" in C++, it'll be converted into "T *".
     T (&)[n] is an array arguments with n elements
     "char (&)[n]"  is different with "char *", though "char[n]" is "char *"
@@ -23,10 +81,11 @@ void crafty(int (&craft)[3][2]){
 
 
 
+
+
 char * revise(char * a, const char * b, char & c, char * d){
     char * tmp = a;
     while( *a != '\0' && '\0' != (*a++ = *b++) );
-    
     cout << "\n<<<<<<<<<<<<<<<<<<<<<<<<<<<" << endl;
     cout << c;
     c = 'K';
@@ -37,9 +96,7 @@ char * revise(char * a, const char * b, char & c, char * d){
     cout << c << "    " << *d;  // K    Y
     *d = y;
     cout << c << "    " << *d;  // Y    Y
-
     cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n" << endl;
-    
     return tmp;
 }
 

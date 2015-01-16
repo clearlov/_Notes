@@ -1,3 +1,42 @@
+
+template <typename dash, typename pound>
+struct Punctuate{
+    pound operator()(typename hyphen) const{  // functor, not ptr
+    return (pound)hyphen;
+    }
+};
+
+Punctuate<int, bool>();  // overload operator()
+
+/**
+ * std::unary_function<T-arg-type, T-rtn-type>
+        template <typename a, typename r>
+        struct binary_function{  // a struct of std
+            typedef a argument_type;
+            typedef r result_type;
+        };
+    
+ * std::binary_function<T-types1, T-type2, T-rtn-type>
+        template <typename a, typename b, typename r>
+        struct binary_function{  // a struct of std
+            typedef a first_argument_type;
+            typedef b second_argument_type;
+            typedef r result_type;
+        };
+ */
+
+
+ 
+struct Subtract: public std::unary_function<int, bool>{
+    bool operator()(int subtraction){   // functor, not ptr
+        return subtraction > 0;
+    }
+}
+
+Subtract(-100);  // false
+
+
+
 /**
  *  sizeof(struct..)
         align to the largest number with sequence

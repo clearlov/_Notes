@@ -1,5 +1,5 @@
 /**
- * "const_cast" will remove "const" and "volatitle" keywords, make "const T*" to "T *". it works, but not suggest.
+ * "const_cast" will remove cv-qualified(const/volatile) keywords, make "const T*" to "T *". it works, but not suggest.
  * it'll makes const T * changeable, but const T unchangeable
  */
 const int exposure = 100;   // 0x7f..a0
