@@ -103,6 +103,9 @@ hydropower(impact);     // Error: int(&)[3] to int[10]
 
 
 
+Toad *toad = new Toad[3];  // ptr array
+
+
 
 
 int a1[2];   // declaration, a1={1,2} or a1[0]=1; a1[1]=2;

@@ -1,5 +1,11 @@
+/**
+ * size_t : long unsigned int in C++ / unsigned int in C
+ */
+
+
+
 int main(int argc, char * argv[]){
-    int id = fork();
+    size_t id = fork();   // same as int id = fork();
 }
 
 

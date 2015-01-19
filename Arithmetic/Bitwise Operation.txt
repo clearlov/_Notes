@@ -1,0 +1,11 @@
+|- Bitwise Operators -|
+/* bitwise operator name(sign) -> operation performance in each bit
+ */
+bitwise NOT(~) -> logical negation:         ~7      ==>  !0111 = 1000 = 8
+bitwise AND(&) -> logical AND:              7 & 8   ==>  0111 & 1000 = 0
+bitwise OR(|)  -> logical inclusive OR:     6 | 12  ==>  0110 | 1100 = 1110 = 14
+bitwise XOR(^) -> logical exclusive OR:     6 ^ 12  ==>  0110 ^ 1100 = 0001 = 1
+
+|- Bit Shifts -|
+right shift(>>):                            12>>2   ==>  1100>>2 = 0011 = 3
+left shift(<<):                             12<<2   ==>  1100<<2 = 110000 = 48

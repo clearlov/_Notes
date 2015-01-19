@@ -1,7 +1,8 @@
 /**
  * Static Member functions (SMF): can't use 'inline'
-    - SMFs are not attached to an object, they have no 'Cls *const this' pointer!
+    - SMFs are not attached to an object, they have no 'Cls *const this' ptr!
     - SMFs are all pointers just like common functions!
+    - 'operator new' and 'operator delete' are all SMF !
     e.g. 
         int (*dejection)(int) = Faecal::excrement;
         int (*dejection)(int) = &Faecal::excrement;  // same as above

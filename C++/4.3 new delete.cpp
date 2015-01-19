@@ -1,17 +1,17 @@
 class Contraception{
-	char * fertilization = new char[1024];   // delete [] fertilization;
+    char * fertilization = new char[1024];   // delete [] fertilization;
 };
 
 
 Contraception *c = new Contraception;   // delete c;
 /*
 HEAP SUMMARY:  1,032 bytes in 2 block
-	total heal usage: 2 allocs, 0 frees, 1032 bytes allocated
-	--> new Contraception   ==> 8 bytes
-	--> new char[1024]  ==> 1024 * sizeof(char) bytes
+    total heal usage: 2 allocs, 0 frees, 1032 bytes allocated
+    --> new Contraception   ==> 8 bytes
+    --> new char[1024]  ==> 1024 * sizeof(char) bytes
 LEAK SUMMARY:
-	definitely lost: 8 bytes in 1 blocks
-	indirectly lost: 1,024 bytes in 1 blocks
+    definitely lost: 8 bytes in 1 blocks
+    indirectly lost: 1,024 bytes in 1 blocks
  */
 
 
@@ -23,12 +23,12 @@ LEAK SUMMARY:
 
 
 
-char *aspect = new char[4];     				//	delete [] aspect;
-char *asperse = new char;						//	delete asperse;
+char *aspect = new char[4];                     //    delete [] aspect;
+char *asperse = new char;                        //    delete asperse;
 
 
-int *a = new int[4] {2,4,6,8};          		//	delete [] a;
-int *pi = new int{6};  // *pi set to 6    		//	delete pi;
+int *a = new int[4] {2,4,6,8};                  //    delete [] a;
+int *pi = new int{6};  // *pi set to 6            //    delete pi;
     
    
 int *pi = new int;

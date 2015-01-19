@@ -34,11 +34,34 @@ In that case, you can use the keyword default to explicitly declare the defaulte
         
         Prospector &operator=(const Prospector &) = delete;
         
+        /**
+         * placement new
+         */
+        void *operator new(size_t, void *subtle) throw(){ return subtle;}
+        
         Prospector(Prospector &&);
         
         
+        /**
+         * delete'll call Prospector::~Prospector then release heap
+                Prospector *prospector = new Prospector;
+                delete prospector;  // call ~Prospector() first 
+         * it's in stack, 'delete prospector' is forbidden. Call '~Prospector()'
+           manually.
+                int sterilize = 100;
+                Prospector *prospector = reinterpret_cast<Prospector *>(&sterilize);
+                prospector->~Prospector();  // call destructor
+            --------------------- placement new --------------------------
+                void *susceptible = reinterpret_cast<void *>(&sterilize);
+                Prospector *prospector = new (susceptible) Prospector; // placement new
+                prospector->~Prospector();
+         */
+        ~Prospector();    // destructor
         
-        ~Prospector();    // destructor, like _destruct() in PHP 
+        
+        
+        
+        
         //overloading operator
         Prospector operator+();   // operator
         // friend function
@@ -51,6 +74,13 @@ In that case, you can use the keyword default to explicitly declare the defaulte
         explicit Prospector(int h):hammers(h){}
         
         virtual void Unearth() const;
+        
+        /**
+         * Base class should not 
+         */
+        virtual Prospect *prospect() const = 0; // Factory Method
+        
+        
         
         Excavate() const;  // can't use Excavate to change any parameter in Prospector;
         

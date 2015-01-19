@@ -1,6 +1,20 @@
 /**
- * 
+ * partial specialization
  */
+template <typename T>
+class Stealth<T *>{};
+Stealth<const char *> steal;    // T is 'const char', partial specialization
+Stealth<int> doGoodByStealth;   // T is 'int', explicit specialization
+Stealth<char **> rob;           // T is 'char *', partial specialization
+ 
+template <class C, typename T1, typename T2>
+class Stash<C (*)(T1,T2)>{}; 
+
+
+
+/**
+ * explicit specialization (absolute specialization)
+ */ 
 template <typename T1, typename T2, int initial_preexist = 100>
 class Precede{
     private:
@@ -105,7 +119,7 @@ T & Adamant<T,N>::operator[](int i){
 }
 
 template <class T, int N>
-T Adamant<T,N>::operator[](int i) const{.
+T Adamant<T,N>::operator[](int i) const{
     if(i<0 || i >=n){
         std::cerr << i << " is out of range";
         std::exit(EXIT_FAILURE);

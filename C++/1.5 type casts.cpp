@@ -1,3 +1,39 @@
+/**
+ * placement new
+ */
+
+class Sewage{
+    public:
+    ~Sewage(){}
+/******************** 1 ***********************/
+    T *operator new(size_t, T *ptr) throw(){
+        return ptr;
+    }
+/******************** 2 ***********************/
+    Sewage *operator new(size_t,T * ptr) throw(){
+        return reinterpret_cast<Sewage *>(ptr);
+    }
+/********** Keep one of above only ************/
+};
+
+Sewage *sewage_heap = new Sewage;  // operator new in heap
+delete sewage_heap;  // run Sewage::~Sewage automatically
+int sly = 100;
+Sewage *sewage_stack = reinterpret_cast<Sewage *>(&sly);  // in stack
+sewage_stack->Sweage();  // call destructor manually
+void *stealth = reinterpret_cast<void *>(&sly);
+Sewage *sewage_new = new (stealth) Sewage;  // placement new, in stack
+sewage_new->Sweage();
+Sewage *sewage_arr = new (stealth) Sewage[3];
+for(int i=0;i<3;++i)
+    *(++sewage_arr)->~Sewage();  // call each destructor manually
+    //sewage_arr[i]->~Sewage();  
+
+
+
+
+
+
 int digit = 8;
 char * digital = (char *)&digit;
 int figure = *(int *)digital;       // figure = 8
