@@ -12,7 +12,7 @@ do "ls -a", you'll find ".filename.swp" the temporary file.
 if you sure the origin file is safe, you can rm -rf the swp file manually
 /, ~/.viminfo  the log of vim ,/
 
-/! set !/
+|~ set ~|
 /* 
  * vim /etc/vimrc and add the strings below 
  * you can also use :set xxx in vim command mode
@@ -41,7 +41,7 @@ syntax on " syntax
 [ :set bg=] dark or light  = set background colod
 
 
-/! short cuts !/
+|~ short cuts ~|
 [ Ctrl+s ] lock the screen
 [ Ctrl+q ] unlock the screen
 [ :!! ]  repeat last system command
