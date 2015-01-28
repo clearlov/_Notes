@@ -1,0 +1,125 @@
+|~ Rules ~|
+- Avoid using NULL
+- Use count(*) to instead count(id)
+- Close 
+|- slow log -|
+db> show variables like '%slow%';
+db> show global status like '%slow%';
+
+
+
+|+ Partition +|
+/**
+ * 1 million ==> 10 partitions, 100,000 each
+ *  partition1(1-100,000), partition2(100,001, 200,000) ...
+ */
+db> show variables like '%partition%';     /* check if it supports partition */
+/**
+ * MySQL Supports Rang, List, Hash, Key when partition.
+ * When you create paritions, you'll find:
+ *   tb#p#tb_1.ibd  tb#p#tb_2.ibd...                        in InnoDB
+ *   tb#P#tb_1.MYD tb#P#tb_1.MYI   tb#P#tb_2.MYD...         in MyISAM
+ */
+db> SELECT * FROM PARTITIONS WHERE PARTITION_NAME IS NOT NULL; /* show partitions*/
+db> CREATE TABLE tb (id INT NOT NULL AUTO_INCREMENT, time int, PRIMARY KEY(id))
+     ENGINE = INNODB
+     PARTITION BY RANGE (id) (
+        PARTITION tb_1 VALUES LESS THAN(100000),
+        PARTITION tb_2 VALUES LESS THAN(200000),
+        PARTITION tb_9 VALUES LESS THAN MAXVALUE
+     );
+db> ALTER TABLE tb ADD PARTITION (                 /* add partition */
+     PARTITION tb_4 VALUES LESS THAN(300000)
+     );
+db> ALTER TABLE tb DROP PARTITION tb_4;    /* drop partition */     
+|+ Divide tables horizontally +|
+/**
+ * 1 million ==> 10 partitions, 100,000 each
+ *  tb_0(i%10==0), tb_1(id%10==1) ...
+ */
+
+
+
+
+
+db> set @@profiling=1;
+db> SELECT * FROM tb;
+db> show profiles;
+|[
++----------+------------+-------------------+
+| Query_ID | Duration   | Query             |
++----------+------------+-------------------+
+|        1 | 0.84718100 | select * from tb  |
++----------+------------+-------------------+
+]|
+
+|- LIMIT -|
+/**
+ *  http://explainextended.com/2009/10/23/mysql-order-by-limit-performance-late-row-lookups/
+ */
+db> SELECT * FROM tb LIMIT 1000,10                            /* takes 5ms */
+db> SELECT * FROM tb LIMIT 900000,10                          /* takes 180ms */
+db> SELECT * FROM tb WHERE id BETWEEN 900000 and 900010       /* takes */
+
+db> explain SELECT * FROM tb ORDER BY id DESC LIMIT 90000,10\G
+|[
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb
+         type: index
+possible_keys: NULL
+          key: PRIMARY
+      key_len: 4
+          ref: NULL
+         rows: 900010         ------> E = [n]∑[o=1](o+row_count) * p(o) = O(n)
+        Extra: NULL
+1 row in set (0.00 sec)
+]|
+
+Take the last 900010 rows in id order and returns the first 10.
+E = [n]∑[o=1](o+row_count) * p(o)
+Known:
+	row_count = [10,30] is a very tiny number
+	n is an extremely huge number
+Assume:
+	p(o) = 1/n
+Solve:
+	E = (1+2*row_count + n)/2 
+	  = n/2
+	  = O(n)
+Assume:
+	[990]∑[o=1]p(o) = 99%, and p(o) = 0.1%
+	[n]∑[o=991]p(o) = 1%, and p(o) = 1/(n-990) % = (1/n)%
+Solve:
+	E_l = (1+2*row_count+990)  *990/2   * 0.1%
+		= 500
+	E_g = (991 + 2*row_count + n)* (n-991)/2 * (1/n)%
+		= (1000 + n) * (n-991) / (200*n)
+		= 5 + n/200 - 5000/n - 5
+		= n/200
+	E 	= E_l + E_g
+		= 500 + n/200
+		= O(n)
+
+
+
+
+
+db> explain SELECT * FROM tb WHERE i>90000 ORDER BY id DESC LIMIT 10\G
+|[
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: tb
+         type: index
+possible_keys: NULL
+          key: PRIMARY
+      key_len: 4
+          ref: NULL
+         rows:                      	----->
+        Extra: NULL
+1 row in set (0.00 sec)
+]|
+
+|- EXPLAIN -|

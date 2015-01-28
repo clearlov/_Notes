@@ -1,0 +1,60 @@
+|+ Create Procedure +|
+|[
+DELIMITER //                                    /* convert delimiter from semicolon to double-slashes */
+CREATE 
+  [?                                                            /* optional */
+     definer = '[USER]'@'[HOST]' | current_user            
+     sql security definer | invoker             
+     comment 'COMMENT WORDS'
+  ]
+  PROCEDURE [proc_name] ([IN | OUT | INOUT] [arg type] ...)               /*IN=input  OUT=output*/
+BEGIN
+    [IF/ELSE/END IF/SET]
+    [EXECUTE]
+    [DEALLOCATE PREPARE]
+END
+//                                              /* converted delimiter */
+]|
+|- SQL Security -|
+    DEFINER: default, Execute with [definer = '[USER]'@'[HOST]']'s priority.
+    INVOKE: Execute with caller's priority.
+
+|- Call Procedure -|
+db> CALL [proc_name]([args]);
+|- Alter procedure -|
+db> ALTER PROCEDURE
+|- Drop Procedure -|
+db> DROP PROCEDURE IF EXISTS [proc_name]
+|- Show Create Procedure -|
+|- Show Procedure Status -|
+
+|~ E.g. ~|
+/**
+ * delete log automatically
+ */
+db> DELIMITER $$
+     DROP TABLE IF EXISTS 'extinct_log';
+     CREATE TABLE IF NOT EXISTS 'extinct_log' (
+     'id' INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+     'extinction' TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+     PRIMARY KEY('id')
+     )
+     COLLATE='utf8_general_ci' ENGINE=MyISAM
+     $$
+db> DELIMITER //
+     CREATE 
+     DEFINER 'root'@'localhost'
+     COMMENT 'delete log'  
+     PROCEDURE 'deletelog' (IN '$tb' VARCHAR(20), IN '$extinction' INT(1))
+     BEGIN
+     SET @qs=CONCAT("DELETE FROM ", $tb, " WHERE extinction=", $extinction);
+     PREPARE prpdeletelog FROM @qs;
+     EXECUTE prpdeletelog;
+     DEALLOCATE PREPARE prpdeletelog;
+     END
+     //
+db> CALL 'deletelog'('extinct_log', 1)
+db> CREATE EVENT IF NOT EXIST event_deletelog ON SCHEDULE
+     EVERY 100 SECOND
+     ONCOMPLETION PRESERVE
+     DOCALL 'deletelog'('extinct_log', 1);

@@ -7,6 +7,18 @@
  * property
  */
 
+ 
+/**
+ * supported variable type keywords
+ *      array [CLASS]
+ */
+class Projectile{}
+function fascination(array $fascinate, Projectile $vomitting){
+    
+}
+
+ 
+ 
 /**
  * assignment of class via reference, clone a class is copy-on-write
  * Using _clone() method
@@ -30,20 +42,39 @@ interface ParalysisIf{
 } 
 abstract class AnaemiaAb{
     public $property;
-    public static $static;
+    public static $soleStatic;
+    public static $overwrite;
 }
 class Bachelor extends AnaemiaAb implments ParalysisIf{
+    public static $overwrite;
 }
 class Cage extends AnaemiaAb{
+    public static $overwrite;
 }
+$AnaemiaAb = new AnaemiaAb(); // Error: NOT allowed
 
-AnaemiaAb::$static = 'Avian'; // Bachelor::$static = Cage::$static = 'Avian';
-echo Bachelor::$static; // Avian
-Bachelor::$static = 'Brutal';
-echo AnaemiaAb::$static;   // Brutal
-Cage::$static = 'Contagious';
-echo Bachelor::$static;  // Contagious
-//$AnaemiaAb = new AnaemiaAb(); // NOT allowed
+
+AnaemiaAb::$soleStatic = 'avian';
+/* @ouput avian avian avian */
+echo AnaemiaAb::$soleStatic, ' ', Bachelor::$soleStatic, ' ', Cage::$soleStatic;
+
+Bachelor::$soleStatic = 'brutal';
+/* @ouput brutal brutal brutal */
+echo AnaemiaAb::$soleStatic, ' ', Bachelor::$soleStatic, ' ', Cage::$soleStatic;
+
+Cage::$soleStatic = 'contagious';
+/* @ouput contagious contagious contagious */
+echo AnaemiaAb::$soleStatic, ' ', Bachelor::$soleStatic, ' ', Cage::$soleStatic;
+
+
+AnaemiaAb::$overwrite = 'invade';
+/* @ouput invade NULL NULL */
+echo AnaemiaAb::$overwrite, ' ', Bachelor::$overwrite, ' ', Cage::$overwrite;
+
+Bachelor::$overwrite = 'colony';
+/* @ouput invade colony NULL */
+echo AnaemiaAb::$overwrite, ' ', Bachelor::$overwrite, ' ', Cage::$overwrite;
+
 
 // Polymorphic
 $Bachelor = new Bachelor();

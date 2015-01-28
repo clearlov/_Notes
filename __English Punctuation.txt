@@ -42,6 +42,12 @@ O() : Big O Notation : e.g. n/2  2*n  100*n+200  ==> O(n)
 
 |- sets -|
 ∈ : belong to; is set of
+|~ WOrds ~|
+register  编译程序相应的变量将被频繁地使用，如果可能的话，应将其保存在CPU的寄存器中，以加快其存储速度。例如下面的内存块拷贝代码，
+clear/unset
+destroy
+get
+gen
 
 |~ Shorts ~|
 ioo   is out of 

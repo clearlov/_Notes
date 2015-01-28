@@ -1,0 +1,92 @@
+|~ Character set ~|
+_ci        char set insensible
+_cs        char set sensible
+_bin    compared with encoding
+
+|+ +|
+– character_set_client：客户端来源数据使用的字符集
+– character_set_connection：连接层字符集
+– character_set_server：默认的内部操作字符集
+    PHP mysqli_set_charset ?>  
+– character_set_database：当前选中数据库的默认字符集
+– character_set_system：系统元数据(字段名等)字符集
+– character_set_results：查询结果字符集
+
+character_set_client   | -- character_set_connection --> 
+|     [ CLIENT ]       |       [ MySQL SERVER ]        |
+character_set_results  | <-- 
+
+|+ +|
+db> show character set;   /* SHOW COLLATION;  */
+db> show variables like 'character%';
+db> show variables like 'collation%';
+
+|~ Basic ~|
+LIMIT row_count
+LIMIT offset, row_count
+LIMIT row_cout OFFSET offset
+
+|~ grant privileges ~|
+db> grant [ PRIVILEGES ] on [ DB ].[ TB ] to [ USERNAME ]@[ HOST =localhost] identified by "[ PASSWD ]"
+        [ PRIVILEGES ] all privileges | (select,delete,update,create,drop,rule,insert)
+        [ SELECT,DELETE .... ] one or some of all privileges
+        <DB> <TB> : you can use * to mean all
+        <HOST> :  normally it's localhost
+db> flush privileges;
+|- drop user -|
+    db> drop user <USERNAME>@<HOST>
+|- Open 3306 for remote ip -|
+/**
+ * Via Grant Privileges
+ * % indicates all ip 
+ */
+db> grant all privileges on *.* to root@'%' identified by "[ PASSWD ]"  with grant option;
+/**
+ * Via Update
+ */
+db> use mysql; update user set host='%' where user='root';
+
+|+ join +|    
+db> select * from a join b on a.id = b.id
+     left join c on c.time = a.time;
+    
+|+ group by +|
+|- q: calculate the population of each province -|
+    db> select province, count(*) from tb group by province;
+`   db> select province, count(*) as nu from tb group by province order by nu desc
+`   db> select province, count(*) from tb group by 1 order by 2 desc;
+|- q: a field birth(int) in tb, list the staffs' birthdays in each month-|
+    db> select month(birth) as month, count(*) as nu from tb 
+    db> group by month order by nu desc;
+`   db> select month(birth), count(*) from tb group by 1 order by 2 desc;
+
+|+ select multiple tables +|
+|- group by -|
+    db> select tb1.date, tb2.profit,
+         min(tb3.price) as min,
+         max(tb3.price) - min(tb3.price) + 1 as range,
+         from tb1, tb2, tb3 
+         where tb1.id = tb2.id and tb2.id = tb3.id
+         group by tb1.date, tb2.profit
+         order by range desc
+    |- join -|
+    db> select fld1 from tb1 left join tb2 on (tb1.id = tb2.id)
+|+ union and union all +|
+|- union : merge the same lines together -|
+    db> (select flds from tb where $where) 
+         union
+         (select flds from tb where $where)
+         order by fld desc limit $limit, $offset
+|- union all : keep repeated lines -|
+    db> (select flds from tb where $where order by $order)
+          union
+         (select flds from tb where $where)
+         limit $limit, $offset
+|~ ~|
+/**
+ * MySQL doesn't yet support 'LIMIT & IN/ALL/ANY/SOME subquery'
+ * e.g. Error:  select flds from tb where id in (select id from tb limit 9);
+ */
+db> select flds from tb where id in (select id from tb);
+db> select flds from tb where id in (select t.id from (select id from tb limit 9) as t);
+    
