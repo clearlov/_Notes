@@ -22,8 +22,12 @@ class Implement{
      * Covariant Return Type (Prototype)
      * what if rtn 'B*' or 'B&' in base class, derived class can rtn 
         'D*' or 'D&' instead
+     * * virutal and friend are exclusion
+     *      virtual friend int exclude() = 0;  // Error:
+     *      B{virtual void exclude()=0;} D{friend void exclude(){}}  // Error:
      */
     virtual Implement *clone() const = 0;   // 'B *'
+    virtual int rear() = 0;
 };
 class Heritor : public Implement{
     public:
@@ -32,6 +36,7 @@ class Heritor : public Implement{
         static_cast<Implement>Heritor
      */
     Heritor *clone() const;                 // 'D *' to 'B *' covariant
+    int rear(){return 100;}
 };
 
 

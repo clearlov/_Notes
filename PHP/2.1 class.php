@@ -17,6 +17,11 @@ function fascination(array $fascinate, Projectile $vomitting){
     
 }
 
+/**
+ * abstract class can extend another abstract class
+ */ 
+abstract class hell{}
+abstract class heaven extends hell{} 
  
  
 /**

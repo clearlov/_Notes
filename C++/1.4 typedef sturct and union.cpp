@@ -42,14 +42,14 @@ Subtract(-100);  // false
         align to the largest number with sequence
         2 1 1   = 4 = 2 [11]
         1 1 2   = 4 = [11] 2
-        1 2 1   = 6 = [1@] 2 [1@]
-        1 2 1 1 = 6 = [1@] 2 [11]
-        1 4 1 2 = 12 = [1@@@] 4 [1@2]
-        1 4 3 2 = 16 = [1@@@] 4 [3@] [2@@]
+        1 2 1   = 6 = [1#] 2 [1#]
+        1 2 1 1 = 6 = [1#] 2 [11]
+        1 4 1 2 = 12 = [1###] 4 [1#2]
+        1 4 3 2 = 16 = [1###] 4 [3#] [2##]
  */
 
 /**
- * 32 = [4@@@@] 8 [1@24] [4@@@@]
+ * 32 = [4####] 8 [1#24] [4####]
  * Note: struct is quite different to allocate stack address
  */
 struct Allergic{
@@ -97,7 +97,7 @@ Brutal *avian = &allergic;
  */
 
 #pragma pack(2)
-struct Allergic{     // 22 = [1@][8][1@][2][4][4]
+struct Allergic{     // 22 = [1#][8][1#][2][4][4]
     int wound;
     const char* victim;
     char respirate;
@@ -107,7 +107,7 @@ struct Allergic{     // 22 = [1@][8][1@][2][4][4]
 }
  
 #pragma pack(4)
-struct Allergic{    // 24 = [1@@@][8][1@2][4][4]
+struct Allergic{    // 24 = [1###][8][1#2][4][4]
 } 
  
  

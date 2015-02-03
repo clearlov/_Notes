@@ -1,22 +1,17 @@
 class Sediment{
     public:
-    Sediment(int n);
+    Sediment(int n);    // implicit and explicit are both allowed
     operator int() const;  // covert int() operator to Sediment
-    explicit Sediment(double n);
+    explicit Sediment(double n);    // explicit call only, Sediment::Sediment()
 }
 
-Sediment a = 10;  //implicit conversion, calls Sediment::Sediment(10)
-Sediment b(10); //OK, calls Sediment::Sediment(10)
-Sediment c = Sediment(10);  //OK, calls Sediment::Sediment(10)
-Sediment d = (Sediment)10; // OK, calls Sediment::Sediment(10)
-
-
+Sediment a = 10;  //implicit conversion, calls Sediment::Sediment(int)
+Sediment b(10); //OK, calls Sediment::Sediment(int)
+Sediment c = Sediment(10);  //OK, calls Sediment::Sediment(int)
+Sediment d = (Sediment)10; // OK, calls Sediment::Sediment(int)
 
 Sediment a;
 int n = a;  // int-to-Sediment automatic conversion
-
-
-
 
 Sediment p = 10.10;  // NOT allowed, Compile-time error: can't convert 10 to an object to type Scar
 
