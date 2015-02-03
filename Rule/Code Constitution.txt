@@ -1,0 +1,14 @@
+|+ Use prefix form (++i/--i) rather than (i++/i--) in loop +|
+|[
+int rear;
+for(rear = 0; bool, ++i); 
+]|
+|- Pros -|
+In PHP and C++, when the return value is ignored, (++i/--i) is more efficient.
+This is because (i++) requires a copy of i to be made. Especially it's an iterator.
+|+ Declaration Order: variables, methods; private, protected, public +|
+Use the specified order of declarations within a class: private protected public; data members (variables) before methods.
+|- Pros -|
+It's accepted in Facebook and it's more human readable.
+|- Cons -|
+It's contrary to Google C++ Guider "Declaration Order".
