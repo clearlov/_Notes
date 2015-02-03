@@ -62,12 +62,12 @@ int main(int argc, char * argv[]){
     "derivedCls *"  to "baseCls *"      bingo
     "derivedCls **" to "baseCls **"     Error
  */
-Anaemia *anaemia =  new Anaemia;
+Anaemia *anaemia =  new Anaemia("piss");    //call Anaemia::Anaemia(const char*)
 Disease *disease = static_cast<Disease *>(anaemia); // Disease *disease=anaemia;
 Anaemia **anaemic = &anaemia;   // it works
 Disease **diseased = anaemic;   // ERROR
 
-const Anaemia *starve = new Anaemia;
+const Anaemia *starve = new Anaemia;        // call Anaemia::Anaemia()
 Disease *pathogenic = static_cast<Disease *>(const_cast<Anaemia *>(starve));
 
 Disease *pathogeny = new Disease;

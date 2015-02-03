@@ -1,4 +1,18 @@
 /**
+ * Null Ptr Constant: An integer constant expression with the value 0, 
+ *  or such an expression cast to type void *
+ *  e.g. 0, 0L, 3-3, (void*)0 are all null ptr constants ((char*)0 is not)
+ * Null Ptr: the resulting ptr that coverted from a null ptr constant
+ *  be guaranteed to compare unequal to a ptr to any obj or func, which means 
+ *  the addr. of any obj or func are all not a null ptr
+ *  e.g T *p; ==> p=NULL; p=0; p=0L; p='\0'; p=0*12; p=(void*)0;
+ *  * if the space cannot be allocated (by malloc), a null ptr is returned
+ * NULL: a null ptr constant. Self-defined NULL is illegal. it's a macro that 
+ *  defined as 0:   #define NULL 0
+ */
+
+
+/**
  * T *     a T pointer
  * T **    a pointer that points to "T *"
  * T *&    a reference that points to "T *"

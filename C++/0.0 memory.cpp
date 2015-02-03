@@ -86,7 +86,7 @@ struct Allergic{    // Note: struct is quite different to allocate stack address
 char initiation; // [Data-BSS]  [0x600190]
 int initiate=0;  // [Data]      [0x600070]
 int main(int argc, char* argv[]){
-    const char initiatory = 'V';      // [stack] [0x7f..f0]
+    const char initiatory = 'V';      // [Data] [0x7f..f0]
     static int initiate = 200;        // [Data]     [0x600074]
     static int uninitialized;         // [Data-BSS] [0x600198]
     int initiator; // [Stack] auto varibles for main(), 4 bytes
@@ -102,12 +102,13 @@ int main(int argc, char* argv[]){
         injectable              -> [Stack]  [0x7f..a22|0x7f..a0]
             
      */
-    char inject[] = "inject-gasoline-into";
+    char inject[] = "inject-gasoline-into"; [Stacks] a bunch of stack
     inject++;    // Err: lvalue required
-    char *injectable = inject;
+    char *injectable = inject;  // ptr to stack ,shouldn't delete
     injectable += 2;  // [0x7f..a22|0x7f..a2]
+    *(injectable) = 'S'; // modify 'j' to 'S'
     printf("%s", inject);   // "inject-gasoline-into"
-    printf("%s", injectable);   // "ject-gasoline-into"
+    printf("%s", injectable);   // "Sect-gasoline-into"
     
    
     /**
@@ -119,7 +120,8 @@ int main(int argc, char* argv[]){
             [0x..01|'n']                [ | *(injure+1) ]
             
      */
-    const char *injure = "injure-injury";
+    const char *injure = "injure-injury";   // ptr to [Data], needn't delete
+    *(injure) = 'V';   // Err: 'const char' unmodifiable
     injure++;   // [0x7f..a0|0x..01]
     printf("%p %s %c", &injure, injure, *injure); // 0x7f..a0 "njure-injury" 'n'
     
@@ -128,8 +130,16 @@ int main(int argc, char* argv[]){
     
     /**
      *  injector           -> [Stack]   [0x7f..a0|]
-        (char *)malloc(10) -> [Heap] malloc()
+        reinterpret_cast<char *>malloc(3) -> [Heap] malloc()
      */
     char *injector;   // same as  "char *injector = 0;"
-    injector = (char*)malloc(10);
+    injector = (char *)(malloc(3));   // allocate memory in heap, delete it
+    *(injector) = 'V';
+    *(injector+1) = 'i';
+    *(injector+2) = '\0';
+    printf("%s", injector); // Vi
+    injector++;
+    printf("%s", injector); // i
+    delete injector; // Err: now injector is 'i', not addr. of the heap
+    delete (--injector); // Ok, 
 }  
