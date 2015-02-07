@@ -1,0 +1,12 @@
+|~ for-loop ~|
+/**
+ * s1, usually an assignment statement, is executed. 
+ * s2, usually a comparison, is evaluated. 
+ *  If false, the for-loop terminates. 
+ *  If true, s3-statement is executed. 
+ * s4, usually an assignment statement, is executed, and control returns to
+ * evaluate e2 again.
+ */
+for(s1-assignment; bool s2-comparison; s4)
+    if(s2) s3-statement;
+if(!s2) for-loop terminates

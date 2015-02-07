@@ -17,7 +17,7 @@ class MaxTree: public BinaryTree<T>{
     public:
     MaxTree():lNode(0),rNode(0){};    // assign to null ptr
     // MaxTree(const T& v):curValue(v),lNode(0),rNode(0){};
-    MaxTree(const T& v, MaxTree<T> *l=0, MaxTree<T> *r=0):curValue(v),lNode(l),rNode(r){};
+    MaxTree(T& v, MaxTree<T> *l=0, MaxTree<T> *r=0):curValue(v),lNode(l),rNode(r){};
     friend void find(T node);
     friend void insert(T node);
     friend void del(T node);
