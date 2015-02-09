@@ -14,6 +14,7 @@ suck -= rear + 1;   // *(suck) = s
 |- Pros -|
 In PHP and C++, when the return value is ignored, (++i/--i) is more efficient.
 This is because (i++) requires a copy of i to be made. Especially it's an iterator.
+
 |+ Declaration Order: variables, methods; private, protected, public +|
 Use the specified order of declarations within a class: private protected public; data members (variables) before methods.
 |- Pros -|

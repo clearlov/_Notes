@@ -24,7 +24,7 @@ N O              P     Q                     N      I        D
   
 [Leaf]: a sub-tree without sub-tree, e.g. O J P Q M are all leaves
 [Height/Depth]: the total level, abbreviate to variable h below
-
+[Sibling]: the childs that share the same parent
 |+ Full/Proper Binary Tree +|
 Every node other than the leaves has two children
 ` E_full_max = E_perfect

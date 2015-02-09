@@ -2,10 +2,18 @@
  * size_t : long unsigned int in C++ / unsigned int in C
  */
 
-
-
-int main(int argc, char * argv[]){
+/**
+ * ./stipulate.out 100 200 300
+ *  argc = 4
+ *  *argv = ./stipulate.out
+ *  *(argv+1) = 100
+ *  *(argv+2) = 200
+ *  *(argv+3) = 300
+ */
+int main(int argc, char **argv){
     size_t id = fork();   // same as int id = fork();
+    for(argc; argc > 0; --argc)
+        printf("%s", *(argv + argc - 1));
 }
 
 
