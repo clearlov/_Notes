@@ -55,20 +55,76 @@ Friend declarations should always be in the private section. If copying and assi
 Unnamed namespaces are allowed and even encouraged in .cc files, to avoid link time naming conflicts:
 Do not use unnamed namespaces in .h files.
 
-
+|+ Nonmember, Static Member, and Global Functions +|
+Prefer nonmember functions within a namespace or static member functions to global functions; use completely global functions rerely.
 |+ Struct only for passive objects; everything else is a class. +|
 structs should be used for passive objects that carry data, and may have associated constants, but lack any functionality other than access/setting the data members. Methods should not provide behavior but should only be used to set up the data members, e.g., constructor, destructor, Initialize(), Reset(), Validate().
 Make data members private, and provide access to them through accessor functions as needed (for technical reasons, we allow data members of a test fixture class to be protected when using Google Test). Typically a variable would be called foo_ and the accessor function foo(). You may also want a mutator function set_foo(). Exception: static const data members (typically called kFoo) need not be private.
 The definitions of accessors are usually inlined in the header file.
 
+|+ Avoid doing complex initialization in construction +|
+In particular, initialization that can fail or that requires virtual method calls. Constructors should never call virtual functions or attempt to raise non-fatal failures. If you object requires non-trivial['trɪvɪəl] initialization, consider using a factory function or init() method.
+
+|+ Use 'explicit' for constructors callable with one argument +|
+
 |+ All parameters passed by reference must be labeled const. +|
 In C, if a function needs to modify a variable, the parameter must use a pointer, eg int foo(int *pval). In C++, the function can alternatively declare a reference parameter: int foo(int &val).
 Input parameters may be const pointers, but we never allow non-const reference parameters except when required by convention, e.g., swap().
-
 However, there are some instances where using const T* is preferable to const T& for input parameters. For example:
-
 You want to pass in a null pointer.
 The function saves a pointer or reference to the input.
 Remember that most of the time input parameters are going to be specified as const T&. Using const T* instead communicates to the reader that the input is somehow treated differently. So if you choose const T* rather than const T&, do so for a concrete reason; otherwise it will likely confuse readers by making them look for an explanation that doesn't exist.
+|+ Make data member private, provide access to them +|
+|+ Avoid using dynamic_cast() abusively +|
+RTTI(Run Time Type Information) allows a programmer to query the C++ class of an object at run time. This is done by use of typeid or dynamic_cast.
+RTTI has legitimate[lɪ'dʒɪtɪmət] uses but is prone[prəʊn] to abuse, so you must be careful when using it. In particular, think twice before using RTTI in new code. If you find yourself needing to write code that behaves differently based on the class of an object, consider one of the following alternatives to querying the type:
+    Virtual methods are the preferred way of executing different code paths depending on a specific subclass type. This puts the work within the object itself.
+    If the work belongs outside the object and instead in some processing code, consider a double-dispatch solution, such as the Visitor design pattern. This allows a facility outside the object itself to determine the type of class using the built-in type system.
+When the logic of a program guarantees[‚gærən'tɪː] that a given instance of a base class is in fact an instance of a particular derived class, then a dynamic_cast() may be used freely on the object. Usually one can use a static_cast as an alternative in such situations.
+Decision trees based on type are a strong indication that your code is on the wrong track.
+|[
+if (typeid(*data) == typeid(D1)) {
+  ...
+} else if (typeid(*data) == typeid(D2)) {
+  ...
+} else if (typeid(*data) == typeid(D3)) {
+...
 
 
+bool Base::Equal(Base* other) = 0;
+bool Derived::Equal(Base* other) {
+  Derived* that = dynamic_cast<Derived*>(other);
+  if (that == NULL)
+    return false;
+  ...
+}
+]|
+|+ Use C++ casts instead of C casts +|
+Use static_cast as the equivalent of a C-style cast that does value conversion, or when you need to explicitly up-cast a pointer from a class to its superclass.
+Use const_cast to remove the const qualifier (see const).
+Use reinterpret_cast to do unsafe conversions of pointer types to and from integer and other pointer types. Use this only if you know what you are doing and you understand the aliasing issues.
+
+|+ Use streams only for logging +|
+Do not use streams, except where required by a logging interface. Use printf-like routines instead.
+There are various pros and cons to using streams, but in this case, as in many other cases, consistency trumps the debate. Do not use streams in your code.
+|+ Use int16_t, uint32_t, int64_t in <stdint.h> +|
+standard: int, size_t, ptrdiff_t
+stdint.h: int16_t = short, uint32_t, int64_t, uint64_t
+|[
+for(uint32_t i = -1; i >= 0; --i){
+    // Error: it'll never terminate! Because i is unsigned
+}
+]|
+
+|+ Prefer inline functions, enums, and const variables to macros +|
+The following usage pattern will avoid many problems with macros; if you use macros, follow it whenever possible:
+
+Don't define macros in a .h file.
+#define macros right before you use them, and #undef them right after.
+Do not just #undef an existing macro before replacing it with your own; instead, pick a name that's likely to be unique.
+Try not to use macros that expand to unbalanced C++ constructs, or at least document that behavior well.
+Prefer not using ## to generate function/class/variable names.
+
+|+ Use 0 for int, 0.0 for real, nullptr (or NULL) for ptr, and '\0' for chars +|
+|+ Prefer sizeof(varname) to sizeof(type) +|
+|+ auto is permitted, for local variables only +|

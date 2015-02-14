@@ -1,6 +1,6 @@
 /**
  * Three-Way Handshake in TCP Connections:
-    SYN(Synchronize Sequence Numbers)
+    Synchronize   Acknowledge
     ---------- HOST A ---------------|---------------- HOST B ------------------
     socket() --> connect()  --> [SYN J]
     [SYN_SEND, blocks connect()]     |
@@ -14,17 +14,20 @@
                                      |                                     
     ---------- HOST A ---------------|---------------- HOST B ------------------
  * Four-Way Handshake in TCP Close:
-   
+    ---------- HOST A ---------------|---------------- HOST B ------------------
+                                     |                                 
+                            -->    [FIN M]
+    [Wait for ACK and FIN from B]    |
+                                  [FIN N, ACK M+1]                   <== close()
+                            --> [ACK N+1]
+                                     |                 
+                                     |
+                                     |
+                                     |                                     
+    ---------- HOST A ---------------|---------------- HOST B ------------------   
                             
-                                
-                                          
-                            
-                                           
-    C: socket() --> connect() 
-                            --> [ACK K+1]
-                                                                 <== accpet() :S
-    --> send/rev --> sendto/recvfrom
-    --> read 
+                                                                    <== close()
+    
     --> close --> shutdown
     
  */
@@ -50,33 +53,22 @@ enum VinceProtocol{
 
 
 
-#include <sys/types.h>
-#include <sys/socket.h>
-/**
- * int socket(int VinceAFamily, int VinceType, int VinceProtocol)
- */
-int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+int socket(int VinceAFamily, int VinceType, int VinceProtocol)
 
 /**
- * int bind(int_socket sockfd, const struct sockaddr* addr, socklen_t addr_len)
- * Convert IP addr. from 'Dotted Decimal Notation' to Binary, 
+ *@return integer 0=success; -1=error;
+ */
+int bind(int_socket sockfd, const struct sockaddr* addr, socklen_t addr_len)
+/**
+ * Presentation to numeric: Convert IP addr. from 'Dotted Decimal Notation' to Binary, 
    and assign to 'in_addr' or 'in6_addr' struct
-    #include <arpa/inet.h>
-    int inet_pton(int VinceAFamily, const char *ip_str, void *dst_struct)
-        dst_strct: 'in_addr' or 'in6_addr' struct , depended on VinceAFamily
+ * dst_strct: 'in_addr' or 'in6_addr' struct , depended on VinceAFamily
  */
-struct sockaddr_in i4; // IPv4
-i4.sin_family = AF_INET;
-i4.sin_port = htons(3490);  // consult Little Endian and Big Endian
-inet_pton(AF_INET, '10.0.0.1', &i4.sin_addr); 
-bind(sockfd, (struct socketaddr*)&i4, sizeof(i4));
+#include <arpa/inet.h>
+int inet_pton(int VinceAFamily, const char *ip_str, void *dst_struct)
+        
 
-struct sockaddr_in6 i6;
-i6.sin6_family = AF_INET6;
-i6.sin6_posrt = htons(4950);
-inet_pton(AF_INET6, "2001:db8:8714:3a90::12", &i6.sin6_addr);
-bind(sockfd, (struct socketaddr*)&i6, sizeof(i6));
-/*******************************************************************************/ 
+/******************************************************************************/ 
 struct sockaddr{
     unsigned short sa_family;   // equal VinceAFamily
     char sa_data[14];           //
@@ -109,29 +101,22 @@ struct sockaddr_un {
 /*******************************************************************************/
 
 /**
- * int listen(int_socket sockfd, int backlog)
-        backlog: max connections
+ * backlog: max connections
  */
- 
-/**
- * int connect(int_socket sockfd, const struct sockaddr* addr, socklen_t addrlen)
- */
- 
-/**
- * int accept(int_socket sockfd, const struct sockaddr* addr, socklen_t addrlen)
- */
- 
-/**
- * int accept(int_socket sockfd, const struct sockaddr* addr, socklen_t addrlen)
- */
- 
+int listen(int_socket sockfd, int backlog)
+int connect(int_socket sockfd, const struct sockaddr* addr, socklen_t addrlen)
+int accept(int_socket sockfd, const struct sockaddr* addr, socklen_t addrlen)
+
 /**
  * I/O Operations
-    read() / write()
-    recv() / send()
-    readv() / writev()
-    recvmsg() / sendmsg()
-    recvfrom() / sendto()
  */
- 
+size_t read(int_socket sockfd, T * recvbuf, size_t bytes_of_recvbuf)
+write(int_socket sockfd, T * sendbuf, size_t bytes_of_sendbuf)
+recv() / send()
+readv() / writev()
+recvmsg() / sendmsg()
+recvfrom() / sendto()
+
+
+close(int_socket sockfd);
  

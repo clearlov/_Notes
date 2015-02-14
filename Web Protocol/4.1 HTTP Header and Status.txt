@@ -12,16 +12,16 @@
 
 |+ Request +|
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/ *;q=0.8
-	supported format in client
-	*/ * means accpet any format (thrift included)
+    supported format in client
+    */ * means accpet any format (thrift included)
 Accept-Encoding:gzip, deflate, sdch
 Accept-Language:en-US,en;q=0.8,zh-CN;q=0.6,zh;q=0.4
 
 
- 	
+     
 |+ Response +|
 Content-Encoding:gzip
 Content-Type:text/html; charset=utf-8
-	application/json
-	
+    application/json
+    
 Expires:Sat, 26 Jul 1997 05:00:00 GMT

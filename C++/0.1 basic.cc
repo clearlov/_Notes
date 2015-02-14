@@ -1,5 +1,5 @@
 /**
- * size_t : long unsigned int in C++ / unsigned int in C
+ * size_t : unsigned long (64bit) / unsigned int (32 bit)
  */
 
 /**

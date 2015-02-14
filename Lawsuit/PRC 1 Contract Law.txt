@@ -4,21 +4,22 @@
 |+ Chapter I. General Provision +|
 |- Article 2. Definition of Contract and Exclusion -|
 An agreement concerning any personal relationship such as marriage, adoption[əˈdɑ:pʃn], guardianship[ˈgɑ:rdiənʃɪp], etc[ɛtˈsɛtərə]. shall be governed by other applicable[[ˈæplɪkəbəl] laws.
+
 |+ Chapter II. Formation of Contract +|
 |- Article 9. Forms of Contract -|
 A contract may be made in a writing, in an oral[ˈɔrəl] conversation[ˌkɑ:nvərˈseɪʃn], as well as in any other form. A contract shall be in writing if a relevant law or administrative regulation so requires. A contract shall be in writing if the parties have so agreed.
 |[
-    Other form: a tacit['tæsɪt] declaration[ˌdɛkləˈreʃən](implied[ɪm'plaɪd]) is acceptable
-    Shall be in writing in Contract Law:
-        (1) 商业借款合同
-        (2) 六个月以上长期租赁合同
-        (3) 融资租赁合同
-        (4) 建设工程合同
-        (5) 建设工程实行建立的委托监理合同
-        (6) 技术开发合同
-        (7) 技术转让合同
-    Shall be in writing in relevant law:
-        土地、房屋承包、租售合同；专利、版权转让……
+Other form: a tacit['tæsɪt] declaration[ˌdɛkləˈreʃən](implied[ɪm'plaɪd]) is acceptable
+Shall be in writing in Contract Law:
+    (1) 商业借款合同
+    (2) 六个月以上长期租赁合同
+    (3) 融资租赁合同
+    (4) 建设工程合同
+    (5) 建设工程实行建立的委托监理合同
+    (6) 技术开发合同
+    (7) 技术转让合同
+Shall be in writing in relevant law:
+    土地、房屋承包、租售合同；专利、版权转让……
 ]|
 |- Article 10. Definition of Writing -|
 A writing means a memorandum[ˌmɛməˈrændəm] of contract, letter or electronic[ɪˌlekˈtrɑ:nɪk] message (including telegram[ˈtɛlɪˌɡræm], telex[ˈtɛlˌɛks], facsimile[fækˈsɪməli], electronic data[ˈdætə] exchange and electronic mail), etc. which is capable[ˈkepəbəl] of expressing its contents in a tangible[ˈtændʒəbəl] form.
@@ -44,7 +45,7 @@ An offer is a party's manifestation[‚mænɪ'festeɪʃn] of intension to enter 
 An invitation to offer is a party's manifestation of intention to invite the other party to make an offer thereto. A delivered price list, announcement[əˈnaʊnsmənt] of auction['ɔːkʃn], call for tender[ˈtɛndɚ], prospectus, or commercial advertisement[ˌædvərˈtaɪzmənt].
 A commercial advertisement is deemed an offer if its contents meet the requirements of an offer.
 |[
-    要约的说明和允诺即使未载入合同，也仍被视为合同内容。一旦要约邀请的内容确定，并对合同订立有重大影响的，应当被视为要约（如商品房宣传单为an invitation to offer，而如果出卖人就开发规划、相关设施做出的说明和允诺具体确定，并对价格有重大影响，即可被视为an offer）。
+要约的说明和允诺即使未载入合同，也仍被视为合同内容。一旦要约邀请的内容确定，并对合同订立有重大影响的，应当被视为要约（如商品房宣传单为an invitation to offer，而如果出卖人就开发规划、相关设施做出的说明和允诺具体确定，并对价格有重大影响，即可被视为an offer）。
 ]|
     
 |- Article 16. Effectiveness of Offer -|
@@ -74,4 +75,37 @@ An acceptance dispatched by the offeree after expiration of the period for accep
 |- Article 29. Delayed Transmission of Acceptance -|
 If the offeree dispatched its acceptance within the period for acceptance, and the acceptance, which would otherwise have reached the offeror in due time under normal circumstances, reaches the offeror after expiration of the period for acceptance due to any other reason, the acceptance is valid, unless the offeror timely advises the offeree that the acceptance has been rejected on grounds of the delay.
 |- Article 30. Acceptance Containing Material Change -|
-The terms of the acceptance shall be identical to those of the offer. A purported[pərˈpɔ:rt] acceptance dispatched by the offeree which materially alters the terms of the offer constitutes[ˈkɑ:nstətu:t] a new offer. A change in the subject matter, quantity, quality, price or remuneration, time, place and method of performance, liabilities for breach of contract or method of dispute resolution is a material change to the terms of the offer. 
+The terms of the acceptance shall be identical to those of the offer. A purported[pərˈpɔ:rt] acceptance dispatched by the offeree which materially alters the terms of the offer constitutes[ˈkɑ:nstətu:t] a new offer. A change in the subject matter, quantity, quality, price or remuneration, time, place and method of performance, liabilities for breach of contract or method of dispute resolution is a material change to the terms of the offer.
+|- Article 32. Time of Formation in Case of Memorandum[‚memə'rændəm] of Contract -|
+Where the parties enter into a contract by a memorandum of contract, the constract is form when it is signed or sealed by the parties.
+|- Article 33. Time of Formation in Case of Letters or Electronic Message -|
+Where the parties enter into a contract by the exchange of letters or electronic message, one party may require execution a conformation letter before the contract is formed. The contract is formed upon execution of the confirmation letter.
+|[
+A confirmation letter is correspondence[‚kɒrɪ'spɒndəns] that is sent to confirm an oral agreement. It can be business or personal related.
+]|
+|- Article 39. Standard Term; Duty to Call Attention -|
+Where a contract is concluded by way of standard terms, the party supplying the standard terms shall abide by the principle of fairness in prescribing[prɪ'skraɪb] the rights and obligations of the parties and shall, in a reasonable manner['mænə(r)], call the other party's attention to the provisions whereby such party's liabilities are excluded[ɪk'skluːd] or limited, and shall explain such provisions upon request by the other party.
+Standard terms are contract provisions which were prepared in advance by a party for repeated use, and which are not negotiated[nɪ'gəʊʃɪeɪt] with the other party in the course of concluding the contract.
+|- Article 40. Invalidity[‚ɪnvə'lɪdətɪ] of Certain Standard Terms -|
+A standard term is invalid[adj. ɪnˈvælɪd | n. 'ɪnvəlɪd]
+ if it excludes the liabilities of the party supplying such term, increase the liabilities of the other party, or deprives[dɪ'praɪv] the other party of any of its material rights.
+|- Article 42. Pre-contract Liabilities -|
+Where in the course of concluding a contract, a party engaged[ɪn'geɪdʒ] in any of the following conducts[kən'dʌkt], thereby causing loss to the other party, it shall be liable for damages:
+    (1) negotiation[nɪ‚gəʊʃɪ'eɪʃn] in bad faith under the pretext of concluding a contract;
+    (2) intensionally concealing[kən'siːl] a material fact relating to hte conclusion of the contract or supplying false information;
+    (3) any other conduct which violates['vaɪəleɪt] the principle of good faith.
+|[
+causing loss + bad faith
+]|
+
+|- Article 43. Trade Secrets, Liability for Disclosure[dis'cləʊʒə] or Improper Use -|
+A party may not disclose or improperly use any trade secret which it became aware of in the course of negotiating a contract, regardless of whether a contract is formed. If the party disclosed or improperly used such trade secret, thereby causing loss to the other party, it shall be liable for damage['dæmɪdʒ].
+
+|+ Chapter III. Validity of Contracts +|
+|- Article 52. Invalidating Circumstances['sɜːkəmstəns] -|
+A contract is invalid in any of following circumstances:
+    (1) One party induced[ɪn'duːs] conclusion of the contract through fraud[frɔːd] or duress[djʊə'res], thereby harming the interests of the state;
+    (2) The parties colluded[kə'luːd] in bad faith, thereby harming the interests of the state, the collective[kə'lektɪv] or any third party;
+    (3) The parties intended to conceal[kən'siːl] an illegal['ɪ'lɪːgl] purpose['pɜrpəs] under the guise[gaɪz] of a legitimate[lɪ'dʒɪtɪmət] transaction[træn'zækʃn];
+    (4) The contract harms public interests;
+    (5) The contract violates['vaɪəleɪt] a mandatory['mændətɔrɪ] prvision of any law or administrative regulation.  

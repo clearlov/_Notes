@@ -1,0 +1,7 @@
+|+ EXISTS(bool) +|
+db> select * from tb where exists (
+        select * from tb where [CONSTRAINT]         
+    )
+|+ <ANY()  >ALL() +|
+db> select * from tb where id<ANY(select id from tb);
+db> select * from tb where id>ALL(select id from tb);
