@@ -95,7 +95,7 @@ Where in the course of concluding a contract, a party engaged[ɪn'geɪdʒ] in an
     (2) intensionally concealing[kən'siːl] a material fact relating to hte conclusion of the contract or supplying false information;
     (3) any other conduct which violates['vaɪəleɪt] the principle of good faith.
 |[
-causing loss + bad faith
+    causing loss + bad faith
 ]|
 
 |- Article 43. Trade Secrets, Liability for Disclosure[dis'cləʊʒə] or Improper Use -|
@@ -104,8 +104,25 @@ A party may not disclose or improperly use any trade secret which it became awar
 |+ Chapter III. Validity of Contracts +|
 |- Article 52. Invalidating Circumstances['sɜːkəmstəns] -|
 A contract is invalid in any of following circumstances:
-    (1) One party induced[ɪn'duːs] conclusion of the contract through fraud[frɔːd] or duress[djʊə'res], thereby harming the interests of the state;
-    (2) The parties colluded[kə'luːd] in bad faith, thereby harming the interests of the state, the collective[kə'lektɪv] or any third party;
-    (3) The parties intended to conceal[kən'siːl] an illegal['ɪ'lɪːgl] purpose['pɜrpəs] under the guise[gaɪz] of a legitimate[lɪ'dʒɪtɪmət] transaction[træn'zækʃn];
-    (4) The contract harms public interests;
-    (5) The contract violates['vaɪəleɪt] a mandatory['mændətɔrɪ] prvision of any law or administrative regulation.  
+    (1) one party induced[ɪn'duːs] conclusion of the contract through fraud[frɔːd] or duress[djʊə'res], thereby harming the interests of the state;
+    (2) the parties colluded[kə'luːd] in bad faith, thereby harming the interests of the state, the collective[kə'lektɪv] or any third party;
+    (3) the parties intended to conceal[kən'siːl] an illegal['ɪ'lɪːgl] purpose['pɜrpəs] under the guise[gaɪz] of a legitimate[lɪ'dʒɪtɪmət] transaction[træn'zækʃn];
+    (4) the contract harms public interests;
+    (5) the contract violates['vaɪəleɪt] a mandatory['mændətɔrɪ] provision of any law or administrative regulation.
+|- Article 54. Contract Subject to Amendment[ə'mendmənt] or Cancellation[‚kænsə'leɪʃn] -|
+Either of the parties may petition[pɪ'tɪʃn] the People's Court or an arbitration institution for amendment or cancellation of a contract if:
+    (1) the contract was concluded due to a material mistake;
+    (2) the contract was grossly unconscionable[ʌnˈkɑ:nʃənəbl] at the time of conclusion;
+If a party induced the other party to enter into a contract against its true intention by fraud or duress, or by taking advantage of the other party's hardship, the aggrieved[əˈɡriv] party is entitled to petition the People's court or an arbitration institution for amendment or cancellation of the contract.
+|[
+    Limitation of Cancellation: 1 year
+]|
+
+|- Article 62. Indeterminate Terms: Gap Filling -|
+Where a relevant term of the contract was not clearly prescribed, and cannot be determined in accordance with Article 61 (Indeterminate Terms: Supplementary Agreement) hereof, one of the following provisions applies:
+    (1) If quality requirement was not clearly prescribed, performed shall be in accordance with the state standard or industry standard; absent['æbsənt] any state or industry standard, performance shall be in accordance with the customary standard or any particular standard consistent with the purpose of the contract;
+    (2) If price or remuneration was not clearly prescribed, performance shall be in accordance with the prevailing[prɪ'veɪlɪŋ] market price at the place of performance at the time the contract was concluded, and if adoption of a price mandated['mændeɪt] by the government or based on government issued pricing guidelines is required by law, such requirement applies;
+    (3) Where the place of performance was not clearly prescribed, if the obligation is payment of money, performance shall be at the place where the payee is located; if the obligation is delivery of immovable[ɪ'muːvəbl] property, performance shall be at the place where the immovable property is located; for any other subject matter, performance shall be at the place where the obligor[‚ɒblɪ'gɔː] is located;
+    (4) If the time of performance was not clearly prescribed, the obligor may perform, and the obligee may require performance, at any time, provided that the other party shall be given the time required for preparation;
+    (5) If the method of performance was not clearly prescribed, performance shall be rendered in a manner which is conducive[con'dusive] to realizing['rɪəlaɪz] the purpose of the contract;
+    (6) If the party responsible for the expenses of performance was not clearly prescribed, the obligor shall bear the expenses;

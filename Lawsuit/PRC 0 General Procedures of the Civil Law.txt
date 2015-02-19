@@ -23,9 +23,11 @@ A party shall have the right to request a people's court or an arbitration[‚ɑ
     (1) those performed by an actor who seriously misunderstood the contents of the acts;
     (2) those that are obviously unfair. Rescinded civil acts shall be null and void from the very beginning.
 |[
-seriously misunderstood: 行为人因对行为的性质、对方当事人、标的物品种、质量、尺寸、数量等的错误认识，并造成了较大损失的。
-obviously unfair: 一方当事人利用优势或者利用对方没有经验，致使双方的权利与义务明显违反公平、等价有偿原则的。
-`Limitation of Action: 1 year
+seriously misunderstood:   
+    行为人因对行为的性质、对方当事人、标的物品种、质量、尺寸、数量等的错误认识，并造成了较大损失的。
+obviously unfair: 
+    一方当事人利用优势或者利用对方没有经验，致使双方的权利与义务明显违反公平、等价有偿原则的。
+Limitation of Action: 1 year
 ]|
 |~ Chapter V. Civil Rights ~|
 |+ Section 1. Property Ownership and Related Property Rights +|    
@@ -78,4 +80,4 @@ The limitation of action shall be one year in cases concerning[kənˈsɜ:rnɪŋ]
     (3) delays in paying rent or refusal[rɪˈfjuzəl] to pay rent; or
     (4) loss of or damage to property left in the care of another person.
 |- Article 155. -|
-In this law, the terms "not less than", "not more than", "within" and "expires[ɪk'spaɪə]" shall include the given figure; the terms "under" and "beyond" shall not include the given figure. 
+In this law, the terms "not less than", "not more than", "within" and "expires[ɪk'spaɪə]" shall include the given figure; the terms "under" and "beyond" shall not include the given figure.

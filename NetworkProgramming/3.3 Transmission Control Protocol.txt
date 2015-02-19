@@ -1,0 +1,25 @@
+TCP contains algorithms['ælgərɪðəm] to estimate['estɪmeɪt] the Round-Trip Time (RTT) between a client and server dynamically so that is knows how long to wait for an acknowledgment.
+|---------------- ----------------| it a 32bit sys, so 1 word = Databus = 32bits
+| Source Port-16 | Destination-16 |         2^16
+|---------------- ----------------|
+|        Sequence No.             |
+|---------------- ----------------|
+|       Acknowledgement No.       |
+|---------------- ----------------|
+|OSe|Res|CEUAPRSF|     Window     |
+|---------------- ----------------|
+|    Checksum    |   Urgent Ptr   |
+|---------------- ----------------|
+|       TCP Options(optional)     |
+|---------------- ----------------|
+
+UDP itself does not provide acknowledgments, sequence numbers, RTT estimation, timeouts or retransmissions. 
+TCP provides flow control. TCP advertised['ædvətaɪz] window(say the advertised window is the amount of room currently available in the receive buffer) tells its peer(say the peer thought a segment was lost and retransmitted it, when it wasn't really lost, the network was just overloaded) exactly how any bytes of data it is willing to accept from the peer at any one time.
+TCP and UDP can both be full-duplex[ˈdu:pleks] connection.
+
+|+ TCP options: +|
+|-MSS(maximum segment size)-| the maximum amount of data that it is willing to accept in each TCP segment.
+|-Window Scale-| 
+|-Timestamp-| to prevent possible data corruption caused by old, delayed, or duplicated segments.
+
+TIME_WAIT State

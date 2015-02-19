@@ -109,7 +109,7 @@ Do not use streams, except where required by a logging interface. Use printf-lik
 There are various pros and cons to using streams, but in this case, as in many other cases, consistency trumps the debate. Do not use streams in your code.
 |+ Use int16_t, uint32_t, int64_t in <stdint.h> +|
 standard: int, size_t, ptrdiff_t
-stdint.h: int16_t = short, uint32_t, int64_t, uint64_t
+stdint.h: int8_t, uint8_t, int16_t = short, int32_t, uint32_t, int64_t, uint64_t
 |[
 for(uint32_t i = -1; i >= 0; --i){
     // Error: it'll never terminate! Because i is unsigned
