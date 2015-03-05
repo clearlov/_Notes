@@ -43,6 +43,7 @@ db> flush privileges;
  * % indicates all ip 
  */
 db> grant all privileges on *.* to root@'%' identified by "[ PASSWD ]"  with grant option;
+db> grant all privileges on *.* to lef@'%' identified by "lef"  with grant option;
 /**
  * Via Update
  */

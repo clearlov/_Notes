@@ -1,0 +1,31 @@
+|~ Nginx ~|
+/* http://wiki.nginx.org/Install */
+sh$ sudo rpm -ivh  http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+
+
+/* it'll list the newest stable Nginx, but not Mainline */
+sh$ sudo yum list | grep nginx
+sh$ sudo yum install nginx
+sh$ sudo service nginx start
+# sudo systemctl start nginx.service
+sudo systemctl enable nginx.service
+
+sh$ nginx -t
+
+sh$ sudo /usr/sbin/groupadd -f www
+sh$ sudo /usr/sbin/useradd -g www www
+sh$ sudo usermod -l www nginx    /* modify user nginx into www */
+sh$ sudo groupmod -n www nginx
+
+/**
+ * Don't set html document root under '/home/lef', otherwise it'll display 304
+ * permission error -- No matter you chown or chomd  to the file or not.
+ */
+
+
+
+
+|- cloase port 9000 -|
+sh$ sudo netstat -anp|grep 9000
+tcp	0	0 :::9000	:::*	LISTEN	1900/php-fpm
+sh$ sudo kill 1900

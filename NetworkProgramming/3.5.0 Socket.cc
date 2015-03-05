@@ -1,28 +1,28 @@
 
 
-enum VinceAddrFamily{
+enum LefAddrFamily{
     AF_INET,    // IPv4, 32bit IP + 16bit Port   
-    AF_INET6,   // IPv6    
-    AF_UNIX     // Unix, absolute path
+    AF_INET6,   // IPv6  
+    AF_LOCAL,   // AF_UNIX(the historial Unix name) absolute path
+    AF_ROUTE,   // Routing sockets
+    AF_KEY      // Key socket
 };
-enum VinceSockType{
-    SOCK_STREAM,    // TCP  
-    SOCK_DGRAM,     // UDP 
-    SOCK_SEQPACKET, 
-    SOCK_RAW,  
-    SOCK_RDM,
+enum LefSockType{
+    SOCK_STREAM,    // stream TCP  
+    SOCK_DGRAM,     // datagram UDP 
+    SOCK_SEQPACKET, // sequenced packet
+    SOCK_RAW,       // raw
 };
-enum VinceProtocolType{
+enum LefProtocolType{
     IPPROTO_TCP,
     IPPROTO_UDP,
     IPPROTO_SCTP,
-    IPPROTO_TIPC
 };
 
 
 
 /**
- * INADDR_ANY is any IP to the server
+ * INADDR_ANY is a wildcard IP addr. to the server
  */
 INADDR_ANY 
 
@@ -31,15 +31,9 @@ INADDR_ANY
 #include <sys/socket.h>
 struct sockaddr{
     uint8_t     sa_len;
-    sa_family_t sa_family;      // u_int, enumeration of VinceAddrFamily
+    sa_family_t sa_family;      // u_int, enumeration of LefAddrFamily
     char        sa_data[14];    // 
 };
-/***********************   *********************************************/
-#include <netinet/in.h>
-struct sockaddr_storage{
-    uint8_t     ss_len;
-    sa_family_t ss_family;
-}
 /*********************** IPv4 *************************************************/
 #include <netinet/in.h>
 struct in_addr {
@@ -73,35 +67,96 @@ struct sockaddr_un{
 };
 
 /******************************************************************************/
+/**
+ * Since we don't know whether the socket addr. is IPv4(sockaddr_in) or 
+ *  IPv6(sockaddr_in6), we use sockaddr_storage
+ */
+#include <netinet/in.h>
+struct sockaddr_storage{
+    uint8_t     ss_len;
+    sa_family_t ss_family;
+} 
+/******************************************************************************/
 
 
-int socket(int VinceAddrFamily, int VinceSockType, int VinceProtocolType)
+
+
 
 /**
- *@return integer 0=success; -1=error;
+ * @return int file descriptor
  */
-int bind(int_socket sockfd, const struct sockaddr* addr, socklen_t addr_len)
+
+int socket(int LefAddrFamily, int LefSockType, int LefProtocolType)
+
+/**
+ * assign a local protocol address to a socket.
+ * @return integer 0=success; -1=error;
+ */
+int bind(int listenfd, const struct sockaddr* addr, socklen_t addr_len)
 
         
 
 
 /**
- * backlog: max connections
+ * be called by TCP server.
+ * status change: CLOSED --> LISTEN(passive open)
+ * max_listen_queues = incomplete_connection_queues + completed_connection_queues
+ *      received: SYN j, MSS=536 ..
+ *  incomplete_connection_queues (SYN_RCVD state):  have a time out of 75s
+ *      send:    SYN k, ACK j+1, MSS=1460 ...
+ *      RTT: about 187ms
+ *      received: ACK k+1 ...
+ *  completed_connection_queues (ESTABLISHED state): 3-way handshake completed
+ * When the process calls accept(), the first entry on the completed queue is 
+ *  returned to the process, or if the queue is empty, the process is put to
+ *  sleep until an entry is placed onto the completed queue.
+ * @param int max_listen_queues 
+ *  It is multiplied by 1.5 in MacOS and added 3 in Linux.
+ *  e.g. listen(listenfd, 2048) --> 3072 queues in MacOS and 2051 queues in Linux
+ *  Provide enough number of queues for SYN flooding.
+ * If the queues are full when a client SYN arrives, TCP ignores the arriving SYN;
+ *  it does not send an RST. The client TCP'll retransmit its SYN, hopefully 
+ *  finding room on the queue in the near future.
+ * If the server responded with an RST, the client's connect() would return an
+ *  error.
  */
-int listen(int_socket sockfd, int backlog)
-int connect(int_socket sockfd, const struct sockaddr* addr, socklen_t addrlen)
-int accept(int_socket sockfd, const struct sockaddr* addr, socklen_t addrlen)
+int listen(int listenfd, int max_listen_queues)
 
 /**
- * I/O Operations
+ * be used by a TCP client to establish a connection with a TCP server
+ * status change: SYN_SENT(active open)
  */
-size_t read(int_socket sockfd, T * recvbuf, size_t bytes_of_recvbuf)
-write(int_socket sockfd, T * sendbuf, size_t bytes_of_sendbuf)
+int connect(int listenfd, const struct sockaddr* serv_addr, socklen_t addrlen)
+
+/**
+ * @param client_addr is used to return the protocol addr. of the connected peer
+ *  process (the client).
+ * @param addrlen is a value-result arg.
+ *  value: sizeof(client_addr)
+ *  result: actual number of bytes stored by the kernel in the socket addr. structure
+ * @return integer connected socket file descriptor 
+ *  (for which the TCP three-way handshake completeds)
+ */
+int accept(int listenfd, struct sockaddr* client_addr, socklen_t addrlen)
+
+
+int close(int listenfd)
+
+
+
+
 recv() / send()
 readv() / writev()
 recvmsg() / sendmsg()
 recvfrom() / sendto()
 
 
-close(int_socket sockfd);
+/**
+ * @param socklen_t * addrlen  is quite different with socklen addrlen
+ */
+
+int getsockname(int listenfd, struct sockaddr *localaddr, socklen_t * addrlen)
+int getpeername(int listenfd, struct sockaddr *peeraddr, socklen_t * addrlen)
+
+
  

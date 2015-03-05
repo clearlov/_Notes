@@ -1,0 +1,38 @@
+sh$ sudo ./socketServ.out &           /* TCP Serv with port 9877 */
+sh$ netstat -a | grep 9877
+|[
+Proto  Recv-Q  Send-Q   LocalAddr.    ForeignAddr   State
+ tcp      0      0     0.0.0.0:9877    0.0.0.0:*   LISTEN
+]|
+sh$ ./socketClient.out          /* hold on it */
+sh$ netstat -a
+|[
+Proto  Recv-Q  Send-Q   LocalAddr.    ForeignAddr        State
+ tcp      0      0     0.0.0.0:9877    0.0.0.0:*         LISTEN      --> ./socketServ.out listening
+ tcp      0      0    localhost:9877  localhost:55256   ESTABLISHED  --> ./socketServ.out -> ./socketClient.out
+ tcp      0      0    localhost:55256 localhost:9877    ESTABLISHED  --> ./socketClient.out -> ./socketServ.out
+]|
+sh$ ps al | grep socket
+|[
+F   UID   PID  PPID PRI  NI    VSZ   RSS WCHAN  STAT TTY        TIME COMMAND
+4     0  8315  6332  20   0 211084  3452 poll_s S    pts/1      0:00 sudo ./socketServ.out
+4     0  8317  8315  20   0   4168   360 inet_c S    pts/1      0:00 ./socketServ.out
+1     0  8329  8317  20   0   4168    96 sk_wai S    pts/1      0:00 ./socketServ.out
+0  1000  8328  6332  20   0   4164   360 n_tty_ S+   pts/1      0:00 ./socketClient.out
+
+]|
+
+sh$ ps -t pts/1 -o pid,ppid,tty,stat,args,wchan
+|[
+
+  PID  PPID TT       STAT COMMAND                     WCHAN
+ 6332  6328 pts/1    Ss   bash                        wait
+ 6373  6332 pts/1    T    sudo ./socketServ.out       signal_stop
+ 6377  6373 pts/1    T    ./socketServ.out            signal_stop
+ 6396  6377 pts/1    Z    [socketServ.out] <defunct>  exit
+ 6412  6377 pts/1    Z    [socketServ.out] <defunct>  exit
+ 8315  6332 pts/1    S    sudo ./socketServ.out       poll_schedule_timeout
+ 8317  8315 pts/1    S    ./socketServ.out            inet_csk_accept
+ 8328  6332 pts/1    S+   ./socketClient.out          n_tty_read
+ 8329  8317 pts/1    S    ./socketServ.out            sk_wait_data
+]|

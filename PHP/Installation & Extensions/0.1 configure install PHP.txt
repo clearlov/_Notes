@@ -1,0 +1,175 @@
+
+|~ Preparing ~|
+
+
+
+|+ for 64bit +|
+sh$ sudo ln -s /usr/lib64/libltdl.so /usr/lib/libltdl.so
+sh$ sudo cp -frp /usr/lib64/libXpm.so* /usr/lib/
+
+yum -y remove php
+rpm -qa|grep php
+rm -rf /usr/local/php
+rm -rf /etc/php.ini
+
+
+|+ Installation for mcrypt +|
+sh$ sudo rpm -ivh http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
+sh$ sudo yum clean all
+sh$ sudo makecache
+sh$ sudo yum install libmcrypt libmcrypt-devel mcrypt mhash
+
+
+|+ libxml2 +|
+sh$ sudo rpm -qa | grep libxml2
+sh$ sudo yum -y install libxml2 libxml2-devel
+sh$ sudo find / -name "xml2-config"
+|+ bzip2 +|
+sh$ sudo yum -y install bzip2 bzip2-devel
+|+ libcurl +|
+sh$ sudo yum -y install curl curl-devel libcurl libcurl-devel
+|+ +|
+sh$ sudo yum -y install gd libjpeg libjpeg-devel libpng libpng-devel
+sh$ sudo yum -y install zlib zlib-devel glibc glibc-devel glib2 glib2-devel freetype freetype-devel
+
+
+
+
+ 
+#no blanks near "=", and variable can only be named with [a-zA-Z_]
+PHP_VERSION_="php-5.6.1"
+MYSQL_CONF_="/etc/my.cnf"
+
+# find / -name "my-default.cnf"
+MYSQL_BASEDIR_="/usr/share/mysql"
+
+# find / -name "performance_schema"
+MYSQL_DATADIR="/var/lib/mysql"
+
+
+
+tar zxvf $PHP_VERSION_.tar.gz
+cd $PHP_VERSION_
+
+#Linux environment variable. the file of shared lib(dll)
+#export LD_LIBRARY_PATH=/usr/local/libgd/lib
+
+# --prefix=    where to install
+# --with-config-file-path=     where php.ini placed
+
+
+sh$ sudo ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php/lib --with-config-file-scan-dir=/usr/local/php/etc/conf.d --with-bz2 --with-curl --with-gd --with-mysql --with-mysqli --with-openssl --with-pcre-regex --with-pear --with-zlib --enable-bcmath --enable-fpm --enable-gd-native-ttf --enable-libxml --enable-mbstring --enable-pdo --enable-sockets --enable-inline-optimization --enable-xml --enable-zip --enable-opcache --enable-cgi --enable-json
+sh$ sudo make
+sh$ sudo make install
+
+sh$ php -i | grep php.ini
+|[
+Configuration File (php.ini) Path => /usr/local/php/lib
+]|
+sh$ sudo cp php.ini-production /usr/local/php/lib/php.ini
+sh$ sudo rm -rf /etc/php.ini
+sh$ sudo ln -s /usr/local/php/lib/php.ini /etc/php.ini
+
+sh$ whereis php
+
+|- php-fpm auto start -|
+sh$ sudo cp sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
+sh$ sudo chmod +x /etc/init.d/php-fpm
+sh$ sudo chkconfig --add php-fpm
+sh$ sudo chkconfig php-fpm on
+sh$ sudo service php-fpm start
+
+
+
+sh$ sudo cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf
+sh$ sudo vim /usr/local/php/etc/php-fpm.conf
+|[
+user = www
+group = www
+pid = run/php-fpm.pid
+]|
+` How to use two php.ini for both php-cli and php-fpm
+/*
+ sh$ sudo /usr/local/php/sbin/php-fpm -y /usr/local/php/etc/php-fpm.conf -c /[ ANY_PHPINI_PATH ]/php.ini
+ Uses php-fpm to load php.ini(any place), it'll make PHP-FPM(for Nginx) Use another 
+ configure ( e.g. /path_for_php_fpm/php.ini ), and PHP-CLI Use /usr/local/php/etc/php.ini
+ But, When you change /[ ANY_PHPINI_PATH ]/php.ini, you need to re-compile this command to load it.
+ */
+
+
+
+
+
+|- add php to enviroment -|
+sh$ sudo whereis php-config
+|[
+    php-config: /usr/local/php/bin/php-config
+]|
+/* http://php.net/manual/zh/install.pecl.php-config.php */
+sh$ sudo vim /usr/local/php/bin/php-config
+|[
+extension_dir='/usr/lib64/php/modules'
+]|
+# export PATH=/usr/local/php/bin:$PATH
+sh$ sudo vim /etc/profile
+/* add at the end */
+export PATH="/usr/local/php/bin:$PATH"
+sh$ sudo source /etc/profile
+
+
+
+
+
+|+ extension installing +|
+
+|- xdebug / xhprof -|
+sh$ sudo cd xdebug
+sh$ sudo phpize
+sh$ sudo +|configure --enable-xdebug --with-php-config=/usr/local/php/bin/php-config
+sh$ sudo make
+sh$ sudo make install
+
+sh$ sudo cd xhprof/extension
+sh$ sudo phpize
+sh$ sudo +|configure --with-php-config=/usr/local/php/bin/php-config
+
+
+
+
+
+
+
+
+|~ Extensions Installation ~|
+|+ Opcache +|
+sh$ cd ext/opcache
+sh$ phpize
+sh$ sudo ./configure --enable-opcache --with-php-config=/usr/local/php/bin/php-config
+sh$ sudo make
+sh$ sudo make install
+
+|+ Xdebug +|
+sh$ phpize
+sh$ ./configure --enable-xdebug --with-php-config=/usr/local/php/bin/php-config
+sh$ sudo make
+sh$ sudo make install
+
+|+ Install Limbcrypt/Mcrypt/Mhash +|
+/**
+ * http://sourceforge.net/projects/mcrypt/files/Libmcrypt/
+ */
+sh$ wget http://sourceforge.net/projects/mcrypt/files/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz
+sh$ ./configure --prefix=/usr/local/libmcrypt
+sh$ sudo make && make install
+sh$ sudo ln -s /usr/local/bin/libmcrypt_config /usr/bin/libmcrypt_config
+sh$ cat /usr/local/bin/libmcrypt_config
+|[
+prefix=/usr/local
+]|
+sh$ export LD_LIBRARY_PATH=/usr/local/lib: LD_LIBRARY_PATH
+
+sh$ wget http://sourceforge.net/projects/mhash/files/mhash/0.9.9.9/mhash-0.9.9.9.tar.gz
+
+sh$ wget http://sourceforge.net/projects/mcrypt/files/MCrypt/2.6.8/mcrypt-2.6.8.tar.gz
+sh$ sudo ./configure --with-libmcrypt-prefix=/usr/local
+sh$ sudo make && make install

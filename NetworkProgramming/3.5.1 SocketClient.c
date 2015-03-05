@@ -1,9 +1,9 @@
 
-int n, sockfd;
-char buf[MAXLINE + 1];
+int n, listenfd;
+
 
 vDebug("socket()",
-    sockfd = socket(AF_INET, SOCK_STREAM, 0)
+    listenfd = socket(AF_INET, SOCK_STREAM, 0)
 );
 
 
@@ -14,15 +14,28 @@ struct sockaddr_in i4; // IPv4
 //bzero(&i4, sizeof(i4)); 
 memset(&i4, 0, sizeof(i4)); // set to 0 using bzero()
 i4.sin_family = AF_INET;
-i4.sin_port = htons(3490);  // consult Little Endian and Big Endian
-inet_pton(AF_INET, '127.0.0.1', &i4.sin_addr); 
+i4.sin_port = htons(SERV_LISTEN_PORT);  // consult Little Endian and Big Endian
+inet_pton(AF_INET, "127.0.0.1", &i4.sin_addr); 
 vDebug("connect()",
-    connect(sockfd, (struct sockaddr *)&i6, sizeof(i6))
+    connect(listenfd, (struct sockaddr *)&i4, sizeof(i4))
 );
-while( (n = read(sockfd, buf, MAXLINE)) > 0 ){
-    buf[n] = 0;     /* null terminate */
-    if(fputs(buf, stdout) == EOF)
-        printf("fputs() errno:%d\n", errno);
+
+
+char sendbuf[SERV_BUF_BYTES], char recvbuf[SERV_BUF_BYTES];
+
+if( NULL != fgets(sendbuf, SERV_BUF_BYTES, stdin) ){
+    vDebug("write()",
+        write(listenfd, sendbuf, strlen(sendbuf))
+    );
+}
+
+
+if( (n = read(listenfd, recvbuf, SERV_BUF_BYTES)) > 0 ){
+    recvbuf[n] = 0;     /* null terminate the last char of recvbuf */
+    if(EOF == fputs(recvbuf, stdout)){
+        printf("fputs() errno:%d(%s)\n", errno, strerror(errno));
+        exit(EXIT_FAILURE);
+    }
 }
 
 

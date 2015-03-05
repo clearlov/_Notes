@@ -3,7 +3,7 @@ SEE Install_Base.txt
 
 
 |~ MariaDB ~|
-sh# vim /etc/yum.repos.d/MariaDB.repo
+sh$ sudo vim /etc/yum.repos.d/MariaDB.repo
 # MariaDB 10.0 CentOS repository list - created 2014-11-20 17:18 UTC
 # http://mariadb.org/mariadb/repositories/
 [mariadb]
@@ -14,100 +14,6 @@ gpgcheck=1
 shell# sudo yum install MariaDB MariaDB-server MariaDB-client
 
 
-|~ MySQL ~|
-/*  http://dev.mysql.com/downloads/repo/yum/ */
-sh# wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
-sh# sudo rpm -Uvh mysql-community-release-el7-5.noarch.rpm
-sh# yum repolist all | grep mysql
-sh# sudo vim /etc/yum.repos.d/mysql-community.repo
-# Enable to use MySQL 5.6
-[mysql56-community]
-name=MySQL 5.6 Community Server
-baseurl=//repo.mysql.com/yum/mysql-5.6-community/el/7/$basearch/
-enabled=1
-gpgcheck=1
-gpgkey=file:/etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
-sh# yum repolist enabled | grep mysql
-sh# sudo yum install mysql-community-server
-sh# sudo service mysqld start
-sudo service mysqld status
-/* The program mysql_secure_installation allows you to perform important operations like setting the root password, removing anonymous users, and so on. Always run it to secure your MySQL installation: 
-to set password
-*/
-sh# mysql_secure_installation
-/* mysqladmin -u root  password [ PASSWORD ] */
-
-
-|+ Installing Additional MySQL Components +|
-sh# yum --disablerepo=\* --enablerepo='mysql*-community*' list available
-sh# sudo yum -y install [ LISTED_ABOVE ]
-
-
-
-sh# sudo yum update mysql-server
-sh# sudo yum update
-
-|+ Allows Extranet To Connect to MySQL+|
-/*  % indicates all ip;  */
-mysql> GRANT ALL PRIVILEGES ON *.* TO root@'%' INDENTIFIED BY '[ PASSWD ]';
-mysql> FLUSH PRIVILEGES;
-sh# sudo service mysqld restart
-
-
-
-
-
-|~ Nginx ~|
-/* http://wiki.nginx.org/Install */
-sh# vim /etc/yum.repos.d/nginx.repo
-[nginx]
-name=nginx repo
-# baseurl=http://nginx.org/packages/[ OS = centos ]/[ CENTOS_VERSION = 7]/$basearch/
-# http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
-baseurl=http://nginx.org/packages/centoS/7/$basearch/
-gpgcheck=0
-enabled=1
-/* it'll list the newest stable Nginx, but not Mainline */
-sh# yum list | grep nginx
-sh# sudo yum install nginx
-sh# sudo service nginx start
-# sudo systemctl start nginx.service
-sudo systemctl enable nginx.service
-
-|~ PHP ~|
-
-|+ libxml2 +|
-sh# rpm -qa | grep libxml2
-sh# sudo yum -y install libxml2 libxml2-devel
-sh# sudo find / -name "xml2-config"
-|+ bzip2 +|
-sh# sudo yum -y install bzip2 bzip2-devel
-|+ libcurl +|
-sh# sudo yum -y install curl curl-devel libcurl libcurl-devel
-|+ +|
-sh# sudo yum -y install gd libjpeg libjpeg-devel libpng libpng-devel
-sh# sudo yum -y install zlib zlib-devel glibc glibc-devel glib2 glib2-devel freetype freetype-devel
-
-
-
-
-#Linux environment variable. the file of shared lib(dll)
-#export LD_LIBRARY_PATH=/usr/local/libgd/lib
-
-# --prefix=    where to install
-# --with-config-file-path=     where php.ini placed
-# --with-mysqli   
-# --with-pear
-sh# sudo +|configure --prefix=/usr/local/php  --with-config-file-path=/usr/local/php/etc --with-config-file-scan-dir=/usr/local/php/etc/conf.d --with-bz2 --with-curl --with-gd --with-mysqli --with-openssl --with-pcre-regex --with-pear --with-zlib --enable-bcmath --enable-fpm --enable-gd-native-ttf --enable-mbstring --enable-pdo --enable-sockets --enable-inline-optimization --enable-xml --enable-zip
-
-sh# sudo make
-sh# sudo make install
-
-
-|- cloase port 9000 -|
-sh# sudo netstat -anp|grep 9000
-tcp	0	0 :::9000	:::*	LISTEN	1900/php-fpm
-sh# sudo kill 1900
 
 
 
@@ -115,63 +21,15 @@ sh# sudo kill 1900
 
 
 
-sh# php --ini
-
-
-sh# sudo cp php.ini-production /usr/local/php/etc/php.ini
-sh# sudo rm -rf /etc/php.ini
-sh# sudo ln -s /usr/local/php/etc/php.ini /etc/php.ini
-sh# sudo cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf
-sh# sudo vim /usr/local/php/etc/php-fpm.conf
-user = nginx
-group = nginx
-pid = run/php-fpm.pid
-
-` How to use two php.ini for both php-cli and php-fpm
-/*
- sh# sudo /usr/local/php/sbin/php-fpm -y /usr/local/php/etc/php-fpm.conf -c /[ ANY_PHPINI_PATH ]/php.ini
- Uses php-fpm to load php.ini(any place), it'll make PHP-FPM(for Nginx) Use another 
- configure ( e.g. /path_for_php_fpm/php.ini ), and PHP-CLI Use /usr/local/php/etc/php.ini
- But, When you change /[ ANY_PHPINI_PATH ]/php.ini, you need to re-compile this command to load it.
- */
 
 
 
 
-|- add php to enviroment -|
-sh# whereis php-config
---> php-config: /usr/local/php/bin/php-config
-/* http://php.net/manual/zh/install.pecl.php-config.php */
-` sh# vim /usr/local/php/bin/php-config
-extension_dir='/usr/lib64/php/modules'
-
-# export PATH=/usr/local/php/bin:$PATH
-sh# sudo vim /etc/profile
-/* add at the end */
-export PATH="/usr/local/php/bin:$PATH"
-sh# source /etc/profile
 
 
-|- php-fpm auto start -|
-sh# sudo cp sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
-sh# sudo chmod +x /etc/init.d/php-fpm
-sh# sudo chkconfig --add php-fpm
-sh# sudo chkconfig php-fpm on
-sh# sudo service php-fpm start
 
 
-|+ extension installing +|
 
-|- xdebug / xhprof -|
-sh# cd xdebug
-sh# phpize
-sh# sudo +|configure --enable-xdebug --with-php-config=/usr/local/php/bin/php-config
-sh# sudo make
-sh# sudo make install
-
-sh# cd xhprof/extension
-sh# phpize
-sh# sudo +|configure --with-php-config=/usr/local/php/bin/php-config
 
 
 
