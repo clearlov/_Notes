@@ -72,9 +72,9 @@ for(;;){
         );
         
         if( read(connfd, recvbuf, SERV_BUF_BYTES) > 0)
-            snprintf(buf, SERV_BUF_BYTES, "Lef-Well Says: %s", recvbuf);
+            snprintf(buf, SERV_BUF_BYTES, "Lef Well Says: %s", recvbuf);
         else
-            snprintf(buf, SERV_BUF_BYTES, "Hello, Lef-Well!");
+            snprintf(buf, SERV_BUF_BYTES, "Hello, Lef Well!");
         vDebug("write()",
             write(connfd, buf, strlen(buf))
         );

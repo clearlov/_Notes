@@ -1,0 +1,19 @@
+db> show profiles;
+db> show variables like "%pro%";
+|[
++---------------------------+-------+ 
+| Variable_name             | Value | 
++---------------------------+-------+ 
+| profiling                 | OFF   | 
+| profiling_history_size    | 15    | 
+| protocol_version          | 10    | 
+| slave_compressed_protocol | OFF   | 
++---------------------------+-------+ 
+4 rows in set (0.00 sec)
+]|
+
+db> set profiling=1;
+db> reset query cache;
+db> flush tables;
+db> ...
+db> show profiles;

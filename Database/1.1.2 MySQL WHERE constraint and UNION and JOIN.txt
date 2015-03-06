@@ -1,3 +1,6 @@
+|+ DINSTINCT and COUNT(DINSTINCT fld) +|
+db> select distinct fld from tb;    /* dinstict */
+db> select count(dinstinct fld) from tbl;
 |+ EXISTS(bool) +|
 db> select * from tb where exists (
         select * from tb where [CONSTRAINT]         

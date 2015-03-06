@@ -1,0 +1,4 @@
+MyISAM
+.frm()
+.MYD(data file)
+.MYI(index file)

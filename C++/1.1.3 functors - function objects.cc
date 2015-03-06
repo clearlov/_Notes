@@ -1,7 +1,7 @@
 /**
  * - Common Functions and Static Member Functions are all Function-pointers
-   - Functors are functions objects, are not pointers.
-   - Only Functors can be a 'inline' code, neither common functions nor SMF;
+ * - Functors are functions objects, are not pointers.
+ * - Only Functors can be a 'inline' code, neither common functions nor SMF;
  */
 
  

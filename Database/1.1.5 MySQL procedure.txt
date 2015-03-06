@@ -33,28 +33,36 @@ db> DROP PROCEDURE IF EXISTS [proc_name]
  * delete log automatically
  */
 db> DELIMITER $$
-     DROP TABLE IF EXISTS 'extinct_log';
-     CREATE TABLE IF NOT EXISTS 'extinct_log' (
-     'id' INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-     'extinction' TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-     PRIMARY KEY('id')
-     )
+    DROP TABLE IF EXISTS 'extinct_log';
+    CREATE TABLE IF NOT EXISTS 'extinct_log' (
+    'id' INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    'extinction' TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+    PRIMARY KEY('id')
+    )
      COLLATE='utf8_general_ci' ENGINE=MyISAM
      $$
-db> DELIMITER //
-     CREATE 
-     DEFINER 'root'@'localhost'
-     COMMENT 'delete log'  
-     PROCEDURE 'deletelog' (IN '$tb' VARCHAR(20), IN '$extinction' INT(1))
-     BEGIN
-     SET @qs=CONCAT("DELETE FROM ", $tb, " WHERE extinction=", $extinction);
-     PREPARE prpdeletelog FROM @qs;
-     EXECUTE prpdeletelog;
-     DEALLOCATE PREPARE prpdeletelog;
-     END
-     //
-db> CALL 'deletelog'('extinct_log', 1)
+db> DROP PROCEDURE IF EXISTS deletelog;
+    DELIMITER //
+    CREATE 
+        DEFINER root@localhost
+        COMMENT 'delete log'  
+        PROCEDURE deletelog (IN tb VARCHAR(20), IN fld VARCHAR(20), IN extinction INT(1))
+    BEGIN
+        DECLARE i int default 1;
+        SET @qs=CONCAT('SELECT COUNT(DISTINCT ', fld, ') INTO @dinstinct_radio FROM ', tb);
+        PREPARE s1 FROM @qs;
+        EXECUTE s1;
+        DEALLOCATE PREPARE s1;
+        SET @qs=CONCAT("DELETE FROM ", tb, " WHERE extinction=", extinction);
+        PREPARE prpdeletelog FROM @qs;
+        EXECUTE prpdeletelog;
+        DEALLOCATE PREPARE prpdeletelog;
+        SET @qs="";
+    END
+    //
+    DELIMITER ;   /* Restore delimiter to ; */
+db> CALL deletelog('extinct_log', 'extinction', 1);
 db> CREATE EVENT IF NOT EXIST event_deletelog ON SCHEDULE
-     EVERY 100 SECOND
-     ONCOMPLETION PRESERVE
-     DOCALL 'deletelog'('extinct_log', 1);
+    EVERY 100 SECOND
+    ONCOMPLETION PRESERVE
+    DOCALL 'deletelog'('extinct_log', 1);

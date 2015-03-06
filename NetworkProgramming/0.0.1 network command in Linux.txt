@@ -1,38 +1,99 @@
 sh$ sudo ./socketServ.out &           /* TCP Serv with port 9877 */
 sh$ netstat -a | grep 9877
 |[
-Proto  Recv-Q  Send-Q   LocalAddr.    ForeignAddr   State
- tcp      0      0     0.0.0.0:9877    0.0.0.0:*   LISTEN
+Proto  Recv-Q  Send-Q  LocalAddr.    ForeignAddr  State
+tcp      0      0      0.0.0.0:9877  0.0.0.0:*    LISTEN
 ]|
-sh$ ./socketClient.out          /* hold on it */
+/**
+ * hold on it with input stream
+ */
+sh$ ./socketClient.out          
 sh$ netstat -a
 |[
-Proto  Recv-Q  Send-Q   LocalAddr.    ForeignAddr        State
- tcp      0      0     0.0.0.0:9877    0.0.0.0:*         LISTEN      --> ./socketServ.out listening
- tcp      0      0    localhost:9877  localhost:55256   ESTABLISHED  --> ./socketServ.out -> ./socketClient.out
- tcp      0      0    localhost:55256 localhost:9877    ESTABLISHED  --> ./socketClient.out -> ./socketServ.out
+Proto  LocalAddr.      ForeignAddr      State
+tcp    0.0.0.0:9877    0.0.0.0:*        LISTEN      --> ./socketServ.out listening
+tcp    localhost:9877  localhost:55256  ESTABLISHED  --> ./socketServ.out -> ./socketClient.out
+tcp    localhost:55256 localhost:9877   ESTABLISHED  --> ./socketClient.out -> ./socketServ.out
 ]|
-sh$ ps al | grep socket
-|[
-F   UID   PID  PPID PRI  NI    VSZ   RSS WCHAN  STAT TTY        TIME COMMAND
-4     0  8315  6332  20   0 211084  3452 poll_s S    pts/1      0:00 sudo ./socketServ.out
-4     0  8317  8315  20   0   4168   360 inet_c S    pts/1      0:00 ./socketServ.out
-1     0  8329  8317  20   0   4168    96 sk_wai S    pts/1      0:00 ./socketServ.out
-0  1000  8328  6332  20   0   4164   360 n_tty_ S+   pts/1      0:00 ./socketClient.out
+sh$ ps al
 
-]|
+F   UID   PID  PPID    VSZ   RSS  WCHAN  STAT TTY    COMMAND
+/**
+ * COMMAND bash shell: parent of ./socketClient.out and ./socketServ.out
+ * pst/1 pseudo['su:doʊ]-terminal number 1
+ * STAT S on sleeping
+ * WCHAN wait
+ */
+0  1000 10230 10226 116524  3316 wait    Ss  pts/1  bash
+/**
+ * n_tty_read blocks the process on terminal I/O input
+ */
+0  1000 10434 10230   4164  360  n_tty_  S+  pts/1  ./socketClient.out
+/**
+ * signal_stop
+ */
+4     0 10275 10230 211056  3692 signal  T   pts/1  sudo ./socketServ.out
+4     0 10299 10230 211056  3688 signal  T   pts/1  sudo ./socketServ.out
+4     0 10336 10230 211056  3692 signal  T   pts/1  sudo ./socketServ.out
+4     0 10423 10230 211084  3456 poll_s  S   pts/1  sudo ./socketServ.out
+/**
+ * Parent process
+ * @WCHAN inet_csk_accpet
+ */
+4     0 10425 10423   4168  360  inet_c  S   pts/1  ./socketServ.out
+/**
+ * Child process from fork()
+ * @WCHAN sk_wait_data socket is waiting for data
+ */
+1     0 10435 10425   4168  96   sk_wai  S   pts/1  ./socketServ.out
+
 
 sh$ ps -t pts/1 -o pid,ppid,tty,stat,args,wchan
 |[
-
   PID  PPID TT       STAT COMMAND                     WCHAN
- 6332  6328 pts/1    Ss   bash                        wait
- 6373  6332 pts/1    T    sudo ./socketServ.out       signal_stop
- 6377  6373 pts/1    T    ./socketServ.out            signal_stop
- 6396  6377 pts/1    Z    [socketServ.out] <defunct>  exit
- 6412  6377 pts/1    Z    [socketServ.out] <defunct>  exit
- 8315  6332 pts/1    S    sudo ./socketServ.out       poll_schedule_timeout
- 8317  8315 pts/1    S    ./socketServ.out            inet_csk_accept
- 8328  6332 pts/1    S+   ./socketClient.out          n_tty_read
- 8329  8317 pts/1    S    ./socketServ.out            sk_wait_data
+10230 10226 pts/1    Ss   bash                        wait
+10275 10230 pts/1    T    sudo ./socketServ.out       signal_stop
+10299 10230 pts/1    T    sudo ./socketServ.out       signal_stop
+10336 10230 pts/1    T    sudo ./socketServ.out       signal_stop
+10423 10230 pts/1    S    sudo ./socketServ.out       poll_schedule_timeout
+10425 10423 pts/1    S    ./socketServ.out            inet_csk_accept
+10434 10230 pts/1    S+   ./socketClient.out          n_tty_read
+10435 10425 pts/1    S    ./socketServ.out            sk_wait_data
 ]|
+
+/**
+ * After typing into ./socketClient.out, the client socket is closed by the 
+ *  kenel. This sends a FIN to the server, 
+ *  +--------------------------------------------------------------------------+
+ *  |               send FIN M -->                                             |
+ *  |   FIN_WAIT_2                                                             |
+ *  |                            <-- responds ACK M+1                          |
+ *  |                                state: CLOSE_WAIT                         |
+ *  |                                blocks read(), child process terminates   |
+ *  |                            <-- responds FIN N                            |
+ *  |             send ACK N+1 -->                                             |
+ *  |   TIME_WAIT                                                              |
+ *  |                                child sends SIGCHLD signal to parent      |
+ *  |                                child enters the zombie state             |
+ *  +--------------------------------------------------------------------------+
+ */
+sh$ netstat -a | grep 9877
+|[
+Proto  Recv-Q  Send-Q  LocalAddr.    ForeignAddr  State
+tcp      0      0      0.0.0.0:9877  0.0.0.0:*    LISTEN
+]|
+sh$ ps al
+F S   UID   PID  PPID  ADDR SZ WCHAN  TTY          TIME CMD
+4 T     0 10275 10230  - 52764 signal pts/1    00:00:00 sudo
+4 T     0 10299 10230  - 52764 signal pts/1    00:00:00 sudo
+4 T     0 10336 10230  - 52764 signal pts/1    00:00:00 sudo
+4 S     0 10423 10230  - 52771 poll_s pts/1    00:00:00 sudo
+4 S     0 10425 10423  -  1042 inet_c pts/1    00:00:00 socketServ.out
+/**
+ * @STATE Z for zombie[ˈzɑmbi], the state of the child is now zombie
+ *  We need to clean up our zombie process with Unix signals
+ */
+1 Z     0 10435 10425  -     0 exit   pts/1    00:00:00 socketServ.out <defunct>
+
+
+
