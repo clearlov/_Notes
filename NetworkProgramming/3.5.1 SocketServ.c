@@ -67,10 +67,14 @@ for(;;){
      * fork() duplicates a child process with listenfd and connfd of its own.
      */
     if( (pid = fork()) == 0){
-        vDebug("close(listenfd)",
-            close(listenfd)    // child closes listening socket
-        );
-        
+        /**
+         * back to for(;;) on errno==EINTR to restart it
+         */
+        if(0 ==
+            vDebug("close(listenfd)",
+                close(listenfd)    // child closes listening socket
+            )
+        ) continue;
         if( read(connfd, recvbuf, SERV_BUF_BYTES) > 0)
             snprintf(buf, SERV_BUF_BYTES, "Lef Well Says: %s", recvbuf);
         else
@@ -88,6 +92,13 @@ for(;;){
             close(connfd)
         );
         exit(0);                // child terminates
+    } else if(pid >0){
+        /**
+         * Delivered signal SIGCHLD blocks parent to call accept(), the kernel 
+         *  causes the accept() to return an error of EINTR(interrupted system
+         *  call). Then sigChld() executes, wait() fetches the child's PID.
+         */
+        signal(SIGCHLD, sigChld);
     }
     vDebug("close(connfd)",
         close(connfd)           // parent closes connected socket

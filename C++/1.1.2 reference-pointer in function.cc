@@ -9,11 +9,31 @@
    T (*dumbbell())[N][N] <--> T(*)[N][N]   3D Array
    T (&oral())[N] <--> T (&)[N]  a func rtn a reference to T[N]
  */
+ 
+/**
+ * Difference between func-ptr and functor
+ *  Common Func and Static Member Func are all Func-ptr
+ *  Functor is a function object, not a ptr.
+ *  Only Functors can be a 'inline' code, neither common function nor SMF;
+ */
+void (*facial)();   // a ptr to void(), not a func; so void(*f)(){...} is error
+void cosmetics(){   // a function returns void
+    printf("cosmetics");
+};
+extern void masquerade(int masque); // a function returns void
+extern const int cosmetic();        // a function returns const int
+void (*raw())(){        // a function ptr to void()
+    printf("raw");
+    return cosmetics;       // void()
+}
 
-void (*facial)();  // a ptr to void() 
-extern void cosmetics();
-extern void masquerade(int masque);
-extern const int cosmetic();
+cosmetics();    // it works
+(*cosmetics)(); // it works too 
+
+raw();      // raw, it works
+(*raw)();   // raw, works too
+raw()();    // raw cosmetics
+
 /**
  * Functions and Static Member Functions (SMF) are functions-pointers
     - T (*bud)() = func;   // compile coverts func to its addr. &func implicitly

@@ -110,7 +110,7 @@ int bind(int listenfd, const struct sockaddr* addr, socklen_t addr_len)
  * When the process calls accept(), the first entry on the completed queue is 
  *  returned to the process, or if the queue is empty, the process is put to
  *  sleep until an entry is placed onto the completed queue.
- * @param int max_listen_queues 
+ * @argument int max_listen_queues 
  *  It is multiplied by 1.5 in MacOS and added 3 in Linux.
  *  e.g. listen(listenfd, 2048) --> 3072 queues in MacOS and 2051 queues in Linux
  *  Provide enough number of queues for SYN flooding.
@@ -129,9 +129,12 @@ int listen(int listenfd, int max_listen_queues)
 int connect(int listenfd, const struct sockaddr* serv_addr, socklen_t addrlen)
 
 /**
- * @param client_addr is used to return the protocol addr. of the connected peer
+ * When a process is blocked in "slow system call"(will ever return, like 
+ *  for(;;) and read()) and the process catches a signal and the signal handler
+ *  returns, the system call can return EINTR(interrupted system call).
+ * @argument client_addr is used to return the protocol addr. of the connected peer
  *  process (the client).
- * @param addrlen is a value-result arg.
+ * @argument addrlen is a value-result arg.
  *  value: sizeof(client_addr)
  *  result: actual number of bytes stored by the kernel in the socket addr. structure
  * @return integer connected socket file descriptor 
@@ -152,7 +155,7 @@ recvfrom() / sendto()
 
 
 /**
- * @param socklen_t * addrlen  is quite different with socklen addrlen
+ * @argument socklen_t * addrlen  is quite different with socklen addrlen
  */
 
 int getsockname(int listenfd, struct sockaddr *localaddr, socklen_t * addrlen)

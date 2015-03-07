@@ -63,19 +63,7 @@ sh$ ps -t pts/1 -o pid,ppid,tty,stat,args,wchan
 
 /**
  * After typing into ./socketClient.out, the client socket is closed by the 
- *  kenel. This sends a FIN to the server, 
- *  +--------------------------------------------------------------------------+
- *  |               send FIN M -->                                             |
- *  |   FIN_WAIT_2                                                             |
- *  |                            <-- responds ACK M+1                          |
- *  |                                state: CLOSE_WAIT                         |
- *  |                                blocks read(), child process terminates   |
- *  |                            <-- responds FIN N                            |
- *  |             send ACK N+1 -->                                             |
- *  |   TIME_WAIT                                                              |
- *  |                                child sends SIGCHLD signal to parent      |
- *  |                                child enters the zombie state             |
- *  +--------------------------------------------------------------------------+
+ *  kenel. This sends a FIN to the server
  */
 sh$ netstat -a | grep 9877
 |[
@@ -83,17 +71,18 @@ Proto  Recv-Q  Send-Q  LocalAddr.    ForeignAddr  State
 tcp      0      0      0.0.0.0:9877  0.0.0.0:*    LISTEN
 ]|
 sh$ ps al
-F S   UID   PID  PPID  ADDR SZ WCHAN  TTY          TIME CMD
-4 T     0 10275 10230  - 52764 signal pts/1    00:00:00 sudo
-4 T     0 10299 10230  - 52764 signal pts/1    00:00:00 sudo
-4 T     0 10336 10230  - 52764 signal pts/1    00:00:00 sudo
-4 S     0 10423 10230  - 52771 poll_s pts/1    00:00:00 sudo
-4 S     0 10425 10423  -  1042 inet_c pts/1    00:00:00 socketServ.out
+F S   UID   PID  PPID  ADDR SZ WCHAN  TTY    CMD
+4 T     0 10275 10230  - 52764 signal pts/1  sudo
+4 T     0 10299 10230  - 52764 signal pts/1  sudo
+4 T     0 10336 10230  - 52764 signal pts/1  sudo
+4 S     0 10423 10230  - 52771 poll_s pts/1  sudo
+4 S     0 10425 10423  -  1042 inet_c pts/1  ./socketServ.out
 /**
  * @STATE Z for zombie[ˈzɑmbi], the state of the child is now zombie
  *  We need to clean up our zombie process with Unix signals
+ * @CMD <defunct> for a zombie process
  */
-1 Z     0 10435 10425  -     0 exit   pts/1    00:00:00 socketServ.out <defunct>
+1 Z     0 10435 10425  -     0 exit   pts/1  [socketServ.out] <defunct>
 
 
 

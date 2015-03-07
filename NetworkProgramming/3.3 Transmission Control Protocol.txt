@@ -17,6 +17,23 @@ UDP itself does not provide acknowledgments, sequence numbers, RTT estimation, t
 TCP provides flow control. TCP advertised['ædvətaɪz] window(say the advertised window is the amount of room currently available in the receive buffer) tells its peer(say the peer thought a segment was lost and retransmitted it, when it wasn't really lost, the network was just overloaded) exactly how any bytes of data it is willing to accept from the peer at any one time.
 TCP and UDP can both be full-duplex[ˈdu:pleks] connection.
 
+/**
+ * When the client terminates, it sends a FIN to the server
+ */
+|[
++------------------------------------------------------------------------------+
+| FIN_WAIT_1         send FIN M -->                                            |
+|                                                 CLOSE_WAIT    read returns 0 |
+|                                 <-- responds ACK M+1                         |
+| FIN_WAIT_2                                                                   |
+|                                                    child process terminates  |
+|                                 <-- responds FIN N                           |
+| TIME_WAIT   send ACK N+1 -->                                                 |
+|                                                                      CLOSED  |
+|                                        child sends SIGCHLD signal to parent  |
+|                                               child enters the zombie state  |
++------------------------------------------------------------------------------+
+]|
 |+ TCP options: +|
 |-MSS(maximum segment size)-| the maximum amount of data that it is willing to accept in each TCP segment.
 |-Window Scale-| 

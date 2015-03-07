@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <iostream>
+#include <signal.h>
 using namespace std;
 /**
  *
@@ -16,12 +17,15 @@ int main(int argc,char **argv){
      */
     pid_t pid = fork();    // create a child process pid: 5001
     char * erode;
-    if(pid>0){           // getpid()=5000; child pid=5001
-        sprintf(erode, "Pid%d -> C%d\n", getpid(), pid);
+    int chld_status;
+    if(pid<0){           
+        printf("fork error");
     } else if(pid==0){           // getpid() = 5001, it's a child process
         sprintf(erode, "Pid%d", getpid());
-    } else{
-        printf("fork error");
+    } else{                     // getpid()=5000; child pid=5001
+        sprintf(erode, "Pid%d -> C%d\n", getpid(), pid);
+        pid = wait(&chld_status);
+        printf("child %d terminated\n", pid);
     }
     for(;;){
         printf(erode);

@@ -27,9 +27,13 @@
 
 
 
-void vDebug(const char*msg, int deprive){
+int vDebug(const char*msg, int deprive){
     if(deprive<0){
+        if(errno == EINTR)
+            return 0;
         printf("%s errno:%d(%s)\n", msg, errno, strerror(errno));
         exit(EXIT_FAILURE);
+        return -1;
     }
+    return 1;
 }
