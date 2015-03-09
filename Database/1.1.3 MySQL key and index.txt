@@ -161,6 +161,8 @@ db> SELECT @len;                    /* using ouput */
 
 |~ Index Failure ~|
 Index won't work in following sentences:
+如果某个数据列里包含着许多重复的值，就算为它建立了索引也不会有很好的效果。比如说，如果某个数据列里包含了净是些诸如“0/1”或“Y/N”等值，就没有必要为它创建一个索引。
+
 /**
  * Any a NULL value in a index field will fail index
  */
@@ -181,6 +183,13 @@ db> LIKE '%gum'   or    LIKE '_gum'  or  LIKE '%gum%' ...
  */
 db> YEAR(dt) > 2015
 
+/**
+ *
+ */
+db> WHERE fld != ..    
+
+
+         
 |~ Foreign Key Constraint[kənˈstrent] ~|
 /**
  * ref_option:

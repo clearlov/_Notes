@@ -5,7 +5,7 @@
    T (**[const] mutation)(T-args)   a [const] ptr that points to a ptr of T()
    T (*[const] muteness[N])()       an array with N elems. pointing to T ()
    T (*verbal()) <--> T (*)   a func rtn a ptr to T
-   T (*dumb())[N] <--> T(*)[N}  a func rtn a ptr to T[N]
+   T (*dumb())[N] <--> T(*)[N]  a func rtn a ptr to T[N]
    T (*dumbbell())[N][N] <--> T(*)[N][N]   3D Array
    T (&oral())[N] <--> T (&)[N]  a func rtn a reference to T[N]
  */
@@ -22,7 +22,7 @@ void cosmetics(){   // a function returns void
 };
 extern void masquerade(int masque); // a function returns void
 extern const int cosmetic();        // a function returns const int
-void (*raw())(){        // a function ptr to void()
+void (*raw())(){        // a function return a ptr to void()
     printf("raw");
     return cosmetics;       // void()
 }

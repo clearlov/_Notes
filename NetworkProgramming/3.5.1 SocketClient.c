@@ -24,8 +24,18 @@ vDebug("connect()",
 char sendbuf[SERV_BUF_BYTES], char recvbuf[SERV_BUF_BYTES];
 
 if( NULL != fgets(sendbuf, SERV_BUF_BYTES, stdin) ){
+    /**
+     * First write() to elicit[ɪˈlɪsɪt] the RST
+     */
     vDebug("write()",
         write(listenfd, sendbuf, strlen(sendbuf))
+    );
+    sleep(3);
+    /**
+     * Second write() to generate SIGPIPE
+     */
+    vDebug("write(SIGPIPD)",
+        write(listenfd, sendbuf + 1, strlen(sendbuf) - 1)
     );
 }
 

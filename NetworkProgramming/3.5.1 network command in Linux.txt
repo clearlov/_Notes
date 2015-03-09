@@ -1,8 +1,9 @@
+|~ ~|
 sh$ sudo ./socketServ.out &           /* TCP Serv with port 9877 */
 sh$ netstat -a | grep 9877
 |[
-Proto  Recv-Q  Send-Q  LocalAddr.    ForeignAddr  State
-tcp      0      0      0.0.0.0:9877  0.0.0.0:*    LISTEN
+Proto  RecvQ  SendQ  LocalAddr.    ForeignAddr  State
+tcp    0      0      0.0.0.0:9877  0.0.0.0:*    LISTEN
 ]|
 /**
  * hold on it with input stream
@@ -61,9 +62,22 @@ sh$ ps -t pts/1 -o pid,ppid,tty,stat,args,wchan
 10435 10425 pts/1    S    ./socketServ.out            sk_wait_data
 ]|
 
+|~ ~|
 /**
  * After typing into ./socketClient.out, the client socket is closed by the 
  *  kenel. This sends a FIN to the server
+ * +------------------------------------- -------------------------------------+
+ * | FIN_WAIT_1             send FIN M -->                                     |
+ * |                                              CLOSE_WAIT  read returns EOF |
+ * |                                     <-- responds ACK M+1                  |
+ * | FIN_WAIT_2                                                                |
+ * |                                                  child process terminates |
+ * |                                     <-- responds FIN N                    |
+ * | TIME_WAIT   send ACK N+1          -->                                     |
+ * |                                                                    CLOSED |
+ * |                                      child sends SIGCHLD signal to parent |
+ * |                                             child enters the zombie state |
+ * +------------------------------------- -------------------------------------+
  */
 sh$ netstat -a | grep 9877
 |[
@@ -84,5 +98,23 @@ F S   UID   PID  PPID  ADDR SZ WCHAN  TTY    CMD
  */
 1 Z     0 10435 10425  -     0 exit   pts/1  [socketServ.out] <defunct>
 
-
+|~ Termination of Server Process ~|
+/**
+ * Before typing into ./socketClient.out, terminates the server child.
+ * +------------------------------------- -------------------------------------+
+ * |                                     <-- send FIN M             FIN_WAIT_1 |
+ * | CLOSE_WAIT fgets(block)                                                   |
+ * |          responds ACK M+1         -->                                     |
+ * |                                                                FIN_WAIT_2 |
+ * |                                         send SIGCHLD to parent; waitpid() |
+ * +------------------------------------- -------------------------------------+
+ */
+sh$ sudo kill -SIGSTOP 10435
+sh$ netstat -a | grep 9877
+|[
+Proto  RecvQ  SendQ  LocalAddr.      ForeignAddr     State
+tcp    0      0      0.0.0.0:9877    0.0.0.0:*       LISTEN
+tcp    0      0      localhost:9877  localhost:60461 FIN_WAIT2
+tcp    1      0      localhost:60461 localhost:9877  CLOSE_WAIT
+]|
 

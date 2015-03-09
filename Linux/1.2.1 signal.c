@@ -15,6 +15,14 @@ signal(SIGCHLD, sigChld);
 void sigChld(int signo){
     pid_t pid;
     int status;
-    pid = wait(&status);    // child pid terminated
+    /**
+     * Unix signals are normally not queued, so wait() is worthless to 
+     *  concurrent server. Which means, if there're N socket clients connect to 
+     *  a server which'll fork() N childs. If the client and server are on the 
+     *  same host, the signal handler is executed once, leaving (N-1) zombies;
+     *  If on different host, the signal is executed twice or more times. So, we
+     *  use waitpid() instead.
+     */
+    while ( (pid = waitpid(-1, &status, WNOHANG)) >0);
 }
  

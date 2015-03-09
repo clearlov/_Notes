@@ -31,7 +31,7 @@ memset(&serv_addr, 0, serv_addr_len);
 vDebug("getsockname()",
     getsockname(listenfd, (struct sockaddr *) &serv_addr, &serv_addr_len)
 );
-printf("family: %d\n", serv_addr.ss_family);
+printf("family: %d  ", serv_addr.ss_family);
 
 struct sockaddr_in serv_i4;
 socklen_t serv_i4_len = sizeof(serv_i4);
@@ -39,8 +39,12 @@ memset(&serv_i4, 0, sizeof(serv_i4));
 vDebug("getsockname(serv_i4)",
     getsockname(listenfd, (struct sockaddr *)&serv_i4, &serv_i4_len)
 );
-printf("family: %d\t", serv_i4.sin_family);
-printf("port: %d\t", serv_i4.sin_port);
+//printf("family: %d  ", serv_i4.sin_family);
+printf("port: %d  ", serv_i4.sin_port);
+if(!serv_i4.sin_port > 0){
+    printf("port error");
+    exit(0);
+}
 #define INET_ADDR_STRLEN    16
 char i4_str[INET_ADDR_STRLEN];
 inet_ntop(AF_INET, &serv_i4.sin_addr, i4_str, INET_ADDR_STRLEN);
@@ -58,23 +62,23 @@ int connfd;
 char recvbuf[SERV_BUF_BYTES + 1], buf[SERV_BUF_BYTES + 1];
 
 for(;;){
-    vDebug("accept()",
+    /**
+     * back to for(;;) on errno==EINTR to restart it
+     */
+    if(0 ==
+        vDebug("accept()",
     // connfd = accept(listenfd, (struct sockaddr *)&client_addr, &client_addr_len)
-        connfd = accept(listenfd, (struct sockaddr *)NULL, NULL)
-    );
+            connfd = accept(listenfd, (struct sockaddr *)NULL, NULL)
+        ) 
+    ) continue;
     /**
      * Concurrent[kənˈkɜ:rənt] Servers
      * fork() duplicates a child process with listenfd and connfd of its own.
      */
     if( (pid = fork()) == 0){
-        /**
-         * back to for(;;) on errno==EINTR to restart it
-         */
-        if(0 ==
-            vDebug("close(listenfd)",
-                close(listenfd)    // child closes listening socket
-            )
-        ) continue;
+        vDebug("close(listenfd)",
+            close(listenfd)    // child closes listening socket
+        );
         if( read(connfd, recvbuf, SERV_BUF_BYTES) > 0)
             snprintf(buf, SERV_BUF_BYTES, "Lef Well Says: %s", recvbuf);
         else

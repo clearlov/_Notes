@@ -21,18 +21,29 @@ TCP and UDP can both be full-duplex[ˈdu:pleks] connection.
  * When the client terminates, it sends a FIN to the server
  */
 |[
-+------------------------------------------------------------------------------+
-| FIN_WAIT_1         send FIN M -->                                            |
-|                                                 CLOSE_WAIT    read returns 0 |
-|                                 <-- responds ACK M+1                         |
-| FIN_WAIT_2                                                                   |
-|                                                    child process terminates  |
-|                                 <-- responds FIN N                           |
-| TIME_WAIT   send ACK N+1 -->                                                 |
-|                                                                      CLOSED  |
-|                                        child sends SIGCHLD signal to parent  |
-|                                               child enters the zombie state  |
-+------------------------------------------------------------------------------+
+ * +------------------------------------- -------------------------------------+
+ * | sock() connect(block)                          socket() bind() listen()
+ * |                                                     LISTEN(passive open)
+ * |                        send SYN J -->
+ * |                                                     SYN_RCVD
+ * |                                     <-- responds SYN J+1, ACK K
+ * | connect() returns send ACK K+1 ->             
+ * |                                                     ESTABLISHED
+ * |                       send RST    -->
+ * |                                              client connection() queued
+ * |                                                         accept() called
+ * +------------------------------------- -------------------------------------+
+ * | FIN_WAIT_1             send FIN M -->                                     |
+ * |                                              CLOSE_WAIT  read returns EOF |
+ * |                                     <-- responds ACK M+1                  |
+ * | FIN_WAIT_2                                                                |
+ * |                                                  child process terminates |
+ * |                                     <-- responds FIN N                    |
+ * | TIME_WAIT   send ACK N+1          -->                                     |
+ * |                                                                    CLOSED |
+ * |                                      child sends SIGCHLD signal to parent |
+ * |                                             child enters the zombie state |
+ * +------------------------------------- -------------------------------------+
 ]|
 |+ TCP options: +|
 |-MSS(maximum segment size)-| the maximum amount of data that it is willing to accept in each TCP segment.
