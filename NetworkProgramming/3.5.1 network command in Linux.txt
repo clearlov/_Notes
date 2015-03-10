@@ -5,6 +5,13 @@ sh$ netstat -a | grep 9877
 Proto  RecvQ  SendQ  LocalAddr.    ForeignAddr  State
 tcp    0      0      0.0.0.0:9877  0.0.0.0:*    LISTEN
 ]|
+
+/**
+ * TCPDump is listening...
+ * @param lo for local,
+ */
+sh$ sudo tcpdump -i lo -nn
+
 /**
  * hold on it with input stream
  */
@@ -13,11 +20,11 @@ sh$ netstat -a
 |[
 Proto  LocalAddr.      ForeignAddr      State
 tcp    0.0.0.0:9877    0.0.0.0:*        LISTEN      --> ./socketServ.out listening
-tcp    localhost:9877  localhost:55256  ESTABLISHED  --> ./socketServ.out -> ./socketClient.out
-tcp    localhost:55256 localhost:9877   ESTABLISHED  --> ./socketClient.out -> ./socketServ.out
+tcp    localhost:9877  localhost:48692  ESTABLISHED  --> ./socketServ.out -> ./socketClient.out
+tcp    localhost:48692 localhost:9877   ESTABLISHED  --> ./socketClient.out -> ./socketServ.out
 ]|
 sh$ ps al
-
+|[
 F   UID   PID  PPID    VSZ   RSS  WCHAN  STAT TTY    COMMAND
 /**
  * COMMAND bash shell: parent of ./socketClient.out and ./socketServ.out
@@ -47,7 +54,7 @@ F   UID   PID  PPID    VSZ   RSS  WCHAN  STAT TTY    COMMAND
  * @WCHAN sk_wait_data socket is waiting for data
  */
 1     0 10435 10425   4168  96   sk_wai  S   pts/1  ./socketServ.out
-
+]|
 
 sh$ ps -t pts/1 -o pid,ppid,tty,stat,args,wchan
 |[
@@ -60,6 +67,22 @@ sh$ ps -t pts/1 -o pid,ppid,tty,stat,args,wchan
 10425 10423 pts/1    S    ./socketServ.out            inet_csk_accept
 10434 10230 pts/1    S+   ./socketClient.out          n_tty_read
 10435 10425 pts/1    S    ./socketServ.out            sk_wait_data
+]|
+
+/**
+ * @result sh$ sudo tcpdump -i lo -nn
+ * TCPDump Result when start ./socketClient.out
+ */
+|[
+/**
+ * Client: Send [S]=SYN J
+ */
+.48692 > .9877: Flags [S], seq 606955278, win 43690, opt [mss 65495,sackOK,TS val 5469683 ecr 0,nop,wscale 7], length 0
+/**
+ * Serv: Respond [S]=SYN K, ACK J+1
+ */
+.9877 > .48692: Flags [S.], seq 3763551751, ack 606955279, win 43690, opt [mss 65495,sackOK,TS val 5469683 ecr 5469683,nop,wscale 7], length 0
+.48692 > .9877: Flags [.], ack 1, win 342, opt [nop,nop,TS val 5469683 ecr 5469683], length 0
 ]|
 
 |~ ~|
@@ -98,6 +121,40 @@ F S   UID   PID  PPID  ADDR SZ WCHAN  TTY    CMD
  */
 1 Z     0 10435 10425  -     0 exit   pts/1  [socketServ.out] <defunct>
 
+
+/**
+ * @result sh$ sudo tcpdump -i lo -nn
+ * TCPDump Result when start ./socketClient.out
+ */
+|[
+/**
+ * Client: write(), [P.]=Push
+ */
+.48692 > .9877: Flags [P.], seq 1:4097, ack 1, win 342, opt [nop,nop,TS val 5732826 ecr 5469683], length 4096
+.9877 > .48692: Flags [.], ack 4097, win 1024, opt [nop,nop,TS val 5732827 ecr 5732826], length 0
+/**
+ * Serv: write() "Lef Well Says: Love", [P.]=Push
+ */
+.9877 > .48692: Flags [P.], seq 1:20, ack 4097, win 1024, opt [nop,nop,TS val 5732827 ecr 5732826], length 19
+.48692 > .9877: Flags [.], ack 20, win 342, opt [nop,nop,TS val 5732827 ecr 5732827], length 0
+/**
+ * Serv: send [F.]=FIN
+ */
+.9877 > .48692: Flags [F.], seq 20, ack 4097, win 1024, opt [nop,nop,TS val 5732827 ecr 5732827], length 0
+.48692 > .9877: Flags [.], ack 21, win 342, opt [nop,nop,TS val 5732867 ecr 5732827], length 0
+/**
+ * Client: write() "Love", [P.]=Push
+ */
+.48692 > .9877: Flags [P.], seq 4097:4101, ack 21, win 342, opt [nop,nop,TS val 5733828 ecr 5732827], length 4
+/**
+ * Serv: send [R]=RST
+ */
+.9877 > .48692: Flags [R], seq 3763551772, win 0, length 0
+]|
+ 
+ 
+
+
 |~ Termination of Server Process ~|
 /**
  * Before typing into ./socketClient.out, terminates the server child.
@@ -110,6 +167,19 @@ F S   UID   PID  PPID  ADDR SZ WCHAN  TTY    CMD
  * +------------------------------------- -------------------------------------+
  */
 sh$ sudo kill -SIGSTOP 10435
+/**
+ * @result sh$ sudo tcpdump -i lo -nn
+ * TCPDump Result when start ./socketClient.out
+ */
+|[
+/**
+ * Serv: send a [F.]=FIN 1=seq
+ */
+.9877 > .48692: Flags [F.], seq 1, ack 1, win 342, options [nop,nop,TS val 7192941 ecr 7162268], length 0
+.48692 > .9877: Flags [.], ack 2, win 342, options [nop,nop,TS val 7192942 ecr 7192941], length 0
+]|
+
+
 sh$ netstat -a | grep 9877
 |[
 Proto  RecvQ  SendQ  LocalAddr.      ForeignAddr     State
@@ -118,3 +188,14 @@ tcp    0      0      localhost:9877  localhost:60461 FIN_WAIT2
 tcp    1      0      localhost:60461 localhost:9877  CLOSE_WAIT
 ]|
 
+/**
+ * After typing into ./socketClient.out, the client socket is closed by the 
+ */
+/**
+ * @result sh$ sudo tcpdump -i lo -nn
+ * TCPDump Result when start ./socketClient.out
+ */
+|[
+.48692 > .9877: Flags [P.], seq 263097761:263101857, ack 2963927551, win 342, options [nop,nop,TS val 7432947 ecr 7192941], length 4096
+.9877 > .48692: Flags [R], seq 2963927551, win 0, length 0
+]|
