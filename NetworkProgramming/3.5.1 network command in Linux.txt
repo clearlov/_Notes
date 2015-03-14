@@ -8,7 +8,7 @@ tcp    0      0      0.0.0.0:9877  0.0.0.0:*    LISTEN
 
 /**
  * TCPDump is listening...
- * @param lo for local,
+ * @arg lo for local,
  */
 sh$ sudo tcpdump -i lo -nn
 

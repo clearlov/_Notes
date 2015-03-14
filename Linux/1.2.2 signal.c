@@ -6,7 +6,7 @@
  *  wait().
  * @bookmark C++/1.1.3 functors - function objects
  *  Common funct and SMF are all func-ptr, they're diff with a functor.
- * @argument void (*func)(int);  func = sigChld;
+ * @arg void (*func)(int);  func = sigChld;
  * @return void() struct sigaction.sa_handle on success; SIG_ERR on error
  *  signal(SIGCHLD, sigChld)() <=====>  sigaction.sa_handle();
  */

@@ -24,9 +24,23 @@
 #define SERV_LISTEN_QUEUES 1024 // LISTENQ 2nd arg. to listen()
 #define SERV_LISTEN_PORT 9877 // any a ephemeral[ɪˈfɛmərəl] port between [5000, 49152]
 
+/**
+ * Passing Binary Structures
+ * @discuss long is diff in diff host, so we can't pass value by long. Passing 
+ *  binary struct instead.
+ */
+struct Args {
+    long arg1;
+    long arg2;
+};
+struct Results{
+    long sum;
+};
 
-
-
+/**
+ * @discuss true on 1; false on 0; 0 == -1  is 0
+ * @arg int deprive 0 on success; 1 on error
+ */
 int vDebug(const char*msg, int deprive){
     if(deprive<0){
         if(errno == EINTR){

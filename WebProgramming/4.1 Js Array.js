@@ -17,8 +17,8 @@ d.sort(pairty);     // 3 1 2 4
 
 /**
  * Array.prototype.slice(int $start, [int $end])
- * @argument int $start 0 on first element; -1 on the last element
- * @argument int $end optional NULL on last element; -1 on to last(not included)
+ * @arg int $start 0 on first element; -1 on the last element
+ * @arg int $end optional NULL on last element; -1 on to last(not included)
  */
 var victim = ['syphilis', 'starvation', 'rash'];
 var plague = new Array(2);
@@ -27,7 +27,7 @@ document.write(plague);   // starvation,rash
 
 /**
  * Array.prototype.concat(mixed $arr [, mixed $arr...])
- * @argument mixed $arr what if it's not an array, turns to [arr]
+ * @arg mixed $arr what if it's not an array, turns to [arr]
  * @return array concatenated[kɑnˈkætˌneɪt]
  */
 var mute = ['mut'];
@@ -69,7 +69,7 @@ diarrhea.unshift('burst', 'dehydration');
 
 /**
  * Array.prototype.push(elem_a, elem_b...)
- *@return int new length
+ * @return int new length
  */
 var humidity = ['humid'];
 var len = humidity.push('heat up');  // 2 ->> humidity=['humid', 'heat up']

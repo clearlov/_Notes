@@ -49,14 +49,14 @@ int memcmp(const void *ptr1, const void *ptr2, size_t nbytes);
  * Convert IP addr. from 'Dotted Decimal Notation' to Binary, 
  * and assign to 'in_addr' or 'in6_addr' struct
  * dst_strct: 'in_addr' or 'in6_addr' struct , depended on LefAddrFamily
- * @argument const char * ip_str INADDR_ANY indicates all IP
+ * @arg const char * ip_str INADDR_ANY indicates all IP
  * @note long INADDR_ANY is not const char *
  *      i4.sin_addr.s_addr = htonl(INADDR_ANY);   // ok
  */
 int inet_pton(sa_family_t LefAddrFamily, const char *ip_str, void *dst_struct)
 
 /**
- * @param numeric_addr_ptr struct sockaddr_in/sockaddr_in6 s; &s.sin_family
+ * @arg numeric_addr_ptr struct sockaddr_in/sockaddr_in6 s; &s.sin_family
  * @return object ptr to result if OK, NULL on error
  */
 #define INET_ADDR_STRLEN    16  /* for IPv4 dotted-decimal */

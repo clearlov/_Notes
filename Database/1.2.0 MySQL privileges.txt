@@ -1,5 +1,5 @@
 /**
- * @param [ PRIVILEGES ]
+ * @arg [ PRIVILEGES ]
  *  all privileges
  *  select,update,delete,drop,rule,insert
  *  alter, alter routine(e.g. procedure, function, trigger)
@@ -15,7 +15,7 @@
  *  reload
  *  replication client
  *  replication slave
- * @param [ HOST ] localhost on default; % on all ip;
+ * @arg [ HOST ] localhost on default; % on all ip;
  *  e.g. grant all privileges on *.* to lef@'%' identified by "lef"  with grant option;
  */
 db> grant [ PRIVILEGES ] on [ DB ].[ TB ] to [ USERNAME ]@[ HOST=localhost ] identified by "[ PASSWD ]"

@@ -7,13 +7,13 @@
 $str = 'Œ“';   /* UTF8 string */
 /**
  * http://php.net/manual/zh/function.unpack.php
- *@return array ['codes']
+ * @return array ['codes']
  */
 $unicode = unpack('H6codes', $str);
 
 /**
  * http://php.net/manual/zh/function.pack.php
- *@return array ['codes']
+ * @return array ['codes']
  */
 $unicode_to_str = pack('H6', $unicode['codes']);   /*  Œ“ */
 |- -|

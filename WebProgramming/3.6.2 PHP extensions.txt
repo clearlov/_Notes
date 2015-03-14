@@ -1,10 +1,10 @@
 cd ext;
-1.	vim [ MODULE ].proto
-2.	./ext_skel --extname=[ MODULE ] --proto=[ MODULE ].proto
-	cd [ MODULE ]
-3.	vim config.m4 [ MODULE ].c
-4. 	compile:  phpize ./configure;  ./configure;  make;   sudo make install
-5.	sudo vim /etc/php.ini  ==> extension=[ MODULE ].so
+1. vim [ MODULE ].proto
+2. ./ext_skel --extname=[ MODULE ] --proto=[ MODULE ].proto
+   cd [ MODULE ]
+3. vim config.m4 [ MODULE ].c
+4.  compile:  phpize ./configure;  ./configure;  make;   sudo make install
+5. sudo vim /etc/php.ini  ==> extension=[ MODULE ].so
 
 /! PHP directories !/
 ext files(.so) :   /usr/lib64/php/modules
@@ -25,9 +25,9 @@ cd ext
 /* dnl is comment tag */
 
 /** 
- *@param <MODULE> create "enable-<MODULE>"
- *@param <TIPS> show when makefile this
- *@param <OPTION> it's an option when user input ./configurehelp 
+ * @arg <MODULE> create "enable-<MODULE>"
+ * @arg <TIPS> show when makefile this
+ * @arg <OPTION> it's an option when user input ./configurehelp 
  */
 PHP_ARG_ENABLE(<MODULE>, <TIPS>, <OPTION>)
 
@@ -67,27 +67,27 @@ PHP_NEW_EXTENSION(<MODULE>, <METHOD_FILE1> <METHOD_FILE2>, $ext_shared)
 /. php_<MODULE>.h ./
 /**
  * initial function when Zend Engine loads this module
- *@return SUCCESS;
+ * @return SUCCESS;
  */
 PHP_MINIT_FUNCTION(<MODULE>);
 
 /**
  * initial function when use this module. e.g. when use session.start() in PHP,
  * Module session will run PHP_MINIT_FUNCTION(session);
- *@return SUCCESS;
+ * @return SUCCESS;
  */
 PHP_RINIT_FUNCTION(<MODULE>);
 
 /**
  * initial function when finish PHP script
- *@return SUCCESS; 
+ * @return SUCCESS; 
  */
 PHP_RSHUTDOWN_FUNCTION(<MODULE>);
 
 /**
  * Zend Engine'll load it before shutdown, and then close core child system
  * e.g. Apache remove PHP modules
- *@return SUCCESS; 
+ * @return SUCCESS; 
  */
 PHP_MSHUTDOWN_FUNCTION(<MODULE>);
 
@@ -176,9 +176,9 @@ const zend_function_entry <MODULE>_functions[] = {
 	/**
 	 * PHP METHOD
 	 * use PHP_METHOD(<CLASS>, <METHOD>) to write code
-     *@param ZEND_ACC_CTOR   :  a constructor function
-	 *@param ZEND_ACC_DTOR   :  a de-constructor function
-	 *@param ZEND_ACC_PUBLIC :  the privilege is public
+     * @arg ZEND_ACC_CTOR   :  a constructor function
+	 * @arg ZEND_ACC_DTOR   :  a de-constructor function
+	 * @arg ZEND_ACC_PUBLIC :  the privilege is public
 	 */
 	PHP_ME(<CLASS>, __construct, arg_construct, ZEND_ACC_CTOR|ZEND_ACC_PUBLIC)
 	PHP_ME(<CLASS>, clone, NULL, ZEND_ACC_PUBLIC)

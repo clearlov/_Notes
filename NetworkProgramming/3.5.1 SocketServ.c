@@ -16,7 +16,7 @@ i4.sin_port = htons(SERV_LISTEN_PORT);  // consult Little Endian and Big Endian
 // i4.sin_addr.s_addr = inet_addr("127.0.0.1");
 inet_pton(AF_INET, "127.0.0.1", &i4.sin_addr); 
 vDebug("bind()",
-    -1 == bind(listenfd, (const struct sockaddr*)&i4, sizeof(i4))
+    bind(listenfd, (const struct sockaddr*)&i4, sizeof(i4))
 );
 
 
@@ -55,12 +55,13 @@ vDebug("listen()",
     listen(listenfd, SERV_LISTEN_QUEUES)
 );
 
-
+ssize_t n;
 pid_t pid;
 struct sockaddr client_addr;
 int connfd;
 char recvbuf[SERV_BUF_BYTES + 1], buf[SERV_BUF_BYTES + 1];
-
+struct Args Args;
+struct Results Results;
 for(;;){
     /**
      * back to for(;;) on errno==EINTR to restart it
@@ -79,12 +80,30 @@ for(;;){
         vDebug("close(listenfd)",
             close(listenfd)    // child closes listening socket
         );
-        if( read(connfd, recvbuf, SERV_BUF_BYTES) > 0)
-            snprintf(buf, SERV_BUF_BYTES, "Lef Well Says: %s", recvbuf);
+        /*
+        if( read(connfd, recvbuf, SERV_BUF_BYTES) == 0)
+            snprintf(buf, SERV_BUF_BYTES, "Client: %s", recvbuf);
         else
-            snprintf(buf, SERV_BUF_BYTES, "Hello, Lef Well!");
+            snprintf(buf, SERV_BUF_BYTES, "Recv Nothing From Client!");
         vDebug("write()",
             write(connfd, buf, strlen(buf))
+        );
+        */
+        
+        if( (n=read(connfd, &Args, sizeof(Args))) > 0){
+            Results.sum = Args.arg1 + Args.arg2;
+            printf("Client: %ld %ld; n=read()=%d ", Args.arg1, Args.arg2, n);
+            printf("Return:%ld\n", Results.sum);
+        } else {
+            Results.sum = -999999;
+            printf("Recv Nothing From Client! Return:%ld\n", Results,sum);
+        }
+        
+        /**
+         * @todo errno:9(Bad file descriptor)
+         */
+        vDebug("Serv write()",
+            write(listenfd, &Results, sizeof(Results))
         );
         
         /**

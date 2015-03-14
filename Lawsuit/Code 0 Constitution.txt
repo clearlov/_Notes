@@ -1,3 +1,31 @@
+|+ Doc maker +|
+/**
+ * @var   --> @field  @constant  @define
+ * @arg   --> @argument/@param
+ * @return  --> @returns
+ * @todo
+ * @link   --> @tutorial
+ * @author
+ * @version
+ * @example
+ * @discuss  --> @remind
+ */
+|[
+int fart = 5;               // @var
+#define profound 100        // @var  --> @define
+const int markdown = 10;    // @var  --> @constant
+
+enum fuzzy{
+    PERHAPS,    // @var   --> @constant
+};
+union recipe{
+    size_t cuisine;         // @var  --> @field
+};
+
+
+
+]|
+
 |+ Use prefix form (++i/--i) rather than (i++/i--) +|
 |[
 const char * suck = "sucker";

@@ -1,10 +1,10 @@
 |~ Row-Level Lock(InnoDB/BDB) ~|
 /**
- * @param $transaction_characteristic
+ * @arg $transaction_characteristic
  *  WITH CONSITENT SNAPSHOT
  *  READ WRITE
  *  READ ONLY
- * @remind if error, please check if the table is MyISAM
+ * @discuss if error, please check if the table is MyISAM
  */
 db> set autocommit = {0|1} 
 db> start transaction [$transaction_characteristic];    |   begin;
@@ -73,7 +73,7 @@ ERROR 1213 (40001): Deadlock found when trying to get lock;
 
 |~ Table-Level Lock(MyISAM) ~|
 /**
- * @param $lock_type
+ * @arg $lock_type
  *  READ [LOCAL]                         select
  *   prohibit write in this table
  *   prohibit read/write in other tables, 

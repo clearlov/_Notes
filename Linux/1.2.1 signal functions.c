@@ -68,11 +68,11 @@ struct sigaction {
 
 /**
  * Examine and change a signal action
- * @argument int signo specifies the signal and can be any valid signal except
+ * @arg int signo specifies the signal and can be any valid signal except
  *  SIGKILL and SIGSTOP.
- * @argument const struct sigaction *act if non-NULL, the new action for signal 
+ * @arg const struct sigaction *act if non-NULL, the new action for signal 
  *  signo is installed from act
- * @argument struct sigaction *old_act if non-NULL, the previous action is saved
+ * @arg struct sigaction *old_act if non-NULL, the previous action is saved
  *  in old_act
  */
 int sigaction(int signo, 
@@ -96,14 +96,14 @@ int sigaction(int signo,
  */
 pid_t wait(int *status_ptr);
 /**
- * @argument pid_t pid 
+ * @arg pid_t pid 
  *  >0  it specifies the pid of a child process for which status is requested
  *  0  status is requested for any child process whose process group ID is equal to that of the calling process 
  *  -1  status is requested for any child process. In this respect, waitpid() is
  *      then equivalent to wait().
  *  <-1 status is requested for any child process whose process group ID is equal to the absolute value of pid.
- * @argument int *status_ptr a value-result
- * @argument int opt bitwise-inclusive OR of zero or defined in the <sys/wait.h>
+ * @arg int *status_ptr a value-result
+ * @arg int opt bitwise-inclusive OR of zero or defined in the <sys/wait.h>
  *  WNOHANG waitpid() not block (suspend execution of the calling thread) if
  *      there're runing children that have not yet terminated
  *  WCONTINUED

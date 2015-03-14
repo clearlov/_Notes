@@ -6,11 +6,11 @@ $StealthMode->steal = 'do good by stealth';
 |+ Use reflection +|
 /**
  * @link http://php.net/manual/en/class.reflectionexception.php
- *@argument string|object
+ * @arg string|object
  */
 $reflect = new ReflectionObject($StealthMode); // new ReflectionObject('Stealth')
 /**
- *@return object array
+ * @return object array
         getName() / isPublic() / isProtected() / isStatic()
  */
 $properties = $reflect->getProperties();

@@ -1,3 +1,31 @@
+Valgrind可以检测内存泄漏和内存违例，还可以分析cache的使用等。
+
+
+|~ ~|
+sh$ valgrind --tool=memcheck ./a.out
+|[
+void del(void *p){
+    char * condom = (char *) p;    // cast any-type point p to (char *)
+    delete [] condom;    
+};
+
+for(int i=0;i < 50; i++){
+    char * aspic = new char[1024 * 1000 * 100];
+}
+]|
+
+|[
+==2326== HEAP SUMMARY:
+==2326== in use at exit: 5,120,000,000 bytes in 50 blocks
+==2326== total heap usage: 50 allocs, 0 frees, 5,120,000,000 bytes allocated
+==4785== LEAK SUMMARY:
+==4785==    definitely lost: 1,638,400,000 bytes in 16 blocks
+==4785==    indirectly lost: 0 bytes in 0 blocks
+==4785==      possibly lost: 3,481,600,000 bytes in 34 blocks
+==4785==    still reachable: 0 bytes in 0 blocks
+==4785==         suppressed: 0 bytes in 0 blocks
+]|
+
 sh$ g++ -std=c++11 a_compiler.cpp -o a_compiler
 sh$ valgrind 
 

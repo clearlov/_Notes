@@ -1,10 +1,10 @@
 /**
- * @argument lo localhost
- * @argument -nn display in type IP.port
+ * @arg lo localhost
+ * @arg -nn display in type IP.port
  */
 sh$ sudo tcpdump -i lo -nn
 /**
- * @param Flags
+ * @arg Flags
  *  S SYN Synchronize[ˈsɪŋkrəˌnaɪz]
  *  F FIN Finish
  *  P PUSH

@@ -1,5 +1,5 @@
 
-int n, listenfd;
+int listenfd;
 
 
 vDebug("socket()",
@@ -22,13 +22,20 @@ vDebug("connect()",
 
 
 char sendbuf[SERV_BUF_BYTES], char recvbuf[SERV_BUF_BYTES];
-
+struct Args Args;
+struct Results Results;
 if( NULL != fgets(sendbuf, SERV_BUF_BYTES, stdin) ){
+    if(2 != sscanf(sendbuf, "%ld %ld", &Args.arg1, &Args.arg2)){
+        printf("invalid input \%ld \%ld:%s", sendbuf);
+        continue;
+    }
+    
     /**
      * First write() to elicit[ɪˈlɪsɪt] the RST
      */
     vDebug("write()",
-        write(listenfd, sendbuf, strlen(sendbuf))
+        //write(listenfd, sendbuf, strlen(sendbuf))
+        write(listenfd, &Args, sizeof(Args))
     );
     sleep(3);
     /**
@@ -41,14 +48,18 @@ if( NULL != fgets(sendbuf, SERV_BUF_BYTES, stdin) ){
 }
 
 
+ssize_t n;
+/*
 if( (n = read(listenfd, recvbuf, SERV_BUF_BYTES)) > 0 ){
-    recvbuf[n] = 0;     /* null terminate the last char of recvbuf */
+    recvbuf[n] = 0;     // null terminate the last char of recvbuf
     if(EOF == fputs(recvbuf, stdout)){
         printf("fputs() errno:%d(%s)\n", errno, strerror(errno));
         exit(EXIT_FAILURE);
     }
 }
-
+*/
+if((n= read(listenfd, &Results, sizeof(Results))) > 0)
+    printf("Serv: %ld; n=read()=%d", Results.sum, n);
 
 
 
