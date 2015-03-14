@@ -22,10 +22,30 @@ void cosmetics(){   // a function returns void
 };
 extern void masquerade(int masque); // a function returns void
 extern const int cosmetic();        // a function returns const int
-void (*raw())(){        // a function return a ptr to void()
+
+/**
+ * A func returns a ptr to void()
+ * void (* ((*)()))()    --> raw is a func-ptr, ,so raw() ==>  (*)()
+ */
+void (*raw())(){
     printf("raw");
     return cosmetics;       // void()
 }
+
+void (* (*rawness)() )() = raw;   //  ()()  function
+
+typedef void (*VoidFunc)();
+VoidFunc raw(){
+    printf("raw");
+    return cosmetics;       // void()
+}
+
+VoidFunc (*rawness)() = raw;
+VoidFunc diarrhoea = raw;
+void (*   disrrhoea   )() = raw;
+void (*  (*rawness)() )() = raw;
+
+
 
 cosmetics();    // it works
 (*cosmetics)(); // it works too 

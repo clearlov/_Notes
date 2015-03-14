@@ -1,8 +1,0 @@
-Modify php files from dos to unix/linux
-sh# find . -name "*.php" | xargs dos2unix
-
-
-
-/. PHP Fatal error: Class 'mysqli' not found in /h ./
-/*  find / -name "php.ini" */
-# vim /etc/php.ini

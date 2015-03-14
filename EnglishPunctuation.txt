@@ -1,28 +1,30 @@
-/* 
- * add a backtick ` to indicate the importance
- * [ Ctrl+x ] both click Ctrl and x
- * [ :! or :~! ] input ! after inputing :
- * n[] or n~[]  normally n is a number
- * n * []  n times inputs, e.g. 3 * [ > ]  is [ >>> ]
- * [?] it's an option, normally the selection will list below
- * [?=memcheck]  it's an optioin, the default value is memcheck
- * [?=\^preg]  \d+  
- * [ A ?> B ?> C ]     if A return A; elseif B return B; elseif C return C;
- * <UPPER_CASE> it's a parameter
- */
-
+|~ ~|
+[] optional
+|[
+    sh$ git log [--online] [--decorate] [--graph]       /* 6 kinds of choice */
+]|
+{} opt one of inside
+<> repeatable, at least one times
+|[
+    db> set autocommit = {0|1} 
+    db> start transaction [$transaction_characteristic];    |   begin;
+    db> <...; commit;>                  /* it's repeatable, do one or more than one times */
+    db> [...; rollback;]
+]|
+ 
+ 
 |~ Commentory ~|
 
 ->> concur:  returns ->> by-product
-	e.g. var arr=[1,2,3]; arr.pop();  // 3 ->> arr = [1,2]
+    e.g. var arr=[1,2,3]; arr.pop();  // 3 ->> arr = [1,2]
 
 |~ range ~|
-[1,99]  	==>  1 <= x <= 99
-[1,]     	==>  1 <= x
-[1,50,99]   ==>  1 <= x <=99, 	  suggest x = 50
-[1,50+,99]   ==>  1 <= x <=99, 	  suggest x = 50+
-[,1+,99]		==>  MIN <  x <= 99,  MIN < 1, and suggest MIN = 1+
-[1,99,]		==>  1 <= x < MAX,    MAX >99, and suggest MAX = 99
+[1,99]      ==>  1 <= x <= 99
+[1,]        ==>  1 <= x
+[1,50,99]   ==>  1 <= x <=99,   suggest x = 50
+[1,50+,99]  ==>  1 <= x <=99,   suggest x = 50+
+[,1+,99]    ==>  MIN <  x <= 99,  MIN < 1, and suggest MIN = 1+
+[1,99,]     ==>  1 <= x < MAX,    MAX >99, and suggest MAX = 99
 
 
 

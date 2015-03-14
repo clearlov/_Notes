@@ -1,3 +1,37 @@
+/**
+ * #define $var_nm $val
+ */
+ 
+/**
+ * typedef $type_nm $alias_type_nm;
+ */
+
+const char * String(){return "Lef Well";}
+typedef const char * Str ();
+Str String{return "Lef Well";} 
+
+
+void (*signal(int signo, void(*func)(int)))(int){}
+typedef void Sig (int);
+Sig (*signal(int signo, Sig * func)){}
+typedef void (*Sig) (int);
+Sig signal(int signo, Sig func){}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 template <typename dash, typename pound>
 struct Punctuate{

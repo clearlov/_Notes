@@ -28,10 +28,10 @@ enum signo{
 /**
  * Unix signals are normally not queued
  * Simplify:
- *  #define void Sig(int);
- *  Sig * signal(int signo, Sig *func)
- *  #define void (*Sig)(int);
- *  Sig signal(int signo, Sig func);
+ *  typedef void Sig(int);
+ *  Sig * signal(int signo, Sig *func){}
+ *  typedef void (*Sig)(int);
+ *  Sig signal(int signo, Sig func){}
  */
 #include <signal.h>
 void (*signal(int signo, void(*func)(int)))(int){

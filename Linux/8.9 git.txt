@@ -1,0 +1,161 @@
+/**
+ * initialized empty git respository, to create a .git file under the tempotory
+ * create a `master` branch as default
+ */
+
+sh$ git reset $log_history     restore to history edition
+sh$ git reset --
+
+
+
+
+
+|~ INIT ~|
+|+ .gitignore +|
+/   directory
+*   widecard
+?   single char widecard
+[]  or
+!   not include
+|[
+
+]|
+|- add global configure -|
+/**
+ * ~/.gitconfig
+ */
+sh$ git config --global user.name "LefWell"
+sh$ git config --global user.email "xxxxxx@xxxx.com"
+/**
+ * [ CWD ]/.git/config
+ */
+sh$ git config --local user.name "LefWell"
+sh$ git config --local user.email "xxxxxx@xxxx.com"
+
+
+
+
+|- Generate Keygen -|
+sh$ rm -f ~/.ssh/id_rsa*
+sh$ ssh-keygen -t rsa -C "xxx@xxx.com"
+sh$ cat ~/.ssh/id_rsa.pub
+
+
+
+sh$ vim ~/.ssh/config
+|[
+#GitLab
+Host gitlab
+HostName gitlab.com
+User think
+IdentityFile ~/.ssh/id_gitlab
+
+#GitHub
+Host github
+HostName github.com
+User think
+IdentityFile ~/.ssh/id_github
+]|
+
+sh$ git init
+sh$ git status -s
+sh$ git add ....
+sh$ git commit -m "COMMENT"
+/**
+ * list depositories of remote 
+ * -v     show the git links, you might see
+ */
+sh$ git remote -v
+|[
+#  origin  git@xxxxxx/xxx.git (fetch)    // a git addr. for fetch
+#  origin  git@xxxxxx/xxx.git (push)     // a git addr. for push
+]|
+
+/** 
+ * add a remote depository
+ * create a depository on web, you'll get a git link
+ * something like  `git@github.com:vince/well.git`
+ * git remote add git@github.com:vince/well.git
+ */
+sh$ git remote add origin git@.......git
+sh$ git clone git@c......git
+
+
+
+
+/** 
+ * List branches of local, asterisk indicates the current branch
+ *  @param $opt
+ *  -a list all branches (local + remote)
+ *  -r list remote branches
+ */
+sh$ git branch [$opt]
+sh$ git branch $branch          /* create a branch for local */
+sh$ git checkout $branch        /* switch to branch */
+sh$ git checkout -b $branch     /* create a branch and switch to it */
+sh$ git branch -d $branch       /* delete a branch */
+sh$ git merge $branch           /* merge a branch */
+sh$ git status -s
+|[
+#   
+#  ?? index.php       // ??  means it hasn't been `git add` yet
+#  A  README.md       // A   means it has been `git add`
+#  M  glacial.html    // M   indicates the modified file after last `git push`
+#  D  hello.php       // D   indicates the deleted file after last `git push`
+#  AM  glacier.cpp    // AM  some modify happened after `git add`, when you
+#                     //         commit, it'll commit last `git add` version. 
+#  MM glaciation.html // MM  after commit a modified file and before push it,
+#                     //         you modify it once again
+]|
+
+
+sh$ git diff    /* list the changed lines detailly */
+|[
+#  +++  README.md
+#  ---  hello.php
+# 
+]|
+
+sh$ git diff --cached   /* list the changed lines that cached by `git add` */
+sh$ git diff HEAD       /* list the  the changes */
+sh$ git diff --stat     /* list the stat, you'll see: */
+|[
+# 1 files changed, 1 insertions(+), 0 deletions(-)
+]|
+
+
+sh$ git add [$paths] /* add files into cache */
+sh$ git rm $file /* remove files from cache and disk */
+sh$ git rm --cached $file    /* only remove files from cache */
+sh$ git mv $file_old $file_new  /* rename in disk */ 
+
+sh$ git commit -m "$comments"    /* -m "Comments" */
+sh$ git commit -am "$comments"   /* automaticlly cache */
+
+sh$ git push [$remote_host=origin] [$local_branch=master]:[$remote_branch]
+/**
+ * git pull $remote_branch $local_branch
+ *  @param $branch NULL on all branches;
+ */
+sh$ git fetch [$remote_host=origin] [$branch]
+/* git log -p master..origin/master */
+sh$ git log -p $branch..$remote_host/$romote_branch
+/* git merge origin/master */
+sh$ git merge [$remote_host=origin]/[$branch=master]
+
+/**
+ * pull remote branch and combine to local branch
+ *  git pull --rebase [$remote_host=origin] [$local_branch=master]:[$remote_branch]
+ */
+sh$ git fetch
+
+
+sh$ git tag -a $version /* add a tag to code when the version is stable */
+
+/**
+ * show log
+ * use :q or :G to quit or to the end
+ */
+sh$ git log [--online] [--decorate] [--graph]
+
+

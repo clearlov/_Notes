@@ -1,53 +1,9 @@
-|~ Character set ~|
-_ci        char set insensible
-_cs        char set sensible
-_bin    compared with encoding
-
-|+ +|
-– character_set_client：客户端来源数据使用的字符集
-– character_set_connection：连接层字符集
-– character_set_server：默认的内部操作字符集
-    PHP mysqli_set_charset ?>  
-– character_set_database：当前选中数据库的默认字符集
-– character_set_system：系统元数据(字段名等)字符集
-– character_set_results：查询结果字符集
-
-character_set_client   | -- character_set_connection --> 
-|     [ CLIENT ]       |       [ MySQL SERVER ]        |
-character_set_results  | <-- 
-
-|+ +|
-db> show character set;   /* SHOW COLLATION;  */
-db> show variables like 'character%';
-db> show variables like 'collation%';
-
-|~ Basic ~|
 LIMIT row_count
 LIMIT offset, row_count
 LIMIT row_cout OFFSET offset
-WHERE constraint_1
+WHERE constraint
 
-
-|~ grant privileges ~|
-db> grant [ PRIVILEGES ] on [ DB ].[ TB ] to [ USERNAME ]@[ HOST =localhost] identified by "[ PASSWD ]"
-        [ PRIVILEGES ] all privileges | (select,delete,update,create,drop,rule,insert)
-        [ SELECT,DELETE .... ] one or some of all privileges
-        <DB> <TB> : you can use * to mean all
-        <HOST> :  normally it's localhost
-db> flush privileges;
-|- drop user -|
-    db> drop user <USERNAME>@<HOST>
-|- Open 3306 for remote ip -|
-/**
- * Via Grant Privileges
- * % indicates all ip 
- */
-db> grant all privileges on *.* to root@'%' identified by "[ PASSWD ]"  with grant option;
-db> grant all privileges on *.* to lef@'%' identified by "lef"  with grant option;
-/**
- * Via Update
- */
-db> use mysql; update user set host='%' where user='root';
+|~ Select ~|
 
 |+ Alias +|
 db> SELECT 
@@ -56,13 +12,14 @@ db> SELECT
     login_access lo     /* tb alias */
     WHERE 
     lo.id = 100     /* ==>  login_access.i = 100 */
-|+ having +|
-db> select * from tb where [constraint_1] group by xx order by xx
-    having [constraint_2]
-    limit [count]
-|+ join +|    
-db> select * from a join b on a.id = b.id
-     left join c on c.time = a.time;
+|- Having -|
+db> select * from tb where $constraint1 group by xx order by xx
+    having $constraint1
+    limit $row_count
+|- join -|    
+db> select * from $tb1 
+    join $tb2 on $tb1.$fld1_1 = $tb2.$fld2_1
+    left join $tb3 on $tb3.$fld3_1 = $tb1.$fld1_2;
     
 |+ group by +|
 |- Q: calculate the population of each province -|
@@ -101,6 +58,38 @@ db> select * from a join b on a.id = b.id
  * MySQL doesn't yet support 'LIMIT & IN/ALL/ANY/SOME subquery'
  * e.g. Error:  select flds from tb where id in (select id from tb limit 9);
  */
-db> select flds from tb where id in (select id from tb);
-db> select flds from tb where id in (select t.id from (select id from tb limit 9) as t);
+db> select $flds from $tb where $fld in (select $fld from $tb);
+db> select $flds from $tb where id in 
+    (select t.id from 
+        (select id from tb limit 9) as t
+    );
     
+
+|~ Insert ~|
+db> insert [low_priority | delayed | high_priority] [ignore]
+    [into] $tb
+    [partition $partion_nm]
+    +--------------------------------------------------------------------------+
+    | ($flds)                          |                                       | 
+    | values                           |  set $fld1=$val1, $flds2=$val2...     |
+    | ($vals1)[, (vals2)]...           |                                       |
+    +--------------------------------------------------------------------------+
+    [on duplicate key update ..]
+db> insert [low_priority | delayed | high_priority] [ignore]
+    [into] $tb
+    [partition $partition_nm]
+    ($flds)
+    select $flds_tb2 from $tb2
+    
+db> INSERT INTO db1.tb1 (title, time) SELECT * FROM db2.tb2 WHERE 1    
+
+|~ Delete ~|
+db> delete [LOW_PRIORITY] [QUICK] [IGNORE] 
+    from $tb[.*] [, tb2[.*]] ...
+    [using $tb_ref]
+    [where $constraint]
+    [order by $fld1,$fld2...]
+    [limit $row_count]
+
+db> DELETE t1, t2, FROM t1 INNER JOIN t2 INNER JOIN t3
+    WHERE t1.id=t2.id AND t2.id=t3.id;

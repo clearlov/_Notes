@@ -1,53 +1,54 @@
-|+ DINSTINCT and COUNT(DINSTINCT fld) +|
-db> select distinct fld from tb;    /* dinstict */
-db> select count(dinstinct fld) from tbl;
-|+ EXISTS(bool) +|
-db> select * from tb where exists (
-        select * from tb where [CONSTRAINT]         
+|+ Dinstinct and count(dinstinct fld) +|
+db> select distinct $fld from $tb;    /* dinstict */
+db> select count(dinstinct $fld) from $tb;
+|+ Exists(bool) +|
+db> select * from $tb where exists (
+        select * from $tb where $constraint        
     )
 |+ <ANY()  >ALL() +|
-db> select * from tb where id<ANY(select id from tb);
-db> select * from tb where id>ALL(select id from tb);
+db> select * from $tb where $id<ANY(select $id from $tb);
+db> select * from $tb where $id>ALL(select $id from $tb);
 
 |~ JOIN ~|
 |[
-tb_a:
+tb1:
     id  1   2   3   4  5
     nm  V   I   N   C   E
-tb_b:
+tb2:
     id  1   3   5   7
     nm  W   E   L   L
-tb_c:
+tb3:
     id  0   2   4   6   8
     bid 1   3   5   7   9
     nm  M   A   R   G   E
 ]|
-|+ (INNER) JOIN = intersection ∩ +|
+|+ (Inner) join = intersection ∩ +|
 /**
- * [USING(id)] is same as [ON tb_c.id = tb_a.id], but the list will show one id
+ * [USING(id)] is same as [ON tb3.id = tb1.id], but the list will show one id
  */
-db> SELECT * FROM tb_c
-     JOIN (tb_a) USING(id)              // tb_c ∩ tb_a = tb_c.id = 2,4
-     JOIN (tb_b) ON (tb_c.bid = tb_b.id) // tb_c ∩ tb_a ∩ tb_b = tb_c.id = 0,2,4,6
-     WHERE tb_c.id > 3;                 // tb_c.id = 4,6,8
+db> SELECT * FROM tb3
+     JOIN (tb1) USING(id)               // tb3 ∩ tb1 = tb3.id = 2,4
+     JOIN (tb2) ON (tb3.bid = tb2.id)   // tb3 ∩ tb2 = tb3.id = 0,2,4,6
+     WHERE tb3.id > 3;                  // tb3.id = 4,6,8
+                                        // t3.id = 2,4 ∩ 0,2,4,6 ∩ 4,6,8 = 4
 |[
 id  bid  nm  nm1  id1  nm2
 4    5    R   C    5    L
 ]|
-|+ CROSS JOIN +|
+|+ Cross join +|
 /**
  * Cartesian[kɑ:rˈti:ziən] Product: TB1xTB2
  */
-db> SELECT flds FROM tb_a CROSS JOIN tb_b;  // 25 results
+db> SELECT flds FROM tb1 CROSS JOIN tb2;  // 25 results
 
 
-|+ LEFT (OUT) JOIN +|
+|+ Left (out) join +|
 /**
  * Base on left table(list it all), 
  */
-db> SELECT * FROM tb_c
-     LEFT JOIN tb_a USING(id)  // tb_c ∪ tb_a∈tb_c ∩ tb_a; tb_c ∪ tb_a.id = 2I,4C
-     LEFT JOIN tb_b ON tb_c.bid = tb_b.id   // tb_c ∪ tb_b.id = 1W,3E,5L,7L
+db> SELECT * FROM tb3
+     LEFT JOIN tb1 USING(id)  // tb3 ∪ tb1∈tb3 ∩ tb1; tb3 ∪ tb1.id = 2I,4C
+     LEFT JOIN tb2 ON tb3.bid = tb2.id   // tb3 ∪ tb2.id = 1W,3E,5L,7L
 |[
 id  bid  nm  nm1  id1  nm2
 2    3    A    I    3    E

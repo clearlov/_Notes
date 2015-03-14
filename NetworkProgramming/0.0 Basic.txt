@@ -1,6 +1,6 @@
 1 nibble = 4 bits
 1 byte = 2 nibble = 8 bits
-1 word = DataBus = 16(in-16bit-sys)    32(in-32bit-sys)   64(in-64bit-sys)
+1 word = DataBus = 64(in-64bit-sys) 32(in-32bit-sys) 16(in-16bit-sys)       
 
 |~ Endianness ~|
 /**
@@ -19,10 +19,9 @@ bool is_be =  1 ==  reinterpret_cast<int>(*interpreter);     // 1 or 2
  * Network Endianness is always BE. So we need to convert host endianness into BE
  * [ 00000000 | 00000000 | 00000000 | 00000000 ]
  */
-hton?: convert unsigned ? from host endianness(LE or BE) to network endianness (BE)
+hton{s|l}: convert unsigned short/long from host endianness(LE or BE) to network endianness (BE)
 uint16_t htons()   /    uint32_t htonl()
-ntoh?: convert unsigned ? from BE to host endianness (LE or BE)
-ntohs / ntohl
+ntoh{s|l}: convert unsigned short/long from BE to host endianness (LE or BE)
 
 |~ Byte Manipulation[mə'nɪpjəleɪʃn] ~|
 #include <string.h>
