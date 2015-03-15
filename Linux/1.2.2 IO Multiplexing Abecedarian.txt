@@ -1,0 +1,99 @@
+|~ Blocking I/O ~|
+/**
+ * <C> Kernel Cache
+ * Process is blocked in the entire time from when it calls recvfrom() until 
+ *  it returs
+ * initiate      ----blocked--->      complete
+ */
+|[
++------------------------------------------------------------------------------+
+| streamA                            kernel                            streamB |
++------------------------------------------------------------------------------+
+| recvfrom()  ------->                 |    <---                        dataIn |  
+|-------------------------------------<C>--------------------------------------|
+| blocking recvfrom() if <C> is empty  |    blocking dataIn if <C> is full     |
+|            wait for data             |                                       |     
+|-------------------------------------<C>--------------------------------------|
+| copy datagram from <C> to recvfrom() |        copy datagram into <C>         |
+|                   OK            <--- |                                       |
++------------------------------------------------------------------------------+
+]|
+
+|~ Nonblocking I/O ~|
+/**
+ * Polling: a loop calling recvfrom() on a nonblocking descriptor
+ * EWOULDBLOCK?...EWOULDBLOCK?  ----blocked---> complete
+ */
+|[
++------------------------------------------------------------------------------+
+| streamA                              |                                kernel |
++------------------------------------------------------------------------------+
+| recvfrom()                           | <--EWOULDBLOCK--  if <C> is empty     |
+| while(true){receiv();}               |                 ...                   |
+| receivfrom()                         | <--EWOULDBLOCK--  if <C> is empty     |
+|--------------------------------------+---------------------------------------|
+|                                      |    if datagram ready, copy datagram   |
+|                                      | <--OK--          copy finish          |
++------------------------------------------------------------------------------+
+]|
+
+|~ I/O Multiplexing ~|
+/**
+ * select() is readable? ---blocked--->ready;  initiate---blocked--->complete
+ */
+|[
++------------------------------------------------------------------------------+
+| streamA                              |                                kernel |
++------------------------------------------------------------------------------+
+| select()                             |  
+|       block in select()              |      if <C> empty, no datagram ready  |
+|                                      | <--readable--    if datagram ready    |
+|--------------------------------------+---------------------------------------|
+| recvfrom(block)                      |                         copy datagram |
+|                                      | <--OK--                   copy finish |
++------------------------------------------------------------------------------+
+]|
+
+|~ Signal-Driven I/O ~|
+/**
+ * Use signal SIGIO to notify the descriptor is ready
+ * deliver SIGIO;  initiate ---blocked--->complete
+ */
+|[
++------------------------------------------------------------------------------+
+| streamA                              |                                kernel |
++------------------------------------------------------------------------------+
+| establish SIGIO                      |                                       |
+|       signal handler                 |                                       |
+|       signal handler                 | <--deliver SIGIO--      datagram read |
+|--------------------------------------+---------------------------------------|
+| recvfrom(block)                      |                         copy datagram |
+|                                      | <--OK--                   copy finish |
++------------------------------------------------------------------------------+
+]|
+
+|~ Asynchronous[æ'sɪŋkrənəs] I/O ~|
+/**
+ * Use signal SIGIO to notify the descriptor is ready
+ * Synchronous I/O: block the process until I/O operations completes
+ * Asynchronous I/O: not
+ */
+|[
++------------------------------------------------------------------------------+
+| streamA                              |                                kernel |
++------------------------------------------------------------------------------+
+| aio_read()                           |  no datagram ready, repeat aio_read() |
+|--------------------------------------+---------------------------------------|
+|                                      |                        datagram ready |
+|                                      |                         copy datagram |
+|                                      | <--deliver signal--       copy finish |
++------------------------------------------------------------------------------+
+]|
+
+
+
+
+
+
+
+

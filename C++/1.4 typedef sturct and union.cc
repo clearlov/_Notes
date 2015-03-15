@@ -20,19 +20,6 @@ Sig signal(int signo, Sig func){}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 template <typename dash, typename pound>
 struct Punctuate{
     pound operator()(typename hyphen) const{  // functor, not ptr

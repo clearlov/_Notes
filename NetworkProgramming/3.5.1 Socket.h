@@ -29,11 +29,11 @@
  * @discuss long is diff in diff host, so we can't pass value by long. Passing 
  *  binary struct instead.
  */
-struct Args {
+struct args {
     long arg1;
     long arg2;
 };
-struct Results{
+struct results{
     long sum;
 };
 

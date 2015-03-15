@@ -147,11 +147,29 @@ int close(int listenfd)
 
 
 
-
-recv() / send()
+/**
+ * @arg int flags 
+ *  MSG_OOB out-of-band data
+ *  MSG_PEEK
+ *  MSG_WAITALL
+ */
+ssize_t recv(int listenfd, void *buf, size_t len, int flags)
+/**
+ * Receive a msg. from a connection-mode or connectionless-mode socket. It is 
+ *  normally used with connectionless-mode sockets because it permits the 
+ *  application to retrieve the source address of received data.
+ * @return >=0 on success, bytes received; -1 on error
+ */
+ssize_t recvfrom(int listenfd, void *buf, size_t len, int flags,
+                 struct sockaddr *serv_addr, socklen_t addrlen)
+                 
+                 
+send()
 readv() / writev()
 recvmsg() / sendmsg()
-recvfrom() / sendto()
+
+
+sendto()
 
 
 /**

@@ -60,8 +60,8 @@ pid_t pid;
 struct sockaddr client_addr;
 int connfd;
 char recvbuf[SERV_BUF_BYTES + 1], buf[SERV_BUF_BYTES + 1];
-struct Args Args;
-struct Results Results;
+struct args args;
+struct results results;
 for(;;){
     /**
      * back to for(;;) on errno==EINTR to restart it
@@ -90,20 +90,20 @@ for(;;){
         );
         */
         
-        if( (n=read(connfd, &Args, sizeof(Args))) > 0){
-            Results.sum = Args.arg1 + Args.arg2;
-            printf("Client: %ld %ld; n=read()=%d ", Args.arg1, Args.arg2, n);
-            printf("Return:%ld\n", Results.sum);
+        if( (n=read(connfd, &args, sizeof(args))) > 0){
+            results.sum = args.arg1 + args.arg2;
+            printf("Client: %ld %ld; n=read()=%d ", args.arg1, args.arg2, n);
+            printf("Return:%ld\n", results.sum);
         } else {
-            Results.sum = -999999;
-            printf("Recv Nothing From Client! Return:%ld\n", Results,sum);
+            results.sum = -999999;
+            printf("Recv Nothing From Client! Return:%ld\n", results,sum);
         }
         
         /**
          * @todo errno:9(Bad file descriptor)
          */
         vDebug("Serv write()",
-            write(listenfd, &Results, sizeof(Results))
+            write(listenfd, &results, sizeof(results))
         );
         
         /**

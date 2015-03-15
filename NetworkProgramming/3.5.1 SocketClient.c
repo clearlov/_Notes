@@ -22,10 +22,10 @@ vDebug("connect()",
 
 
 char sendbuf[SERV_BUF_BYTES], char recvbuf[SERV_BUF_BYTES];
-struct Args Args;
-struct Results Results;
+struct args args;
+struct results results;
 if( NULL != fgets(sendbuf, SERV_BUF_BYTES, stdin) ){
-    if(2 != sscanf(sendbuf, "%ld %ld", &Args.arg1, &Args.arg2)){
+    if(2 != sscanf(sendbuf, "%ld %ld", &args.arg1, &args.arg2)){
         printf("invalid input \%ld \%ld:%s", sendbuf);
         continue;
     }
@@ -35,7 +35,7 @@ if( NULL != fgets(sendbuf, SERV_BUF_BYTES, stdin) ){
      */
     vDebug("write()",
         //write(listenfd, sendbuf, strlen(sendbuf))
-        write(listenfd, &Args, sizeof(Args))
+        write(listenfd, &args, sizeof(args))
     );
     sleep(3);
     /**
@@ -58,8 +58,8 @@ if( (n = read(listenfd, recvbuf, SERV_BUF_BYTES)) > 0 ){
     }
 }
 */
-if((n= read(listenfd, &Results, sizeof(Results))) > 0)
-    printf("Serv: %ld; n=read()=%d", Results.sum, n);
+if((n= read(listenfd, &results, sizeof(results))) > 0)
+    printf("Serv: %ld; n=read()=%d", results.sum, n);
 
 
 
