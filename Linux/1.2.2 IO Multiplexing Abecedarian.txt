@@ -1,6 +1,6 @@
 |~ Blocking I/O ~|
 /**
- * <C> Kernel Cache
+ * BUF kernel buffer
  * Process is blocked in the entire time from when it calls recvfrom() until 
  *  it returs
  * initiate      ----blocked--->      complete
@@ -10,11 +10,11 @@
 | streamA                            kernel                            streamB |
 +------------------------------------------------------------------------------+
 | recvfrom()  ------->                 |    <---                        dataIn |  
-|-------------------------------------<C>--------------------------------------|
-| blocking recvfrom() if <C> is empty  |    blocking dataIn if <C> is full     |
+|-------------------------------------BUF--------------------------------------|
+| blocking recvfrom() if BUF is empty  |    blocking dataIn if BUF is full     |
 |            wait for data             |                                       |     
-|-------------------------------------<C>--------------------------------------|
-| copy datagram from <C> to recvfrom() |        copy datagram into <C>         |
+|-------------------------------------BUF--------------------------------------|
+| copy datagram from BUF to recvfrom() |        copy datagram into BUF         |
 |                   OK            <--- |                                       |
 +------------------------------------------------------------------------------+
 ]|
@@ -28,9 +28,9 @@
 +------------------------------------------------------------------------------+
 | streamA                              |                                kernel |
 +------------------------------------------------------------------------------+
-| recvfrom()                           | <--EWOULDBLOCK--  if <C> is empty     |
+| recvfrom()                           | <--EWOULDBLOCK--  if BUF is empty     |
 | while(true){receiv();}               |                 ...                   |
-| receivfrom()                         | <--EWOULDBLOCK--  if <C> is empty     |
+| receivfrom()                         | <--EWOULDBLOCK--  if BUF is empty     |
 |--------------------------------------+---------------------------------------|
 |                                      |    if datagram ready, copy datagram   |
 |                                      | <--OK--          copy finish          |
@@ -46,7 +46,7 @@
 | streamA                              |                                kernel |
 +------------------------------------------------------------------------------+
 | select()                             |  
-|       block in select()              |      if <C> empty, no datagram ready  |
+|       block in select()              |      if BUF empty, no datagram ready  |
 |                                      | <--readable--    if datagram ready    |
 |--------------------------------------+---------------------------------------|
 | recvfrom(block)                      |                         copy datagram |

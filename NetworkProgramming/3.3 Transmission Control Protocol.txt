@@ -18,7 +18,8 @@ TCP provides flow control. TCP advertised['ædvətaɪz] window(say the advertise
 TCP and UDP can both be full-duplex[ˈdu:pleks] connection.
 
 /**
- * When the client terminates, it sends a FIN to the server
+ *  FIN the peer process terminates
+ *  RST the peer host has crashed and rebooted
  */
 |[
  * +------------------------------------- -------------------------------------+

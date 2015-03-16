@@ -144,6 +144,15 @@ int accept(int listenfd, struct sockaddr* client_addr, socklen_t addrlen)
 
 
 int close(int listenfd)
+/**
+ * @arg int how
+ *  0 SHUT_RD stop reading data; reject it when further data arrives
+ *  1 SHUT_WR stop writing data;discard any data waiting to be sent;
+ *      stop looking for ACK of data already sent
+ *  2 SHUT_RDWR is equivalent to call shutdown() twice: with SHUT_RD and SHUT_WR
+ */
+int shutdown(int listenfd, int how)
+
 
 
 

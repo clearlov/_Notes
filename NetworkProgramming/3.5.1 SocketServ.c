@@ -59,9 +59,20 @@ ssize_t n;
 pid_t pid;
 struct sockaddr client_addr;
 int connfd;
-char recvbuf[SERV_BUF_BYTES + 1], buf[SERV_BUF_BYTES + 1];
+char recvbuf[SERV_BUF_SIZE + 1], buf[SERV_BUF_SIZE + 1];
 struct args args;
 struct results results;
+/**
+ *
+ */
+fd_set rset, allset;
+int i, clients[FD_SETSIZE];
+for(i=0; i<FD_SETSIZE; ++i)
+    clients[i] = -1;
+FD_ZERO(&allset);
+FD_SET(listenfd, &allset);
+
+
 for(;;){
     /**
      * back to for(;;) on errno==EINTR to restart it
@@ -81,10 +92,10 @@ for(;;){
             close(listenfd)    // child closes listening socket
         );
         /*
-        if( read(connfd, recvbuf, SERV_BUF_BYTES) == 0)
-            snprintf(buf, SERV_BUF_BYTES, "Client: %s", recvbuf);
+        if( read(connfd, recvbuf, SERV_BUF_SIZE) == 0)
+            snprintf(buf, SERV_BUF_SIZE, "Client: %s", recvbuf);
         else
-            snprintf(buf, SERV_BUF_BYTES, "Recv Nothing From Client!");
+            snprintf(buf, SERV_BUF_SIZE, "Recv Nothing From Client!");
         vDebug("write()",
             write(connfd, buf, strlen(buf))
         );
@@ -99,11 +110,8 @@ for(;;){
             printf("Recv Nothing From Client! Return:%ld\n", results,sum);
         }
         
-        /**
-         * @todo errno:9(Bad file descriptor)
-         */
         vDebug("Serv write()",
-            write(listenfd, &results, sizeof(results))
+            write(connfd, &results, sizeof(results))
         );
         
         /**

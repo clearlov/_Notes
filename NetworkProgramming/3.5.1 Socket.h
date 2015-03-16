@@ -20,7 +20,7 @@
 
 // #define SA struct sockaddr
 
-#define SERV_BUF_BYTES 4096 // MAXLINE, buffer size for reads and writes
+#define SERV_BUF_SIZE 4096 // MAXLINE, buffer size for reads and writes
 #define SERV_LISTEN_QUEUES 1024 // LISTENQ 2nd arg. to listen()
 #define SERV_LISTEN_PORT 9877 // any a ephemeral[ɪˈfɛmərəl] port between [5000, 49152]
 
