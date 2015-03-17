@@ -1,19 +1,24 @@
 #include <sys/select.h>
 #include <sys/time.h>
-struct timeval{
-    long tv_sec;
-    long tv_usec;   // microseconds
-};
 /**
- * @discuss fd_set data-type a bit array
+ * fd_set data-type a bit array
+ * @disucss 0,1,2 is preserved for standard input/output/error. And the rest
+ *   add one by one
+ * @example
+ *  fd_set allset; FD_ZERO(&allset);
+ *  FD_SET(fileno(stdin), &allset); FD_SET(listenfd, &allset);
+ *  client1: FD_SET(connfd, &allset);
+ *  client2: FD_SET(connfd, &allset);
+ *  allset = [0=>fileno(stdin), 1, 2, 3=>serv.listenfd, 4=>select1.connfd,
+ *            5=>select2.connfd];
  */
 typedef struct{
-#ifdef__USE_XOPEN
+#ifdef __USE_XOPEN
     __fd_maskfds_bits[__FD_SETSIZE/__NFDBITS];
-#define__FDS_BITS(set)((set)->fds_bits)
+#define __FDS_BITS(set)((set)->fds_bits)
 #else
     __fd_mask__fds_bits[__FD_SETSIZE/__NFDBITS];
-#define__FDS_BITS(set)((set)->__fds_bits)
+#define __FDS_BITS(set)((set)->__fds_bits)
 #endif
 } fd_set;
 #define FD_SETSIZE 1024
@@ -21,6 +26,8 @@ void FD_ZERO(fd_set *fdset);
 void FD_SET(int fd, fd_set *fdset);
 void FD_CLR(int fd, fd_set *fdset);
 void FD_ISSET(int fd, fd_set *fdset);
+
+
 /**
  * @arg int maxfd_add1 the maximum no. of fds across all the sets, plus 1
  * @arg fd_set any of these args can be as a null ptr
@@ -40,16 +47,34 @@ void FD_ISSET(int fd, fd_set *fdset);
  *  1. the arrival of out-of-band data for a socket
  * @disucss When an error occurs, it's marked as both readable and writable
  */
+struct timeval{
+    long tv_sec;
+    long tv_usec;   // microseconds
+}; 
 int select(int maxfd_add1, 
-            fd_set *readset fd_set *writeset, fd_set *exceptset
+            fd_set *readset, fd_set *writeset, fd_set *exceptset,
             const struct timeval *timeout);
+/**
+ * @arg sigmask 
+ */
+struct timespec{
+    long tv_sec;
+    long tv_nsec;   // nanoseconds
+}; 
+int pselect(int maxfd_add1,             
+            fd_set *readset, fd_set *writeset, fd_set *exceptset,
+            const struct timespec *timeout, const sigset_t *sigmask);
             
             
-            
-            
-            
-            
-            
+/**
+ *
+ */
+struct pollfd{
+    int fd;
+    short events;       // requested events
+    short revents;      // returned events
+};
+int poll(struct pollfd * fds, nfds_t nfds, int timeout)
             
             
             

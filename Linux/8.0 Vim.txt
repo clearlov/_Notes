@@ -191,7 +191,7 @@ n[ yy ] copy n lines below
 [ Ctrl+w~q ] quite [ :sp ] mode
 [ Ctrl+w~v ] split the file vertically
 
-[ % ] move to the outer brackets
+[ Shift+% ] move to the outer brackets
 
 |+ edite multiple files +|
 vim filename1 filename2 ...   /* open multiple files to buffer */

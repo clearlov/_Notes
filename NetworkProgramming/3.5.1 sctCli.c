@@ -38,9 +38,8 @@ for(;;){
     FD_SET(fileno(stdin), &rset);   // FD_SET(0, &rset);
     FD_SET(listenfd, &rset);
     maxfd_add1 = listenfd > fileno(stdin) ? listenfd : fileno(stdin);
-    ++maxfd_add1;
     vDebug("select()",
-        select(maxfd_add1, &rset, NULL, NULL, NULL)
+        select(maxfd_add1 + 1, &rset, NULL, NULL, NULL)
     );
    
     if(FD_ISSET(fileno(stdin), &rset)){

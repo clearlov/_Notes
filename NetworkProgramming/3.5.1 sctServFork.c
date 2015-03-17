@@ -57,29 +57,19 @@ vDebug("listen()",
 
 ssize_t n;
 pid_t pid;
-struct sockaddr client_addr;
+//struct sockaddr cli_addr;
+//socklen_t cli_addr_len;
 int connfd;
 char recvbuf[SERV_BUF_SIZE + 1], buf[SERV_BUF_SIZE + 1];
 struct args args;
 struct results results;
-/**
- *
- */
-fd_set rset, allset;
-int i, clients[FD_SETSIZE];
-for(i=0; i<FD_SETSIZE; ++i)
-    clients[i] = -1;
-FD_ZERO(&allset);
-FD_SET(listenfd, &allset);
-
-
 for(;;){
     /**
      * back to for(;;) on errno==EINTR to restart it
      */
     if(0 ==
         vDebug("accept()",
-    // connfd = accept(listenfd, (struct sockaddr *)&client_addr, &client_addr_len)
+    // connfd = accept(listenfd, (struct sockaddr *)&cli_addr, &cli_addr_len)
             connfd = accept(listenfd, (struct sockaddr *)NULL, NULL)
         ) 
     ) continue;

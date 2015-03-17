@@ -1,3 +1,22 @@
+typedef struct {
+#ifdef __USE_XOPEN
+    __fd_maskfds_bits[__FD_SETSIZE/__NFDBITS];
+#define __FDS_BITS(set)((set)->fds_bits)
+#else
+    __fd_mask__fds_bits[__FD_SETSIZE/__NFDBITS];
+#define __FDS_BITS(set)((set)->__fds_bits)
+#endif
+} fd_set;
+
+fd_set rset, allset;
+FD_ZERO(&allset);
+FD_SET(listenfd, &allset);
+FD_SET(fileno(stdin), &allset);
+rset = allset;  // structure assignment
+FD_CLR(listenfd, &allset);
+FD_ISSET(listenfd, &allset);    // false
+FD_ISSET(listenfd, &rset);  // true
+
 /**
  * #define $var_nm $val
  */

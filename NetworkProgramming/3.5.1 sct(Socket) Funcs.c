@@ -132,15 +132,15 @@ int connect(int listenfd, const struct sockaddr* serv_addr, socklen_t addrlen)
  * When a process is blocked in "slow system call"(will ever return, like 
  *  for(;;) and read()) and the process catches a signal and the signal handler
  *  returns, the system call can return EINTR(interrupted system call).
- * @arg client_addr is used to return the protocol addr. of the connected peer
+ * @arg cli_addr is used to return the protocol addr. of the connected peer
  *  process (the client).
  * @arg addrlen is a value-result arg.
- *  value: sizeof(client_addr)
+ *  value: sizeof(cli_addr)
  *  result: actual number of bytes stored by the kernel in the socket addr. structure
  * @return integer connected socket file descriptor 
  *  (for which the TCP three-way handshake completeds)
  */
-int accept(int listenfd, struct sockaddr* client_addr, socklen_t addrlen)
+int accept(int listenfd, struct sockaddr* cli_addr, socklen_t addrlen)
 
 
 int close(int listenfd)
