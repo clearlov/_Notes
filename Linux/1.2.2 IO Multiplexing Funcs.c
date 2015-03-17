@@ -67,12 +67,36 @@ int pselect(int maxfd_add1,
             
             
 /**
- *
+ * +---------------------------------------------------------------------------+
+ * |          |e|r|     e=events; r=revents;
+ * |---------------------------------------------------------------------------|
+ * |POLLIN    |Y|Y| = POLLRDNORM | POLLRDBAND
+ * |POLLRDNORM|Y|Y| Normal Data can be read
+ * |POLLRDBAND|Y|Y| Priority band data can be read
+ * |POLLPRI   |Y|Y| High-prio., e.g. out-of-band data
+ * |---------------------------------------------------------------------------|
+ * |POLLOUT   |Y|Y| Normal Data can be written
+ * |POLLWRNORM|Y|Y| Normal Data can be write
+ * |POLLWRBAND|Y|Y| Priority band data can be written
+ * |---------------------------------------------------------------------------|
+ * |POLLERR   | |Y| Error has occurred
+ * |POLLHUP   | |Y| Hangup has occurred
+ * |POLLNVAL  | |Y| fd is not an open file
+ * +---------------------------------------------------------------------------+
+ * @arg int timeout
+ *  INFTIM  infinite time, wait forever
+ * @return >0 fds that have a nonzero revents; 0 no fd ready; -1 on error
+ * @example
+ *  fds[0].fd = listenfd;
+ *  fds[0].events = POLLIN | POLLOUT | POLLERR; // interest in read/write/error
+ *  poll(fds, 1, INFTIM);
+ *  if(fds[0].revents & (POLLRDNORM | POLLERR)) // 
  */
+typedef unsigned long nfds_t; 
 struct pollfd{
     int fd;
-    short events;       // requested events
-    short revents;      // returned events
+    short events;       // interest
+    short revents;      // occurred
 };
 int poll(struct pollfd * fds, nfds_t nfds, int timeout)
             

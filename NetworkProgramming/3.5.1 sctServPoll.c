@@ -68,70 +68,37 @@ memset(&results, 0, sizeof(results));
  * Concurrent[kənˈkɜ:rənt] Servers for multiple clients
  * 
  */
-fd_set rset, allset;
-int i, nready, maxfd, maxi, tempfd, cli[FD_SETSIZE];
-maxfd = listenfd;
-maxi=-1;
-// client available
+struct pollfd clis[OPEN_MAX];
+int i, maxi, nready, connfd, tempfd;
+clis[0].fd = listenfd;
+clis[0].events = POLLRDNORM;
 #define CLI_AVL -1
-for(i=0; i<FD_SETSIZE; ++i)
-    cli[i] = CLI_AVL;            // -1 indicates avaliable entry
-FD_ZERO(&allset);
-FD_SET(listenfd, &allset);
-
-
+for(i=1; i < OPEN_MAX; ++i)
+    clis[i].fd = CLI_AVL;
+maxi=0;
 for(;;){
-    rset = allset;
-    // printf("listenfd:%d; maxfd:%d\n", listenfd, maxfd);
-    vDebug("select()",
-        nready = select(maxfd+1, &rset, NULL, NULL, NULL)
-    );
-    if(FD_ISSET(listenfd, &rset)){
-        if(0 ==
-            vDebug("accpet()",
-                connfd = accpet(listenfd, &cli_addr, &cli_addr_len)
-            )
-        ) continue;
-        // set connfd into available cli[]
-        for(i=0; i< FD_SETSIZE; ++i){
-            if(cli[i] == CLI_AVL){
-                cli[i] = connfd;
+    nready = poll(clis, maxi+1, INFTIM);
+    /**
+     * new client connection
+     * the avaliable of a new connection on a listening sokcet can be considered
+     *  either normal(POLLRDNORM) or priority(POLLRDBAND) data.
+     */
+    if(clis[0].revents & POLLIN){
+        cli_addr_len = sizeof(cli_addr_len);
+        vDebug("accept()",
+            connfd=accept(listenfd, (struct sockaddr*)&cli_adrr, &cli_addr_len)
+        );
+        for(i=1;i<OPEN_MAX;++i){
+            if(clis[i].fd < 0){
+                clis[i].fd = connfd;
+                clis[i].events = POLLRDNORM;
                 break;
             }
-        }
-        //printf("client[%d] on woking...\n", %i)
-        FD_SET(connfd, &allset);
-        if(connfd > maxfd)  maxfd = connfd;
-        if(i>maxi) maxi = i;
-        if(--nready <=0) continue;
-    }
-    for(i=0;i<=maxi;++i){
-        if((tempfd = client[i]) < 0)
-            continue;
-        if(FD_ISSET(tempfd, &rset)){
-            if( (n=read(tempfd, &args, sizeof(args))) == 0){
-                vDebug("Serv close()",
-                    close(tempfd)
-                );
-                FD_CLR(tempfd);
-                cli[i] = -1;
-            } else{
-                results.sum = args.arg1 + args.arg2;
-                printf("Client(%d): %ld %ld", tempfd, args.arg1, args.arg2);
-                printf("Return:%ld\n", results.sum);
-                vDebug("Serv write()",
-                    write(connfd, &results, sizeof(results))
-                );
-            }
-            if(--nready <=0)
-                break;
         }
     }
 }
-
-
-struct sockaddr_in6 i6;
-i6.sin6_family = AF_INET6;
-i6.sin6_posrt = htons(4950);
-inet_pton(AF_INET6, "2001:db8:8714:3a90::12", &i6.sin6_addr);
-bind(listenfd, (struct sockaddr*)&i6, sizeof(i6));
+for(i=1;i<=maxi;++i){
+    if((tempfd = clis[i].fd)<0)
+        continue;
+    
+}
