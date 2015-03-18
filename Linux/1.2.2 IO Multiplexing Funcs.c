@@ -68,23 +68,23 @@ int pselect(int maxfd_add1,
             
 /**
  * +---------------------------------------------------------------------------+
- * |          |e|r|     e=events; r=revents;
+ * |          |e|r|     e=events; r=revents;                                   
  * |---------------------------------------------------------------------------|
  * |POLLIN    |Y|Y| = POLLRDNORM | POLLRDBAND
  * |POLLRDNORM|Y|Y| Normal Data can be read
- * |POLLRDBAND|Y|Y| Priority band data can be read
+ * |POLLRDBAND|Y|Y| Priority Band Data can be read
  * |POLLPRI   |Y|Y| High-prio., e.g. out-of-band data
  * |---------------------------------------------------------------------------|
- * |POLLOUT   |Y|Y| Normal Data can be written
+ * |POLLOUT   |Y|Y| = POLLWRNORM
  * |POLLWRNORM|Y|Y| Normal Data can be write
- * |POLLWRBAND|Y|Y| Priority band data can be written
+ * |POLLWRBAND|Y|Y| Priority Band Data can be written
  * |---------------------------------------------------------------------------|
  * |POLLERR   | |Y| Error has occurred
  * |POLLHUP   | |Y| Hangup has occurred
  * |POLLNVAL  | |Y| fd is not an open file
  * +---------------------------------------------------------------------------+
  * @arg int timeout
- *  INFTIM  infinite time, wait forever
+ *  <0 | INFTIM  infinite time, wait forever
  * @return >0 fds that have a nonzero revents; 0 no fd ready; -1 on error
  * @example
  *  fds[0].fd = listenfd;
