@@ -70,6 +70,11 @@
  *      SO_RCVLOWAT
  *      SO_SNDBUF
  *      SO_SNDLOWAT
+ *      SO_REUSEADDR allow a port to bind multiple address
+ *       e.g. 192.168.0.10:80 127.0.0.1:80 ...
+ *      SO_PORT
+ *      SO_USELOOPBACK default ON, make socket receives a copy of everything
+ *       sent on the socket. It applies only to sockets in the AF_ROUTE.
  *  IPPROTO_IP
  *  IPPROTO_ICMPV6
  *  IPPROTO_IPV6

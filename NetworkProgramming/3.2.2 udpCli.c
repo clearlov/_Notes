@@ -16,7 +16,9 @@ struct args args;
 struct results results;
 
 while(NULL != fgets(buf, SERV_BUF_SIZE, stdin)){
-    snprintf(buf, sizeof(buf), "%ld %ld", args.arg1, args.arg2);
+    vDebug("sscanf()",
+        sscanf(buf, sizeof(buf), "%ld %ld", &args.arg1, &args.arg2)
+    );
     vDebug("sento()",
         sendto(sockfd, &args, sizeof(args), 0, (const struct sockaddr*)&i4, i4len)
     );
@@ -27,7 +29,5 @@ while(NULL != fgets(buf, SERV_BUF_SIZE, stdin)){
      * UDP string'll not end with an EOF, so you need to add it
      * rtn_str[n] = EOF;  // or = 0 or '\0';
      */
-    vDebug("fput()",
-        fputs(results.sum, stdout)
-    );
+    printf("= %ld (IP:%s)\n", results.sum, results.in_addr);
 }

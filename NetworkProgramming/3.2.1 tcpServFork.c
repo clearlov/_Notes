@@ -45,7 +45,6 @@ if(!sa_in.sin_port > 0){
     printf("port error");
     exit(0);
 }
-#define INET_ADDR_STRLEN    16
 char i4_str[INET_ADDR_STRLEN];
 inet_ntop(AF_INET, &sa_in.sin_addr, i4_str, INET_ADDR_STRLEN);
 printf("inet_ntop(sin_addr): %s\n", i4_str);

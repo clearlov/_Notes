@@ -19,9 +19,12 @@ memset(&cliaddr, 0, sizeof(cliaddr));
 ssize_t n;
 for(;;){
     vDebug("recvfrom()",
-        n = recvfrom(sockfd, &results, sizeof(results), 0, (struct sockaddr *)&cliaddr, &cliaddr_len)
+        n = recvfrom(sockfd, &args, sizeof(args), 0, (struct sockaddr *)&cliaddr, &cliaddr_len)
     );
+    results.sum = args.arg1 + args.arg2;
+    inet_ntop(AF_INET, &cliaddr.sin_addr.s_addr, results.in_addr, INET_ADDR_STRLEN);
+    printf("IP:%s %ld+%ld=%ld", results.in_addr, args.arg1, args.arg2, results.sum);
     vDebug("sento()",
-        sendto(sockfd, &args, sizeof(args), 0, (const struct sockaddr*)&cliaddr, cliaddr_len)
+        sendto(sockfd, &results, sizeof(results), 0, (const struct sockaddr*)&cliaddr, cliaddr_len)
     );
 }

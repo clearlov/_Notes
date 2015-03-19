@@ -30,6 +30,7 @@
 #define SERV_LISTEN_QUEUES 1024 // LISTENQ 2nd arg. to listen()
 #define SERV_LISTEN_PORT 9877 // any a ephemeral[ɪˈfɛmərəl] port between [5000, 49152]
 
+#define INET_ADDR_STRLEN    16
 /**
  * Passing Binary Structures
  * @discuss long is diff in diff host, so we can't pass value by long. Passing 
@@ -40,6 +41,8 @@ struct args {
     long arg2;
 };
 struct results {
+    char in_addr[INET_ADDR_STRLEN];
+    char in6_addr[INET_ADDR_STRLEN];
     long sum;
 };
 

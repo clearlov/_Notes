@@ -33,7 +33,7 @@ int fputs(const char *buf, FILE * file_ptr)
 
 /**
  * Read formatted data from string and stores them according to args
- * @example sscanf("Hello, @LefWell 2015-10", "%*s %s %ld-03", &arg1, &arg2)
+ * @example sscanf("Hello, @LefWell 2015-10", "%s %s %ld-03", &arg1, &arg2)
  *  char arg1[] = "@LefWell"; long int arg2 = 2015
  * @return >=0 on success, args successfully filled; EOF on failure
  */
