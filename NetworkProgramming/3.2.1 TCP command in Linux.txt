@@ -89,18 +89,18 @@ sh$ ps -t pts/1 -o pid,ppid,tty,stat,args,wchan
 /**
  * After typing into ./socketClient.out, the client socket is closed by the 
  *  kenel. This sends a FIN to the server
- * +------------------------------------- -------------------------------------+
- * | FIN_WAIT_1             send FIN M -->                                     |
- * |                                              CLOSE_WAIT  read returns EOF |
- * |                                     <-- responds ACK M+1                  |
- * | FIN_WAIT_2                                                                |
- * |                                                  child process terminates |
- * |                                     <-- responds FIN N                    |
- * | TIME_WAIT   send ACK N+1          -->                                     |
- * |                                                                    CLOSED |
- * |                                      child sends SIGCHLD signal to parent |
- * |                                             child enters the zombie state |
- * +------------------------------------- -------------------------------------+
+ * +-------------------------------------|-------------------------------------+
+ * | FIN_WAIT_1                --FIN M-->                                     
+ * |                                              CLOSE_WAIT  read returns EOF 
+ * |                                      <--ACK M+1--                  
+ * | FIN_WAIT_2                                                                
+ * |                                                  child process terminates 
+ * |                                      <--FIN N--                    
+ * | TIME_WAIT               --ACK N+1-->                                     
+ * |                                                                    CLOSED 
+ * |                                      child sends SIGCHLD signal to parent 
+ * |                                             child enters the zombie state 
+ * +-------------------------------------|-------------------------------------+
  */
 sh$ netstat -a | grep 9877
 |[
@@ -158,13 +158,13 @@ F S   UID   PID  PPID  ADDR SZ WCHAN  TTY    CMD
 |~ Termination of Server Process ~|
 /**
  * Before typing into ./socketClient.out, terminates the server child.
- * +------------------------------------- -------------------------------------+
- * |                                     <-- send FIN M             FIN_WAIT_1 |
- * | CLOSE_WAIT fgets(block)                                                   |
- * |          responds ACK M+1         -->                                     |
- * |                                                                FIN_WAIT_2 |
- * |                                         send SIGCHLD to parent; waitpid() |
- * +------------------------------------- -------------------------------------+
+ * +-------------------------------------|-------------------------------------+
+ * |                                      <--FIN M--             FIN_WAIT_1 
+ * | CLOSE_WAIT fgets(block)                                                   
+ * |                         --ACK M+1-->                                     
+ * |                                                                FIN_WAIT_2 
+ * |                                         send SIGCHLD to parent; waitpid() 
+ * +-------------------------------------|-------------------------------------+
  */
 sh$ sudo kill -SIGSTOP 10435
 /**

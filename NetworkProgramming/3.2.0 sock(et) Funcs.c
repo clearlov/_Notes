@@ -125,7 +125,7 @@ int listen(int bindfd, int max_listen_queues)
  * be used by a TCP client to establish a connection with a TCP server
  * status change: SYN_SENT(active open)
  */
-int connect(int sockfd, const struct sockaddr* sa_s, socklen_t addrlen)
+int connect(int sockfd, const struct sockaddr*serv_addr, socklen_t addrlen)
 
 /**
  * When a process is blocked in "slow system call"(will ever return, like 
@@ -146,8 +146,9 @@ int close(int fd)
 /**
  * @arg int how
  *  0 SHUT_RD stop reading data; reject it when further data arrives
- *  1 SHUT_WR stop writing data;discard any data waiting to be sent;
- *      stop looking for ACK of data already sent
+ *  1 SHUT_WR stop writing data;contents of socket send buffer sent to other end
+ *    followed by FIN. discard any data waiting to be sent; stop looking for 
+ *    ACK of data already sent
  *  2 SHUT_RDWR is equivalent to call shutdown() twice: with SHUT_RD and SHUT_WR
  */
 int shutdown(int listenfd, int how)
@@ -168,16 +169,17 @@ ssize_t recv(int listenfd, void *buf, size_t len, int flags)
  *  application to retrieve the source address of received data.
  * @return >=0 on success, bytes received; -1 on error
  */
-ssize_t recvfrom(int listenfd, void *buf, size_t len, int flags,
-                 struct sockaddr *sa_s, socklen_t addrlen)
+ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+                 struct sockaddr *from, socklen_t *addrlen)
                  
-                 
+ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+               const struct sockaddr *sendto, socklen_t addrlen)                 
 send()
 readv() / writev()
 recvmsg() / sendmsg()
 
 
-sendto()
+
 
 
 /**

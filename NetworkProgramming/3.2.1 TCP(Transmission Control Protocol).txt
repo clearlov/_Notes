@@ -1,0 +1,114 @@
+TCP contains algorithms['ælgərɪðəm] to estimate['estɪmeɪt] the Round-Trip Time (RTT) between a client and server dynamically so that is knows how long to wait for an acknowledgment.
+|---------------- ----------------| it a 32bit sys, so 1 word = Databus = 32bits
+| Source Port-16 | Destination-16 |         2^16
+|---------------- ----------------|
+|        Sequence No.             |
+|---------------- ----------------|
+|       Acknowledgement No.       |
+|---------------- ----------------|
+|OSe|Res|CEUAPRSF|     Window     |
+|---------------- ----------------|
+|    Checksum    |   Urgent Ptr   |
+|---------------- ----------------|
+|       TCP Options(optional)     |
+|---------------- ----------------|
+
+UDP itself does not provide acknowledgments, sequence numbers, RTT estimation, timeouts or retransmissions. 
+TCP provides flow control. TCP advertised['ædvətaɪz] window(say the advertised window is the amount of room currently available in the receive buffer) tells its peer(say the peer thought a segment was lost and retransmitted it, when it wasn't really lost, the network was just overloaded) exactly how any bytes of data it is willing to accept from the peer at any one time.
+TCP and UDP can both be full-duplex[ˈdu:pleks] connection.
+
+/**
+ *  FIN the peer process terminates
+ *  RST the peer host has crashed and rebooted
+ */
+|[
+ * +-------------------------------------|-------------------------------------+
+ * | sock() connect(block)                          socket() bind() listen()
+ * |                                                     LISTEN(passive open)
+ * |                           --SYN J-->
+ * |                                                     SYN_RCVD
+ * |                                      <--SYN J+1, ACK K--
+ * | connect() returns send ACK K+1 ->             
+ * |                                                     ESTABLISHED
+ * |                             --RST-->
+ * |                                              client connection() queued
+ * |                                                         accept() called
+ * +-------------------------------------|-------------------------------------+
+ * | FIN_WAIT_1              --FIN M -->                                     
+ * |                                              CLOSE_WAIT  read returns EOF 
+ * |                                      <--ACK M+1--                  
+ * | FIN_WAIT_2                                                                
+ * |                                                  child process terminates 
+ * |                                      <--FIN N--
+ * | TIME_WAIT   send ACK N+1        -->                                     
+ * |                                                                    CLOSED 
+ * |                                      child sends SIGCHLD signal to parent 
+ * |                                             child enters the zombie state 
+ * +-------------------------------------|-------------------------------------+
+]|
+
+|~ Way to detect TCP crash conditions ~|
+|+ TCP sends data actively +|
+|- Peer Process Crashes -|
+|[
+ * +-------------------------------------|-------------------------------------+
+ * |                                      <--FIN--
+ * |    select() readable
+ * |-------------------------------------|-------------------------------------+
+ * |     if another write()               
+ * |                                      <--RST--     
+ * |      SIGPIPE                               
+ * | -------------------------------------|-------------------------------------+
+]|
+|- Peer Host Crashes -|
+Out TCP'll time out and out socket's pending error will be set to ETIMEDOUT
+|- Peer Host Unreadable -|
+Out TCP'll time out and out socket's pending error will be set to EHOSTUNREACH
+|+ TCP receives data actively +|
+|- Peer Process Crashes -|
+|[
+ * +-------------------------------------|-------------------------------------+
+ * |                                      <--FIN--
+ * |    read() as EOF
+ * |-------------------------------------|-------------------------------------+
+]|
+|- Peer Host Crashes -|
+We'll stop receiving data
+|- Peer Host Unreadable -|
+We'll stop receiving data
+|+ Connection idles, Keep-Alive Set +|
+|- Peer Process Crashes -|
+|[
+ * +-------------------------------------|-------------------------------------+
+ * |                                      <--FIN--
+ * |    select() readable
+ * |-------------------------------------|-------------------------------------+
+]|
+|- Peer Host Crashes -|
+Nine keep-alive probes are sent after two hours of inactivity and then our
+socket's pending error is set to ETIMEDOUT
+|- Peer Host Unreadable -|
+Nine keep-alive probes are sent after two hours of inactivity and then our
+socket's pending error is set to EHOSTUNREACH
+
+|+ Connection idles, Keep-Alive Not Set +|
+|- Peer Process Crashes -|
+|[
+ * +-------------------------------------|-------------------------------------+
+ * |                                      <--FIN--
+ * |    select() readable
+ * |-------------------------------------|-------------------------------------+
+]|
+|- Peer Host Crashes -|
+(Nothing)
+|- Peer Host Unreadable -|
+(Nothing)
+
+
+|~~|
+|+ TCP options: +|
+|-MSS(maximum segment size)-| the maximum amount of data that it is willing to accept in each TCP segment.
+|-Window Scale-| 
+|-Timestamp-| to prevent possible data corruption caused by old, delayed, or duplicated segments.
+
+TIME_WAIT State

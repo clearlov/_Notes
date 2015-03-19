@@ -63,7 +63,7 @@ for(;;){
             sleep(3);
             /**
              * Second write() to generate a SIGPIPE in server. The default action of 
-             *  SIGPIPE is to teminate the process.
+             *  SIGPIPE is to terminate the process.
              */
             vDebug("write(SIGPIPD)",
                 write(listenfd, sendbuf + 1, strlen(sendbuf) - 1)

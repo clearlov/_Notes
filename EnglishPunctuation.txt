@@ -11,7 +11,8 @@
     db> <...; commit;>                  /* it's repeatable, do one or more than one times */
     db> [...; rollback;]
 ]|
- 
+
+--DATA-->  send DATA
  
 |~ Commentory ~|
 
