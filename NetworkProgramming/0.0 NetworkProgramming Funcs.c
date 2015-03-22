@@ -1,29 +1,26 @@
-1 nibble = 4 bits
-1 byte = 2 nibble = 8 bits
-1 word = DataBus = 64(in-64bit-sys) 32(in-32bit-sys) 16(in-16bit-sys)       
-
-|~ Endianness ~|
 /**
  * Endianness is depended on CPU. It determines the memory to store int.
+ * LE(little endian)  BE(big endian)
+ * @example e.g. 0x11223344
+ *  LE: [0x7f..a0 | 44] [0x7f..a8 | 33] [0x7f..b0 | 22] [0x7f..b8 | 11]
+ *  BE: [0x7f..a0 | 11] [0x7f..a8 | 22] [0x7f..b0 | 33] [0x7f..b8 | 44]
  */
-e.g. 0x11223344
-LE(little endian): [0x7f..a0 | 44] [0x7f..a8 | 33] [0x7f..b0 | 22] [0x7f..b8 | 11]
-BE(big endian): [0x7f..a0 | 11] [0x7f..a8 | 22] [0x7f..b0 | 33] [0x7f..b8 | 44]
-|[
-unsigned short sterilize = 0x0102; // [0000 0001 | 0000 0010] or [0000 0010 | 0000 0001] in 64bit OS
-char * interpreter = reinterpret_cast<char *>(&i);      // [0000 0001 |] or [[0000 0010 |], 1 or 2
+// [0000 0001 | 0000 0010] or [0000 0010 | 0000 0001] in 64bit OS
+unsigned short sterilize = 0x0102;
+// [0000 0001 |] or [[0000 0010 |], 1 or 2
+char * interpreter = reinterpret_cast<char *>(&i);      
 bool is_be =  1 ==  reinterpret_cast<int>(*interpreter);     // 1 or 2
-]|
-|+ Network Endianness +|
+
 /**
- * Network Endianness is always BE. So we need to convert host endianness into BE
- * [ 00000000 | 00000000 | 00000000 | 00000000 ]
+ * Network Endianness is always BE. We need to convert host endianness into BE
  */
 hton{s|l}: convert unsigned short/long from host endianness(LE or BE) to network endianness (BE)
 uint16_t htons()   /    uint32_t htonl()
 ntoh{s|l}: convert unsigned short/long from BE to host endianness (LE or BE)
 
-|~ Byte Manipulation[mə'nɪpjəleɪʃn] ~|
+/**
+ * Byte Manipulation[mə'nɪpjəleɪʃn]
+ */
 #include <string.h>
 /**
  * byte zero
@@ -42,7 +39,9 @@ void *memcpy(void * dest, const void *src, size_t nbytes);
  */
 int memcmp(const void *ptr1, const void *ptr2, size_t nbytes);
 
-|~ IP address conversion ~|
+/**
+ * IP address conversion
+ */
 #include <arpa/inet.h>
 /**
  * Presentation to numeric

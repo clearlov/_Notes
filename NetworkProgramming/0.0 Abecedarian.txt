@@ -1,0 +1,15 @@
+1 nibble = 4 bits
+1 byte = 2 nibble = 8 bits
+1 word = DataBus = 64(in-64bit-sys) 32(in-32bit-sys) 16(in-16bit-sys)  
+|+ RTT (Round Trip Time) +|
+/**
+ * @link http://en.wikipedia.org/wiki/Round-trip_delay_time
+ */
+the time for a signal(data packet) to be sent plus the time for an ACK to be received.
+The RTT is also known as the ping time, using the ping command.
+RTT = (C · Old_RTT) + ((1 − C) · New_Round_Trip_Sample)    0 ≤ C < 1
+|+ IP Fragmentation +|
+/**
+ * @link http://en.wikipedia.org/wiki/IP_fragmentation
+ */
+ can lead to packet loss and excessive retransmissions. 

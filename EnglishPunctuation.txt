@@ -12,7 +12,9 @@
     db> [...; rollback;]
 ]|
 
---DATA-->  send DATA
+send time--DATA-->  send DATA    <--DATA--recv time
+# blocking
+
  
 |~ Commentory ~|
 

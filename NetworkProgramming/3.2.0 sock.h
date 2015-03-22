@@ -23,6 +23,7 @@
 
 #include <poll.h>           // for poll()
 #include <limits.h>         // for poll() OPEN_MAX
+#define INFTIME -1
 
 // #define SA struct sockaddr
 

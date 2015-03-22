@@ -15,19 +15,19 @@ sh$ sudo tcpdump -i lo -nn
 /**
  * hold on it with input stream
  */
-sh$ ./socketClient.out          
+sh$ ./tcpCli.out         
 sh$ netstat -a
 |[
 Proto  LocalAddr.      ForeignAddr      State
 tcp    0.0.0.0:9877    0.0.0.0:*        LISTEN      --> ./socketServ.out listening
 tcp    localhost:9877  localhost:48692  ESTABLISHED  --> ./socketServ.out -> ./socketClient.out
-tcp    localhost:48692 localhost:9877   ESTABLISHED  --> ./socketClient.out -> ./socketServ.out
+tcp    localhost:48692 localhost:9877   ESTABLISHED  --> ./tcpCli.out-> ./socketServ.out
 ]|
 sh$ ps al
 |[
 F   UID   PID  PPID    VSZ   RSS  WCHAN  STAT TTY    COMMAND
 /**
- * COMMAND bash shell: parent of ./socketClient.out and ./socketServ.out
+ * COMMAND bash shell: parent of ./tcpCli.outand ./socketServ.out
  * pst/1 pseudo['su:doʊ]-terminal number 1
  * STAT S on sleeping
  * WCHAN wait
@@ -65,7 +65,7 @@ sh$ ps -t pts/1 -o pid,ppid,tty,stat,args,wchan
 10336 10230 pts/1    T    sudo ./socketServ.out       signal_stop
 10423 10230 pts/1    S    sudo ./socketServ.out       poll_schedule_timeout
 10425 10423 pts/1    S    ./socketServ.out            inet_csk_accept
-10434 10230 pts/1    S+   ./socketClient.out          n_tty_read
+10434 10230 pts/1    S+   ./tcpCli.out         n_tty_read
 10435 10425 pts/1    S    ./socketServ.out            sk_wait_data
 ]|
 

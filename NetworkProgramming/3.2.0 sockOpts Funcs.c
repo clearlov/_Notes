@@ -66,7 +66,21 @@
  *       |                     --ACK N+1-->
  *       +---------------------------------|-----------------------------------+
  *      SO_OOBINLINE
- *      SO_RCVBUF
+ *      SO_RCVBUF advertised window; TCP [8192,61440]; UDP[,9000,]
+ *       It must be set before connect()/listen() coz of TCP Window Scale
+ *       It should be more than 4 times the MSS.
+ *       +---------------------------------------------------------------------+
+ *       | Client |      MSS=1460; both socket buffers=6*1460=8760       | Serv
+ *       +---------------------------------------------------------------------+
+ *       |    --SYN6 1460bytes-->  --SYN5 1200bytes-->  --SYN4 800bytes--> 
+ *       |              <--ACK1--            <--ACK2--           <--ACK3-- 
+ *       +---------------------------------------------------------------------+
+ *       Pipe: a TCP connection between two endpoints
+ *       Even though the both socket buffers is 6 times MSS, and it can only 
+ *        send 3 segments of data in the pipe. coz the client TCP must keep a 
+ *        copy of each segment until the ACK is received.
+ *       BandWidth-Delay Product: The capability of a pipe.
+ *        BWDP = bandwidth bit/sec * RTT sec * 8 bit/byte
  *      SO_RCVLOWAT
  *      SO_SNDBUF
  *      SO_SNDLOWAT
@@ -81,7 +95,48 @@
  *  IPPROTO_IP
  *  IPPROTO_TCP
  *      TCP_MAXSEG
- *      TCP_NODELAY
+ *      TCP_NODELAY disables TCP's Nagle algorithm; default enabled; Nagle algo
+ *       -rithm is to reduce packets smaller than the MSS on a WAN.
+ *       E.g. we send "Hi@Lef" 250ms for each char, and the RTT is 600ms. 
+ *       +---------------------------------------------------------------------+
+ *       | TCP_NODELY=1, disables Nagle, send data regularly
+ *       |                        0--H-->
+ *       |                      250--i-->
+ *       |                      500--@-->
+ *       |       <--ACK for H-- 600
+ *       |                      750--L-->
+ *       |       <--ACK for i-- 850
+ *       |                     1000--e-->
+ *       |       <--ACK for @--1100
+ *       |                     1250--f-->
+ *       |       <--ACK for L--1350 
+ *       |       <--ACK for e--1600 
+ *       |       <--ACK for f--1850
+ *       +---------------------------------------------------------------------+
+ *       
+ *       +---------------------------------------------------------------------+
+ *       | TCP_NODELY=0, enable Nagle, blocking send data<MSS until ACK back
+ *       +---------------------------------------------------------------------+
+ *       |                      0--H-->
+ *       | 250--i--> 500-->@-->#(without piggybacked ACK, store in buffer)
+ *       |   <--ACK for H--  600--i@-->(piggyback ACK, send buffer)
+ *       | 750--L--> 1000--e-->#       
+ *       |   <--ACK for i@--1200--Le-->
+ *       | 1250--f-->#                 
+ *       |   <--ACK for Le--1800 --f-->
+ *       |   <--ACK for f--2400        
+ *       +---------------------------------------------------------------------+
+ *       There's a problem here, assume a client sends smaller data (A + B),
+ *       the server needs to receive both A and B then response. It'll be block
+ *       -ing when receive one of them.
+ *       +---------------------------------------------------------------------+
+ *       | write()              0--A--> |
+ *       | write() 250--B-->#  blocking |
+ *       |                              |         A recved, blocking for B          
+ *       +---------------------------------------------------------------------+ 
+ *       You can fix it:
+ *        1. Use writev() instead of two calls to write()
+ *        2. Copy data A and B into a single buffer with write() once
  *  IPPROTO_SCTP
  * @arg int opt_nm
  * @arg void *opt_val

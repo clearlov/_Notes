@@ -24,10 +24,14 @@ vDebug("connect()",
 char sendbuf[SERV_BUF_SIZE], char recvbuf[SERV_BUF_SIZE];
 struct args args;
 struct results results;
-ssize_t n;
-int maxfd_add1;
-fd_set rset;
-FD_ZERO(&rset);
+
+nfds_t maxfd = 2;
+struct pollfd fds[maxfd];
+fds[0].fd = listenfd;
+fds[0].events = POLLIN;
+fds[1].fd = fileno(stdin);
+fds[1].events = POLLIN;
+
 /**
  * @discuss the conditions are handled with the socket
  *  1. peer TCP sends data, read() returns > 0
@@ -35,19 +39,19 @@ FD_ZERO(&rset);
  *  3. peer TCP send RST, read() returns -1 with errno
  */
 for(;;){
-    FD_SET(fileno(stdin), &rset);   // FD_SET(0, &rset);
-    FD_SET(listenfd, &rset);
-    maxfd_add1 = listenfd > fileno(stdin) ? listenfd : fileno(stdin);
-    vDebug("select()",
-        select(maxfd_add1 + 1, &rset, NULL, NULL, NULL)
+    
+    vDebug("poll()",
+        poll(fds, maxfd + 1, INFTIME)
     );
-   
-    if(FD_ISSET(fileno(stdin), &rset)){
+    if(fds[0].revents & POLLRDNORM){
+        if((n= read(listenfd, &results, sizeof(results))) > 0)
+            printf("Serv: %ld; n=read()=%d", results.sum, n);
+    }
+    if(fds[1].revents & (POLLRDNORM | POLLERR)){
         if( NULL != fgets(sendbuf, SERV_BUF_SIZE, stdin) ){
             if(2 != sscanf(sendbuf, "%ld %ld", &args.arg1, &args.arg2)){
                 vDebug("shutdown()",
                     shutdown(listenfd, SHUT_WR)     // send FIN
-                    FD_CLR(fileno(stdin), &rset);
                 );
                 printf("invalid input:%s", sendbuf);
                 continue;
@@ -60,29 +64,17 @@ for(;;){
                 //write(listenfd, sendbuf, strlen(sendbuf))
                 write(listenfd, &args, sizeof(args))
             );
-            sleep(3);
+            args.arg1 += args.arg2;
+            args.arg2 *= args.arg1;
+            //sleep(1);
             /**
              * Second write() to generate a SIGPIPE in server. The default action of 
              *  SIGPIPE is to terminate the process.
              */
-            vDebug("write(SIGPIPD)",
-                write(listenfd, sendbuf + 1, strlen(sendbuf) - 1)
+            vDebug("write()",
+                write(listenfd, &args, sizeof(args))
             );
         }
-    }
-    
-    if(FD_ISSET(listenfd, &rset)){
-        /*
-        if( (n = read(listenfd, recvbuf, SERV_BUF_SIZE)) > 0 ){
-            recvbuf[n] = 0;     // null terminate the last char of recvbuf
-            if(EOF == fputs(recvbuf, stdout)){
-                printf("fputs() errno:%d(%s)\n", errno, strerror(errno));
-                exit(EXIT_FAILURE);
-            }
-        }
-        */
-        if((n= read(listenfd, &results, sizeof(results))) > 0)
-            printf("Serv: %ld; n=read()=%d", results.sum, n);
     }
 }
 

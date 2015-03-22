@@ -66,7 +66,8 @@ memset(&results, 0, sizeof(results));
  *  Use sysconf(_SC_OPEN_MAX) to query the same information.
  */
 struct pollfd clis[sysconf(_SC_OPEN_MAX)];
-int i, maxi, nready, connfd, tempfd;
+int i, nready, connfd, tempfd;
+nfds_t maxi;
 clis[0].fd = listenfd;
 clis[0].events = POLLRDNORM;
 #define CLI_AVL -1
@@ -77,7 +78,9 @@ for(;;){
     /**
      * @todo INFTIM is undefined
      */
-    nready = poll(clis, maxi+1, -1);
+    vDebug("poll()",
+        nready = poll(clis, maxi+1, INFTIM)
+    );
     /**
      * new client connection
      * the avaliable of a new connection on a listening sokcet can be considered

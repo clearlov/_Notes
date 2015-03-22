@@ -83,6 +83,7 @@ int pselect(int maxfd_add1,
  * |POLLHUP   | |Y| Hangup has occurred
  * |POLLNVAL  | |Y| fd is not an open file
  * +---------------------------------------------------------------------------+
+ * @arg nfds_t unsigned long fds type
  * @arg int timeout
  *  <0 | INFTIM  infinite time, wait forever
  * @return >0 fds that have a nonzero revents; 0 no fd ready; -1 on error
