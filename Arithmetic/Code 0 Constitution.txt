@@ -3,12 +3,14 @@
  * @var   --> @field  @constant  @define
  * @arg   --> @argument/@param
  * @return  --> @returns
+ * @throw  
  * @todo
- * @link   --> @tutorial
+ * @see   --> @link @tutorial
  * @author
  * @version
  * @example
  * @discuss  --> @remind
+ * int array bool string
  */
 |[
 int fart = 5;               // @var
@@ -16,26 +18,32 @@ int fart = 5;               // @var
 const int markdown = 10;    // @var  --> @constant
 
 enum fuzzy{
-    PERHAPS,    // @var   --> @constant
+  PERHAPS,    // @var   --> @constant
 };
 union recipe{
-    size_t cuisine;         // @var  --> @field
+  size_t cuisine;         // @var  --> @field
 };
 
 
 
 ]|
 
+|+ Set Tab 2 spaces length +|
+|- Pros -|
+Facebook sets it 1 space; Google sets it 2 spaces;
+4 spaces is not good for doc commentary. 1 is so short;
+|- Cons -|
+Others set it 4 spaces
 |+ Use prefix form (++i/--i) rather than (i++/i--) +|
 |[
 const char * suck = "sucker";
 int rear;
 for(rear = 0; *(suck++); ++rear)
-    printf("%d,%c", rear, *suck);   // [s]  0,u  1,c  2,k  3,e  4,r  5,'\0'
+  printf("%d,%c", rear, *suck);   // [s]  0,u  1,c  2,k  3,e  4,r  5,'\0'
 printf("%d", rear); // 6   and now suck is in the addr. after '\0'
 suck -= rear + 1;   // *(suck) = s
 for(read = r; *(++suck); ++rear)
-    printf("%d,%c", rear, *suck);   // [s]  0,u  1,c  2,k  3,e  4,r
+  printf("%d,%c", rear, *suck);   // [s]  0,u  1,c  2,k  3,e  4,r
 printf("%d", rear); // 5  and now suck is in addr. '\0'
 suck -= rear + 1;   // *(suck) = s
 ]|
@@ -44,7 +52,7 @@ In PHP and C++, when the return value is ignored, (++i/--i) is more efficient.
 This is because (i++) requires a copy of i to be made. Especially it's an iterator.
 
 |+ Declaration Order: variables, methods; private, protected, public +|
-Use the specified order of declarations within a class: private protected public; data members (variables) before methods.
+Use the specified order of declarations within a class: private protected public; data  members (variables) before methods.
 |- Pros -|
 It's accepted in Facebook and it's more human readable.
 |- Cons -|

@@ -44,7 +44,8 @@ $("").load('.php', function(response, status, XMLHttpRequest){
         $("#err").html(XMLHttpRequest.status + xhr.statusText);
     }
 });
-
+$.ajax().done(function(){})
+        .fail(function(){});
 
 /**
  * @arg string event [click | submit]
@@ -79,6 +80,30 @@ $('nodes').hide([int speed_microsec][, "swing" | "linear"][, fn(){}])
  */
 $('nodes').toggle([int speed_microsec][, "swing" | "linear"][, fn(){}])
 $('nodes').toggle(fn_1st_click(), fn_2nd_click(), fn_3rd_click() ...)
+
+$('nodes').slideUp([int speed_microsec][, esing="swing"|"linear"][, fn()])
+$('nodes').slideDown([int speed_microsec][, esing="swing"|"linear"][, fn()])
+$('nodes').slideToggle([int speed_microsec][, esing="swing"|"linear"][, fn()])
+
+$('nodes').fadeIn([int speed_microsec][, easing="swing"|"linear"][, fn()])
+$('nodes').fadeOut([int speed_microsec][, easing="swing"|"linear"][, fn()])
+$('nodes').fadeToggle([int speed_microsec][, easing="swing"|"linear"][, fn()])
+$('nodes').fadeTo([int speed_microsec][, float opacity][, easing][, fn()])
+
+$('nodes').animate({params}[, int speed_microsec][, easing][, fn()])
+$('#occupy').animate({
+        width: "40%",
+        fontSize: "25px",
+        borderWidth: 10
+    },
+    1000, "swing", function(){}
+);
+
+$('#occupy').stop();        /* stop animation */
+
+$('nodes').slideUp(300).delay(800).fadeIn(400);
+
+
 
 $(function($){});            $(document).ready(function(){});
 

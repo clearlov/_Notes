@@ -1,9 +1,7 @@
-
 int listenfd;
 
-
 vDebug("socket()",
-    listenfd = socket(AF_INET, SOCK_STREAM, 0)
+  listenfd = socket(AF_INET, SOCK_STREAM, 0)
 );
 
 
@@ -17,7 +15,7 @@ i4.sin_family = AF_INET;
 i4.sin_port = htons(SERV_LISTEN_PORT);  // consult Little Endian and Big Endian
 inet_pton(AF_INET, "127.0.0.1", &i4.sin_addr); 
 vDebug("connect()",
-    connect(listenfd, (struct sockaddr *)&i4, sizeof(i4))
+  connect(listenfd, (struct sockaddr *)&i4, sizeof(i4))
 );
 
 
@@ -39,56 +37,40 @@ fds[1].events = POLLIN;
  *  3. peer TCP send RST, read() returns -1 with errno
  */
 for(;;){
-    
-    vDebug("poll()",
-        poll(fds, maxfd + 1, INFTIME)
-    );
-    if(fds[0].revents & POLLRDNORM){
-        if((n= read(listenfd, &results, sizeof(results))) > 0)
-            printf("Serv: %ld; n=read()=%d", results.sum, n);
+  vDebug("poll()",
+    poll(fds, maxfd + 1, INFTIME)
+  );
+  if(fds[0].revents & POLLRDNORM){
+    if((n= read(listenfd, &results, sizeof(results))) > 0)
+      printf("Serv: %ld; n=read()=%d", results.sum, n);
+  }
+  if(fds[1].revents & (POLLRDNORM | POLLERR)){
+    if( NULL != fgets(sendbuf, SERV_BUF_SIZE, stdin) ){
+      if(2 != sscanf(sendbuf, "%ld %ld", &args.arg1, &args.arg2)){
+        vDebug("shutdown()",
+          shutdown(listenfd, SHUT_WR)     // send FIN
+        );
+        printf("invalid input:%s", sendbuf);
+        continue;
+      }
+     
+       /**
+        * First write() to elicit[ɪˈlɪsɪt] the RST
+        */
+      vDebug("write()",
+        //write(listenfd, sendbuf, strlen(sendbuf))
+        write(listenfd, &args, sizeof(args))
+      );
+      args.arg1 += args.arg2;
+      args.arg2 *= args.arg1;
+       //sleep(1);
+       /**
+        * Second write() to generate a SIGPIPE in server. The default action of 
+        *  SIGPIPE is to terminate the process.
+        */
+      vDebug("write()",
+        write(listenfd, &args, sizeof(args))
+      );
     }
-    if(fds[1].revents & (POLLRDNORM | POLLERR)){
-        if( NULL != fgets(sendbuf, SERV_BUF_SIZE, stdin) ){
-            if(2 != sscanf(sendbuf, "%ld %ld", &args.arg1, &args.arg2)){
-                vDebug("shutdown()",
-                    shutdown(listenfd, SHUT_WR)     // send FIN
-                );
-                printf("invalid input:%s", sendbuf);
-                continue;
-            }
-            
-            /**
-             * First write() to elicit[ɪˈlɪsɪt] the RST
-             */
-            vDebug("write()",
-                //write(listenfd, sendbuf, strlen(sendbuf))
-                write(listenfd, &args, sizeof(args))
-            );
-            args.arg1 += args.arg2;
-            args.arg2 *= args.arg1;
-            //sleep(1);
-            /**
-             * Second write() to generate a SIGPIPE in server. The default action of 
-             *  SIGPIPE is to terminate the process.
-             */
-            vDebug("write()",
-                write(listenfd, &args, sizeof(args))
-            );
-        }
-    }
+  }
 }
-
-
-
-
-/**
- * IPv6
- */
-struct sockaddr_in6 i6;
-memset(&i6, 0, sizeof(i6)); // set to 0 using bzero()
-i6.sin6_family = AF_INET6;
-i6.sin6_posrt = htons(4950);
-inet_pton(AF_INET6, "2001:db8:8714:3a90::12", &i6.sin6_addr);
-
-
-

@@ -1,7 +1,7 @@
 #include <sys/types.h>
 
 /**
- *@link http://en.wikipedia.org/wiki/Unix_signal
+ *@see http://en.wikipedia.org/wiki/Unix_signal
  */
 enum signo{
     

@@ -147,14 +147,14 @@
  *  getsockopt(sockfd, IPPROTO_TCP, &opt_val, &len);
  */
 struct linger{
-    int l_onoff;    // 0=off, nonzero=on
-    int l_linger;   // linger time, POSIX specifies units as seconds
+  int l_onoff;    // 0=off, nonzero=on
+  int l_linger;   // linger time, POSIX specifies units as seconds
 };
 union opt_val{
-    int i_val; 
-    long l_val; 
-    struct linger linger_val; 
-    struct timeval timeval_val
+  int i_val; 
+  long l_val; 
+  struct linger linger_val; 
+  struct timeval timeval_val
 } opt_val;
 int getsockopt(int sockfd, int lvl, int opt_nm, void *opt_val, socklen_t *optlen)
 int setsockopt(int sockfd, int lvl, int opt_nm, const void *opt_val, socklen_t optlen)

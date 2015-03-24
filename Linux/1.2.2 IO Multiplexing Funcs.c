@@ -14,10 +14,10 @@
  */
 typedef struct{
 #ifdef __USE_XOPEN
-    __fd_maskfds_bits[__FD_SETSIZE/__NFDBITS];
+  __fd_maskfds_bits[__FD_SETSIZE/__NFDBITS];
 #define __FDS_BITS(set)((set)->fds_bits)
 #else
-    __fd_mask__fds_bits[__FD_SETSIZE/__NFDBITS];
+  __fd_mask__fds_bits[__FD_SETSIZE/__NFDBITS];
 #define __FDS_BITS(set)((set)->__fds_bits)
 #endif
 } fd_set;
@@ -48,8 +48,8 @@ void FD_ISSET(int fd, fd_set *fdset);
  * @disucss When an error occurs, it's marked as both readable and writable
  */
 struct timeval{
-    long tv_sec;
-    long tv_usec;   // microseconds
+  long tv_sec;
+  long tv_usec;   // microseconds
 }; 
 int select(int maxfd_add1, 
             fd_set *readset, fd_set *writeset, fd_set *exceptset,
@@ -58,8 +58,8 @@ int select(int maxfd_add1,
  * @arg sigmask 
  */
 struct timespec{
-    long tv_sec;
-    long tv_nsec;   // nanoseconds
+  long tv_sec;
+  long tv_nsec;   // nanoseconds
 }; 
 int pselect(int maxfd_add1,             
             fd_set *readset, fd_set *writeset, fd_set *exceptset,
@@ -95,9 +95,9 @@ int pselect(int maxfd_add1,
  */
 typedef unsigned long nfds_t; 
 struct pollfd{
-    int fd;
-    short events;       // interest
-    short revents;      // occurred
+  int fd;
+  short events;       // interest
+  short revents;      // occurred
 };
 int poll(struct pollfd * fds, nfds_t nfds, int timeout)
             

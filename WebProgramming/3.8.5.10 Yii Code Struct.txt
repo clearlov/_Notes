@@ -1,0 +1,12 @@
+|~~|
+/yiisoft
+  /yii2
+   /base
+   /web
+        
+  /yii2-bootstrap
+  /yii2-codeception
+  /yii2-debug
+  /yii2-faker
+  /yii2-gii
+  /yii2-swiftmailer

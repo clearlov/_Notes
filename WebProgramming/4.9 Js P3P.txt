@@ -1,8 +1,8 @@
 P3P(Platform for Privacy Preferences): Cross Domain Cookie Reading
 
 /**
- * http://www.w3.org/2002/04/P3Pv1-header.html
- * http://www.w3.org/P3P/details.html
+ * @see http://www.w3.org/2002/04/P3Pv1-header.html
+ * @see http://www.w3.org/P3P/details.html
  * @arg $p3p_header_compact_policy
  */
 |[

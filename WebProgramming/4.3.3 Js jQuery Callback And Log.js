@@ -1,4 +1,13 @@
 /**
+ * Callback
+ */
+var testis = function(){}
+$.Callback().add(testis);
+boolean $.Callback().has(testis);
+$.Callback().fire('testis');
+$.Callback().disable();
+
+/**
  * @return boolean | number | string | function | array | data | regexp
  */
 mixed $.type(mixed)

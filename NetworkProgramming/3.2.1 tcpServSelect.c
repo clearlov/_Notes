@@ -3,7 +3,7 @@
 
 int listenfd;
 vDebug("socket()", 
-    listenfd = socket(AF_INET, SOCK_STREAM, 0)
+  listenfd = socket(AF_INET, SOCK_STREAM, 0)
 );
 
 
@@ -16,7 +16,7 @@ i4.sin_port = htons(SERV_LISTEN_PORT);  // consult Little Endian and Big Endian
 // i4.sin_addr.s_addr = inet_addr("127.0.0.1");
 inet_pton(AF_INET, "127.0.0.1", &i4.sin_addr); 
 vDebug("bind()",
-    bind(listenfd, (const struct sockaddr*)&i4, sizeof(i4))
+  bind(listenfd, (const struct sockaddr*)&i4, sizeof(i4))
 );
 
 
@@ -29,7 +29,7 @@ struct sockaddr_storage sa_s;
 socklen_t sa_s_len = sizeof(sa_s);
 memset(&sa_s, 0, sa_s_len);
 vDebug("getsockname(sa_s)",
-    getsockname(listenfd, (struct sockaddr *) &sa_s, &sa_s_len)
+  getsockname(listenfd, (struct sockaddr *) &sa_s, &sa_s_len)
 );
 printf("ss_family: %d  ", sa_s.ss_family);
 
@@ -37,13 +37,13 @@ struct sockaddr_in sa_in;
 socklen_t sa_in_len = sizeof(sa_in);
 memset(&sa_in, 0, sizeof(sa_in));
 vDebug("getsockname(sa_in)",
-    getsockname(listenfd, (struct sockaddr *)&sa_in, &sa_in_len)
+  getsockname(listenfd, (struct sockaddr *)&sa_in, &sa_in_len)
 );
 //printf("family: %d  ", sa_in.sin_family);
 printf("sin_port: %d  ", sa_in.sin_port);
 if(!sa_in.sin_port > 0){
-    printf("port error");
-    exit(0);
+  printf("port error");
+  exit(0);
 }
 
 char i4_str[INET_ADDR_STRLEN];
@@ -52,7 +52,7 @@ printf("inet_ntop(sin_addr): %s\n", i4_str);
 
 
 vDebug("listen()",
-    listen(listenfd, SERV_LISTEN_QUEUES)
+  listen(listenfd, SERV_LISTEN_QUEUES)
 );
 
 ssize_t n;
@@ -75,60 +75,60 @@ maxi=-1;
 // client available
 #define CLI_AVL -1
 for(i=0; i<FD_SETSIZE; ++i)
-    clis[i] = CLI_AVL;            // -1 indicates avaliable entry
+  clis[i] = CLI_AVL;            // -1 indicates avaliable entry
 FD_ZERO(&allset);
 FD_SET(listenfd, &allset);
 
 
 for(;;){
-    rset = allset;
-    // printf("listenfd:%d; maxfd:%d\n", listenfd, maxfd);
-    vDebug("select()",
-        nready = select(maxfd+1, &rset, NULL, NULL, NULL)
-    );
-    /**
-     * new client connection
-     */
-    if(FD_ISSET(listenfd, &rset)){
-        cli_addr_len = sizeof(cli_addr_len);    // ipv4 or ipv6 for each
-        if(0 ==
-            vDebug("accpet()",
-                connfd = accpet(listenfd, &cli_addr, &cli_addr_len)
-            )
-        ) continue;
-        // set connfd into available clis[]
-        for(i=0; i< FD_SETSIZE; ++i){
-            if(clis[i] == CLI_AVL){
-                clis[i] = connfd;
-                break;
-            }
-        }
-        //printf("client[%d] on woking...\n", %i)
-        FD_SET(connfd, &allset);
-        if(connfd > maxfd)  maxfd = connfd;
-        if(i>maxi) maxi = i;
-        if(--nready <=0) continue;
+  rset = allset;
+  // printf("listenfd:%d; maxfd:%d\n", listenfd, maxfd);
+  vDebug("select()",
+    nready = select(maxfd+1, &rset, NULL, NULL, NULL)
+  );
+  /**
+   * new client connection
+   */
+  if(FD_ISSET(listenfd, &rset)){
+    cli_addr_len = sizeof(cli_addr_len);    // ipv4 or ipv6 for each
+    if(0 ==
+      vDebug("accpet()",
+        connfd = accpet(listenfd, &cli_addr, &cli_addr_len)
+      )
+    ) continue;
+    // set connfd into available clis[]
+    for(i=0; i< FD_SETSIZE; ++i){
+      if(clis[i] == CLI_AVL){
+        clis[i] = connfd;
+        break;
+      }
     }
-    for(i=0;i<=maxi;++i){
-        if((tempfd = client[i]) < 0)
-            continue;
-        if(FD_ISSET(tempfd, &rset)){
-            if( (n=read(tempfd, &args, sizeof(args))) <= 0){
-                vDebug("Serv close()",
-                    close(tempfd)
-                );
-                FD_CLR(tempfd);
-                clis[i] = CLI_AVL;
-            } else{
-                results.sum = args.arg1 + args.arg2;
-                printf("Cli(%d): %ld + %ld = ", tempfd, args.arg1, args.arg2);
-                printf("%ld\n", results.sum);
-                vDebug("write()",
-                    write(connfd, &results, sizeof(results))
-                );
-            }
-            if(--nready <=0)
-                break;
-        }
+    //printf("client[%d] on woking...\n", %i)
+    FD_SET(connfd, &allset);
+    if(connfd > maxfd)  maxfd = connfd;
+    if(i>maxi) maxi = i;
+    if(--nready <=0) continue;
+  }
+  for(i=0;i<=maxi;++i){
+    if((tempfd = client[i]) < 0)
+      continue;
+    if(FD_ISSET(tempfd, &rset)){
+      if( (n=read(tempfd, &args, sizeof(args))) <= 0){
+        vDebug("Serv close()",
+          close(tempfd)
+        );
+        FD_CLR(tempfd);
+        clis[i] = CLI_AVL;
+      } else{
+        results.sum = args.arg1 + args.arg2;
+        printf("Cli(%d): %ld + %ld = ", tempfd, args.arg1, args.arg2);
+        printf("%ld\n", results.sum);
+        vDebug("write()",
+          write(connfd, &results, sizeof(results))
+        );
+      }
+      if(--nready <=0)
+        break;
     }
+  }
 }

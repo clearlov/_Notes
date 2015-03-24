@@ -14,10 +14,10 @@ class DbMdl extends \yii\db\ActiveRecord{
 
 namespace app\controllers;
 $query_all = \yii\app\models\DbMdl::find()
-    ->orderBy('')
-    ->offset('')
-    ->limit('')
-    ->all();
+  ->orderBy('')
+  ->offset('')
+  ->limit('')
+  ->all();
 $query_one = \yii\app\models\DbMdl::findOne('');
 $qa_fld = $query_one->fld;
 $query_one->fld = 'Modify'; 
@@ -25,9 +25,9 @@ $query_one->save;       // save the modify
 
 
 class DemitForm extends Model{
-    public function rules(){
-        return [
-            [['param1', 'param2' ...], 'required']
-        ];
-    }
+  public function rules(){
+    return [
+      [['param1', 'param2' ...], 'required']
+    ];
+  }
 }

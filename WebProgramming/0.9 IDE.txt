@@ -1,0 +1,6 @@
+|~ PHPStorm~|
+|- Tab -|
+Code Style -> PHP
+Tab size Indent Continuation indent
+|- Remote Host -|
+Tools->Development->Browser Remote Host

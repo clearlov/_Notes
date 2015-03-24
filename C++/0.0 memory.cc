@@ -1,7 +1,7 @@
 /**
  *
- *@link http://www.ibm.com/developerworks/library/j-nativememory-aix/
- *@link http://www.c-sharpcorner.com/uploadfile/c210df/how-memory-is-managed-by-stack-and-heap/
+ *@see http://www.ibm.com/developerworks/library/j-nativememory-aix/
+ *@see http://www.c-sharpcorner.com/uploadfile/c210df/how-memory-is-managed-by-stack-and-heap/
 
 
 [Stack]
@@ -15,53 +15,53 @@
     DS register is a 16-bit register containing address of 64KB segment with program data.Index register (SI, DI) are used to access all data on data segment
     全局变量和静态变量的存储是放在一块的，初始化的全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。程序结束后由系统释放。
 [Code/Text segment]
-    Contains all the executable code.CS register is a 16-bit register containing address of 64 KB segment with processor instructions. CS + IP(instruction pointer) gives the access to all instruction in the code segment.
-        |-------------------------------|
-        |          Physical RAM         |
-        |-|-----------------------------|0xffffffffffffffff = 2^64
-        | | avaliable for stack growth  |[Stack Reserved]
-        |-|-----------------------------|0xffffffffffbf0000
-        |S| system                      |
-        |T| env-argv-argc               |
-        |A| auto varibles for main()    |[Stack]
-        |C| auto variables for func()   |
-        |K|                             |
-        |-|-----------------------------|
-        |S| malloc.o (lib*.so)          |[Shared Library]   
-        |L| printf.o (lib*.so)          |
-        |-|-----------------------------|0xfffff7ff00000000
-        | | avaliable for heap growth   |[Heap Reserved]
-        |-|-----------------------------|0x80100000000
-        |H| heap(malloc(),calloc(),new) |[Heap]
-        |-|-----------------------------|
-        |D| Unintial../Zero G/S Members |[Data] Uinitialized data - BSS Segment   
-        |T| Global/Static variables     |       Initialized data - Data Segment
-        |-|-----------------------------|
-        |T| malloc.o/printf.o (lib*.a)  |
-        |E| file.o                      |[Text]
-        |X| main.o func()               |================== the return address
-        |T| ctr0.o (startup routine()   |
-        |-|*****************************|0x100000000 = 16^8 = 2^32
-        | | OS Kernel                   |
-        |-|-----------------------------|0x0
+  Contains all the executable code.CS register is a 16-bit register containing address of 64 KB segment with processor instructions. CS + IP(instruction pointer) gives the access to all instruction in the code segment.
+    |-------------------------------|
+    |          Physical RAM         |
+    |-|-----------------------------|0xffffffffffffffff = 2^64
+    | | avaliable for stack growth  |[Stack Reserved]
+    |-|-----------------------------|0xffffffffffbf0000
+    |S| system                      |
+    |T| env-argv-argc               |
+    |A| auto varibles for main()    |[Stack]
+    |C| auto variables for func()   |
+    |K|                             |
+    |-|-----------------------------|
+    |S| malloc.o (lib*.so)          |[Shared Library]   
+    |L| printf.o (lib*.so)          |
+    |-|-----------------------------|0xfffff7ff00000000
+    | | avaliable for heap growth   |[Heap Reserved]
+    |-|-----------------------------|0x80100000000
+    |H| heap(malloc(),calloc(),new) |[Heap]
+    |-|-----------------------------|
+    |D| Unintial../Zero G/S Members |[Data] Uinitialized data - BSS Segment   
+    |T| Global/Static variables     |       Initialized data - Data Segment
+    |-|-----------------------------|
+    |T| malloc.o/printf.o (lib*.a)  |
+    |E| file.o                      |[Text]
+    |X| main.o func()               |================== the return address
+    |T| ctr0.o (startup routine()   |
+    |-|*****************************|0x100000000 = 16^8 = 2^32
+    | | OS Kernel                   |
+    |-|-----------------------------|0x0
 
-        
-        |-------------------------------|
-        | Process(a.out) AIX Virtual Mem|
-        |-------------------------------|0xff..ff = 0xffffffffffff
-        | Shared Library Data           |
-        | Shared / Mapped               |
-        | Shared Library Text           |
-        |-------------------------------|
-        | point to Page file            |
-        | point to Physical RMA         |[Shared/Mapped Storage]
-        | point to File System -> a.out |   {a.out b.out ...}
-        |-------------------------------|
-        | Stack + Data                  |
-        |-------------------------------|
-        | App Text Kernel               |
-        |-------------------------------|0x0
-        
+    
+    |-------------------------------|
+    | Process(a.out) AIX Virtual Mem|
+    |-------------------------------|0xff..ff = 0xffffffffffff
+    | Shared Library Data           |
+    | Shared / Mapped               |
+    | Shared Library Text           |
+    |-------------------------------|
+    | point to Page file            |
+    | point to Physical RMA         |[Shared/Mapped Storage]
+    | point to File System -> a.out |   {a.out b.out ...}
+    |-------------------------------|
+    | Stack + Data                  |
+    |-------------------------------|
+    | App Text Kernel               |
+    |-------------------------------|0x0
+      
         
 */
 

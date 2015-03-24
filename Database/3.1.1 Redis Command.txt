@@ -1,6 +1,6 @@
 |+ KEYS +|
 /**
- * http://redis.io/commands/scan
+ * @see http://redis.io/commands/scan
  * db> keys *    
  * The SCAN command and the closely related commands SSCAN, HSCAN and ZSCAN are used in order to incrementally iterate over a collection of elements.
     SCAN iterates the set of keys in the currently selected Redis database.

@@ -1,5 +1,5 @@
 /**
- * @link http://en.wikipedia.org/wiki/Transmission_Control_Protocol
+ * @see http://en.wikipedia.org/wiki/Transmission_Control_Protocol
  */
 TCP contains algorithms['ælgərɪðəm] to estimate['estɪmeɪt] the Round-Trip Time (RTT) between a client and server dynamically so that is knows how long to wait for an acknowledgment.
 |---------------- ----------------|0   it a 32bit sys, 1 word = Databus = 32bits
@@ -118,7 +118,7 @@ the MSS should be set small enough to avoid IP fragmentation,
 |+ MSL(Maximum Segment Lifetim) (32 bits)+|
 |+ Window Scale (24 bits) +|
 /**
- * @link http://en.wikipedia.org/wiki/TCP_window_scale_option
+ * @see http://en.wikipedia.org/wiki/TCP_window_scale_option
  */
 a Window Size field (16 bits) is limited to [2,65535] bytes. Scale it with Win
 -dow Scale Option to increase from [65535, 1Gigabyte]

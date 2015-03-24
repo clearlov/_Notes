@@ -1,6 +1,6 @@
 <?php
 /**
- *@link http://php.net/manual/zh/class.reflection.php
+ *@see http://php.net/manual/zh/class.reflection.php
  */
 interface Reflector{
     public static export();
@@ -13,21 +13,21 @@ abstract class Reflection{
 }
 
 /**
- *@link http://php.net/manual/zh/class.reflectionclass.php
+ *@see http://php.net/manual/en/class.reflectionclass.php
  */
 class ReflectionClass implements Reflector{
      
 }
 
 /**
- *@link http://php.net/manual/zh/class.reflectionproperty.php
+ *@see http://php.net/manual/zh/class.reflectionproperty.php
  */
 class ReflectionProperty implements Reflector{
     
 }
 
 /**
- *@link http://php.net/manual/zh/class.reflectionobject.php
+ *@see http://php.net/manual/zh/class.reflectionobject.php
  */
 class ReflectionObject extends ReflectionClass implements Reflector{
     

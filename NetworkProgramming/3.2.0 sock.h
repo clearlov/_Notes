@@ -38,13 +38,13 @@
  *  binary struct instead.
  */
 struct args {
-    long arg1;
-    long arg2;
+  long arg1;
+  long arg2;
 };
 struct results {
-    char in_addr[INET_ADDR_STRLEN];
-    char in6_addr[INET_ADDR_STRLEN];
-    long sum;
+  char in_addr[INET_ADDR_STRLEN];
+  char in6_addr[INET_ADDR_STRLEN];
+  long sum;
 };
 
 /**
@@ -52,14 +52,14 @@ struct results {
  * @arg int deprive 0 on success; 1 on error
  */
 int vDebug(const char*msg, int deprive){
-    if(deprive<0){
-        if(errno == EINTR){
-            printf("errno==EINTR\n");
-            return 0;
-        }
-        printf("%s errno:%d(%s)\n", msg, errno, strerror(errno));
-        exit(EXIT_FAILURE);
-        return -1;
+  if(deprive<0){
+    if(errno == EINTR){
+      printf("errno==EINTR\n");
+      return 0;
     }
-    return 1;
+    printf("%s errno:%d(%s)\n", msg, errno, strerror(errno));
+    exit(EXIT_FAILURE);
+    return -1;
+  }
+  return 1;
 }
