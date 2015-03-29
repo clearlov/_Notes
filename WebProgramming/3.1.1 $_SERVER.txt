@@ -32,3 +32,21 @@ $_SERVER['REQUEST_TIME']
 |- $_SERVER['HTTP_USER_AGENT'] -|
     User-Agent:Mozilla/5.0 (Windows NT 6.3; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0
 |- $_SERVER['HTTPS'] -|
+
+|- $_SERVER['HTTP_RANGE'] -|
+|[
+ranges-specifier = byte-ranges-specifier
+byte-ranges-specifier = bytes-unit “=” byte-range-set
+byte-range-set = 1#( byte-range-spec | suffix-byte-range-spec )             
+byte-range-spec = first-byte-pos “-” [last-byte-pos]
+first-byte-pos = 1*DIGIT
+last-byte-pos = 1*DIGIT
+]|
+/**
+ * Client call "Range: bytes=0-500", Server needs response 0-500 bits, and with
+ *  a Content Range: bytes 0-500/1000    1000 is total file size
+ */
+Range: bytes=0-500      /* 0 to 500, 501 bits */
+Range: bytes=500-       /* bits after bit 500 */
+Range: bytes=-500       /* last 500 bits */
+Range: bytes=0-0, -1    /* first bit and last bit*/

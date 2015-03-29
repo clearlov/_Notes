@@ -1,16 +1,37 @@
 <?php
 namespace app\controllers;
-use Yii;
-use yii\filters\AccessControl;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
-class AnonymousController extends Controller{
+class NitCtrl extends Controller{
+  /**
+   * @extends \yii\base\Controller::defaultAction
+   */
+  public $defaultAction = 'index';
+  /**
+   * @extends \yii\base\Component::behaviors()
+   */
+  public function behaviors(){
+      return [
+          'access' => [
+              'class' => AccessControl::className(),
+              'only' => ['logout'],
+              'rules' => [
+                  [
+                      'actions' => ['logout'],
+                      'allow' => true,
+                      'roles' => ['@'],
+                  ],
+              ],
+          ],
+          'verbs' => [
+              'class' => VerbFilter::className(),
+              'actions' => [
+                  'logout' => ['post'],
+              ],
+          ],
+      ];
+  }
   
   /**
-   * Standalone Actions
-   * extends \yii\base\Action, 
+   * @extends \yii\base\Controller::actions()
    * e.g. \yii\web\ViewAction \yii\web\ErrorAction are all standalone actions
    */
   public function actions(){
@@ -23,8 +44,11 @@ class AnonymousController extends Controller{
       ],
     ];
   }
-  
-  public function anonymousView($param1, $param2 = null){
+  /**
+   * @example
+   *  ?r=nit-ctrl/sec&arg1=&arg2=
+   */
+  public function actionSec($arg1, $arg2 = null){
       
   }
 }

@@ -31,7 +31,7 @@ fds[1].fd = fileno(stdin);
 fds[1].events = POLLIN;
 
 /**
- * @discuss the conditions are handled with the socket
+ * @note the conditions are handled with the socket
  *  1. peer TCP sends data, read() returns > 0
  *  2. peer TCP sends FIN, read() returns EOF
  *  3. peer TCP send RST, read() returns -1 with errno

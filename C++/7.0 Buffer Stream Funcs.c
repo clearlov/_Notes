@@ -12,7 +12,7 @@
  */
 int read(int file_descriptor, void * buf, size_t bytes_of_buf)
 /**
- * @discuss errno:9(Bad file descriptor)
+ * @note errno:9(Bad file descriptor)
  *  
  */
 int write(int file_descriptor, void * buf, size_t bytes_of_buf)

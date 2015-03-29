@@ -2,9 +2,6 @@
 /**
  * install pdo and pdo_mysql
  */
-
-
-
 namespace app\models;
 /**
  * You do not need to write any code inside of it! With just the above code, Yii will guess the associated table name from the class name.
@@ -29,5 +26,14 @@ class DemitForm extends Model{
     return [
       [['param1', 'param2' ...], 'required']
     ];
+  }
+  /**
+   * @extends \yii\base\Model::attributeLabels()
+   */
+  public function attributeLabels(){
+        return [
+            'verifyCode' => 'Verification Code',
+            'email' => \Yii::t('app', 'Email Addr.'),
+        ];
   }
 }

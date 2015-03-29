@@ -34,7 +34,7 @@
 #define INET_ADDR_STRLEN    16
 /**
  * Passing Binary Structures
- * @discuss long is diff in diff host, so we can't pass value by long. Passing 
+ * @note long is diff in diff host, so we can't pass value by long. Passing 
  *  binary struct instead.
  */
 struct args {
@@ -48,7 +48,7 @@ struct results {
 };
 
 /**
- * @discuss true on 1; false on 0; 0 == -1  is 0
+ * @note true on 1; false on 0; 0 == -1  is 0
  * @arg int deprive 0 on success; 1 on error
  */
 int vDebug(const char*msg, int deprive){
