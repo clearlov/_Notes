@@ -159,17 +159,28 @@ sh$ sudo make install
  * http://sourceforge.net/projects/mcrypt/files/Libmcrypt/
  */
 sh$ wget http://sourceforge.net/projects/mcrypt/files/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz
-sh$ ./configure --prefix=/usr/local/libmcrypt
-sh$ sudo make && make install
-sh$ sudo ln -s /usr/local/bin/libmcrypt_config /usr/bin/libmcrypt_config
-sh$ cat /usr/local/bin/libmcrypt_config
+sh$ sudo ./configure
+sh$ sudo make
+sh$ sudo make install
+sh$ cat /usr/local/bin/libmcrypt-config
 |[
 prefix=/usr/local
 ]|
+sh$ sudo ln -s /usr/local/bin/libmcrypt-config /usr/bin/libmcrypt-config
 sh$ export LD_LIBRARY_PATH=/usr/local/lib: LD_LIBRARY_PATH
 
 sh$ wget http://sourceforge.net/projects/mhash/files/mhash/0.9.9.9/mhash-0.9.9.9.tar.gz
+sh$ sudo ./configure
+
 
 sh$ wget http://sourceforge.net/projects/mcrypt/files/MCrypt/2.6.8/mcrypt-2.6.8.tar.gz
-sh$ sudo ./configure --with-libmcrypt-prefix=/usr/local
+sh$ sudo LD_LIBRARY_PATH=/usr/local/lib ./configure
 sh$ sudo make && make install
+
+|- Download a PHP file -|
+sh$ cd php-5.4.39/ext/mcrypt
+sh$ phpize
+sh$ whereis php-config
+sh$ sudo ./configure --with-php-config=/usr/bin/php-config
+sh$ sudo make && make install
+

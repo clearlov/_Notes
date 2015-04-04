@@ -1,3 +1,12 @@
+|~ Wildcard character %_ ~|
+%  ==>  one or more characters
+_  ==>  one characters
+[] ==>  char range
+[^] [!]  ==> not in the range
+db> SELECT * FROM tb WHERE fld like '%Lef_Well%';   /* error */
+db> SELECT * FROM tb WHERE fld like '%Lef\_Well%'; 
+
+
 |+ Dinstinct and count(dinstinct fld) +|
 db> select distinct $fld from $tb;    /* dinstict */
 db> select count(dinstinct $fld) from $tb;

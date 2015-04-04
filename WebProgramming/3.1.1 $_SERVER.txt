@@ -1,3 +1,18 @@
+/**
+ * @see http://php.net/manual/en/reserved.variables.server.php
+ */
+ 
+/**
+ * The absolute pathname of the currently executing script.
+ * @note
+ *  By web server, $_SERVER['SCRIPT_FILENAME'] is same as __FILE__
+ *  except php-cli run php ./index.php
+ *    $_SERVER['SCRIPT_FILENAME'] returns "./index.php"
+ *    __FILE__ returns "/www/html/index.php"
+ */ 
+$_SERVER['SCRIPT_FILENAME']
+
+
 |~~|
 |+ session hijacking +|
     if($_SESSION['http_user_agent'] != $_SERVER['HTTP_USER_AGENT']){ ... }

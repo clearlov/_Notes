@@ -1,3 +1,8 @@
+|~ Add An User Under /home/www ~|
+sh$ sudo /usr/sbin/groupadd -f www
+sh$ sudo /usr/sbin/useradd -g www www
+sh$ sudo passwd www 
+
 |~ Nginx ~|
 /* http://wiki.nginx.org/Install */
 sh$ sudo rpm -ivh  http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
@@ -5,17 +10,23 @@ sh$ sudo rpm -ivh  http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-
 
 /* it'll list the newest stable Nginx, but not Mainline */
 sh$ sudo yum list | grep nginx
-sh$ sudo yum install nginx
+sh$ sudo yum install nginx*
+
+sh$ sudo userdel nginx
+sh$ sudo groupdel nginx
+sh$ sudo vim /etc/nginx/nginx.conf
+|[
+user www
+root /home/www/html
+]|
+
 sh$ sudo service nginx start
 # sudo systemctl start nginx.service
 sudo systemctl enable nginx.service
 
 sh$ nginx -t
 
-sh$ sudo /usr/sbin/groupadd -f www
-sh$ sudo /usr/sbin/useradd -g www www
-sh$ sudo usermod -l www nginx    /* modify user nginx into www */
-sh$ sudo groupmod -n www nginx
+
 
 /**
  * Don't set html document root under '/home/lef', otherwise it'll display 304

@@ -81,7 +81,7 @@ sh$ sudo service mysqld restart
 |+ Installing Additional MySQL Components +|
 sh$ sudo yum --disablerepo=\* --enablerepo='mysql*-community*' list available
 |[
-sh$ sudo yum -y install mysql-community-bench.x86_64 mysql-community-client.x86_64 mysql-community-common.x86_64 mysql-community-devel.x86_64 mysql-community-embedded.x86_64 mysql-community-embedded-devel.x86_64 mysql-community-libs.x86_64 mysql-community-server.x86_64 mysql-community-test.x86_64 mysql-workbench-community.x86_64
+sh$ sudo yum -y install mysql-community-bench.x86_64 mysql-community-client.x86_64 mysql-community-common.x86_64 mysql-community-devel.x86_64 mysql-community-embedded.x86_64 mysql-community-embedded-devel.x86_64 mysql-community-libs.x86_64 mysql-community-server.x86_64 mysql-community-test.x86_64
 ]|
 
 sh$ sudo yum update mysql-server

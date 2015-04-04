@@ -1,0 +1,2 @@
+<?php
+namesapce app\assets;

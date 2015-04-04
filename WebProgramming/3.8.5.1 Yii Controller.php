@@ -11,7 +11,10 @@ class NitCtrl extends Controller{
   public function behaviors(){
       return [
           'access' => [
-              'class' => AccessControl::className(),
+              /**
+               * Filter
+               */
+              'class' => \yii\filters\AccessControl::className(),
               'only' => ['logout'],
               'rules' => [
                   [
@@ -22,7 +25,7 @@ class NitCtrl extends Controller{
               ],
           ],
           'verbs' => [
-              'class' => VerbFilter::className(),
+              'class' => \yii\filters\VerbFilter::className(),
               'actions' => [
                   'logout' => ['post'],
               ],

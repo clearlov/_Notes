@@ -5,7 +5,7 @@ namespace yii\db;
  */
 class ActiveRecord extends BaseActiveRecord{
   public:
-    self loadDefaultValue($skip_if_set = true)
+    this loadDefaultValue($skip_if_set = true)
     static object getDb():= Yii::$app->getDb()
     /**
      * ::findBySql('SELECT DINSTINCT id FROM tb')->all()
@@ -17,6 +17,7 @@ class ActiveRecord extends BaseActiveRecord{
     static findByCondition(mixed $cond, bool $one)
     
     static updateAll(string|array $attr, $cond = '', $args = [])
+    static string tableName()
 }
 
 abstract class BaseActiveRecord extends \yii\base\Model 
@@ -96,26 +97,25 @@ class Model extends Component
     
     array scenarios()
     string formName()
-    array attributes()
-    /**
-     * @return [name=>friendly_name]
-     */
-    array attributeLabels()
+    array attributes():= ReflectionClass($this)
+      ->getProperties(\ReflectionProperty::IS_PUBLIC)->!isStatic()->getName()[]
+      
+    [args=>friendly_name] attributeLabels()
     string getAttributeLabel($attr)
     string generateAttributeLabel($nm):= Inflector::camel2words($name, true)
     
     
     
-    bool validate($attrNms = null, $clrErrors = true)
+    bool validate($attr_nms = null, $clr_errs = true)
     bool beforeValidate()
     afterValidate()
 
 
-    bool isAttributeRequired($attribute)
-    bool isAttributeSafe($attribute)
+    bool isAttributeRequired($attr)
+    bool isAttributeSafe($attr)
     bool isAttributeActive($attr)
 
-    addError($attr, $error = '')
+    addError($attr, $err = '')
     addErrors(array $items)
     bool hasErrors($attr = null)
     /**
@@ -133,17 +133,24 @@ class Model extends Component
     string getFirstError($attr)
     clearErrors($attr = null)
     
+    array safeAttributes():= scenario()[getScenario()]{0} != '!'
+    array activeAttributes()
+    
+    
     array getAttributes($nms = null, $except = [])
-    setAttributes($values, $safe_only = true)
+    
+    
+    setAttributes($posts, $safe_only = true):= $this->${$posts[k]} = $posts[v]
     onUnsafeAttribute($nm, $val)
     string getScenario()
     setScenario($val)
-    array safeAttributes()
-    array activeAttributes()
-    bool load($data, $form_nm = null)
+   
+    
+    bool load($data, $form_nm = formName())
+      := $form_nm ==='' ? setAttributes($data) : setAttributes($data[$form_nm])  
     static bool loadMultiple($models, $data, $form_nm = null)
     static bool validateMultiple($models, $attr_nms = null)
-    array fields()
+    array fields():= array_combine(attributes(), attributes())
     array getIterator()
     
     bool offsetExists($offset)

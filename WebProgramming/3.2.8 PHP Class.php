@@ -1,4 +1,31 @@
 <?php
+
+/**
+ * static:: = parent:: + self::(will overwrite parent) 
+ */
+class Abase
+{
+  public function prissy(){
+    return new self();    // Abase always, not its derived class
+  }
+  public function fervent(){
+    return new static(); 
+  }
+}
+class Backer extends Abase{}
+$backer = new Backer;
+$backer->prissy();  // new Abase()
+$backer->fervent(); // new Backer()
+
+
+
+
+
+
+mixed call_user_func(string $func[, mixed $arg1[, $arg2...]]):= $func($args)
+
+
+
 int func_num_args()
 mixed func_get_arg($arg_num)
 array func_get_args()
