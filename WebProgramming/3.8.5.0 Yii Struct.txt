@@ -18,3 +18,13 @@
                 YII_ENABLE_ERROR_HANDLER specifies whether to enable the error handler provided by Yii
  /app2.php    another application     /web/app2.php?r=ctrl/action
 ]|
+
+|~ Alias ~|
+@yii, the directory where the BaseYii.php file is located (also called the framework directory).
+@app, the base path of the currently running application.
+@runtime, the runtime path of the currently running application. Defaults to @app/runtime.
+@webroot, the Web root directory of the currently running Web application. It is determined based on the directory containing the entry script.
+@web, the base URL of the currently running Web application. It has the same value as yii\web\Request::$baseUrl.
+@vendor, the Composer vendor directory. Defaults to @app/vendor.
+@bower, the root directory that contains bower packages. Defaults to @vendor/bower.
+@npm, the root directory that contains npm packages. Defaults to @vendor/npm.

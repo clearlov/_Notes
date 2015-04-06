@@ -18,6 +18,10 @@
  * 
  */
 |[
+
+char leadPoisoning(int &value_result){
+}
+
 int fart = 5;               // @var
 #define profound 100        // @var  --> @define
 const int markdown = 10;    // @var  --> @constant

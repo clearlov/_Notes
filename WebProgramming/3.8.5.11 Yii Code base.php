@@ -8,6 +8,7 @@ class BaseYii
   static object createObject($type, $args = []):= static::$container->get($type, $args)
   static yii\log\Logger getLogger():= static::createObject('yii\log\Logger')
   static info($msg, $category = 'application'):= static::getLogger()->log()
+  static trace($msg, $category = 'application'):= getLogger()->log()
 }
 
 /*******************************************************************************
