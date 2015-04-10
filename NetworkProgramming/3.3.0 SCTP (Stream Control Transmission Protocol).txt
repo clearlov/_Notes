@@ -5,13 +5,13 @@ Association: refers to a communication between two systems, which may involve mo
 ]|
 
 |~ Compare With TCP ~|
-          write(0)         Nagle Algorithm
-[TCP Cli] write(1) o----- Network(connection) ------o read() [TCP Serv]
+          write(0)         Nagle Algorithm            read(0)
+[TCP Cli] write(1) o----- Network(connection) ------o read(x) [TCP Serv]
           write(n)
              
-            write(0)                    |- Stream 0 -|        read(0)
-        o-  write(1) - Network 0 [Peer] |- Stream 1 -| [Peer] read(1) -o
-            write(n)                    |- Stream n -|        read(n)
+          sctp_sendmsg(0)       |- Stream 0 -|       sctp_recvmsg(0)
+        o-sctp_sendmsg(1)-[Peer]|- Stream 1 -|[Peer] sctp_recvmsg(1)-o
+          sctp_sendmsg(n)       |- Stream n -|       sctp_recvmsg(n)
 [SCTP A]o-                                                          -o[SCTP B]
                                                       
         o-            Network n - Streams                           -o

@@ -10,7 +10,7 @@ enum LefAddrFamily{
 enum LefSockType{
   SOCK_STREAM,    // stream TCP  
   SOCK_DGRAM,     // datagram UDP 
-  SOCK_SEQPACKET, // sequenced packet
+  SOCK_SEQPACKET, // sequenced packet SCTP
   SOCK_RAW,       // raw
 };
 enum LefProtocolType{

@@ -1,22 +1,22 @@
 /**
  * @arg int lvl{opt}
  *  SOL_SOCKET
- *      SO_BROADCAST
- *      SO_DEBUG TCP only
- *      SO_DONTROUTE
- *      SO_ERROR
- *      SO_KEEPALIVE if no data exchanged for 2 hours, TCP automatically sends a
- *       "keep-alive probe"(a TCP segment) to the peer, the peer must respond
- *       1 If the peer responds with an ACK, but is not notified. Resend probe
- *       2 If the peer responds with an RST, socket is closed with ECONNNRESET
- *       3 If no response, TCP sends 8 more probes, 75 seconds apart. TCP'll
+ *    SO_BROADCAST
+ *    SO_DEBUG TCP only
+ *    SO_DONTROUTE
+ *    SO_ERROR
+ *    SO_KEEPALIVE if no data exchanged for 2 hours, TCP automatically sends a
+ *      "keep-alive probe"(a TCP segment) to the peer, the peer must respond
+ *      1 If the peer responds with an ACK, but is not notified. Resend probe
+ *      2 If the peer responds with an RST, socket is closed with ECONNNRESET
+ *      3 If no response, TCP sends 8 more probes, 75 seconds apart. TCP'll
  *          give up if no response within 11 minutes and 15 seconds, the socket
  *          is closed with ETIMEDOUT
- *      SO_LINGER see struct linger{} below
- *       1 If l_onoff=0, SO_LINGER turns off. close() returns immediately
- *       2 If l_linger=0, TCP discards any data still remaining in the socket
+ *    SO_LINGER see struct linger{} below
+ *      1 If l_onoff=0, SO_LINGER turns off. close() returns immediately
+ *      2 If l_linger=0, TCP discards any data still remaining in the socket
  *          send buffer and sends an RST to the peer, not the normal 4-packet.
- *       3 If l_onoff is on, l_linger>0, kernel lingers when socket is closed.
+ *      3 If l_onoff is on, l_linger>0, kernel lingers when socket is closed.
  *          If there's any data still remaining in the socket send buffer, the
  *          process is put to sleep until either:
  *            (1) all the data is sent and acknowledged by the peer TCP;
@@ -65,8 +65,8 @@
  *       | read() returns 0
  *       |                     --ACK N+1-->
  *       +---------------------------------|-----------------------------------+
- *      SO_OOBINLINE
- *      SO_RCVBUF advertised window; TCP [8192,61440]; UDP[,9000,]
+ *    SO_OOBINLINE
+ *    SO_RCVBUF advertised window; TCP [8192,61440]; UDP[,9000,]
  *       It must be set before connect()/listen() coz of TCP Window Scale
  *       It should be more than 4 times the MSS.
  *       +---------------------------------------------------------------------+
@@ -81,23 +81,23 @@
  *        copy of each segment until the ACK is received.
  *       BandWidth-Delay Product: The capability of a pipe.
  *        BWDP = bandwidth bit/sec * RTT sec * 8 bit/byte
- *      SO_RCVLOWAT
- *      SO_SNDBUF
- *      SO_SNDLOWAT
- *      SO_REUSEADDR allow a port to bind multiple address
- *       e.g. 192.168.0.10:80 127.0.0.1:80 ...
- *      SO_PORT
- *      SO_USELOOPBACK default ON, make socket receives a copy of everything
+ *    SO_RCVLOWAT
+ *    SO_SNDBUF
+ *    SO_SNDLOWAT
+ *    SO_REUSEADDR allow a port to bind multiple address
+ *      e.g. 192.168.0.10:80 127.0.0.1:80 ...
+ *    SO_PORT
+ *    SO_USELOOPBACK default ON, make socket receives a copy of everything
  *       sent on the socket. It applies only to sockets in the AF_ROUTE.
  *  IPPROTO_IP
  *  IPPROTO_ICMPV6
  *  IPPROTO_IPV6
  *  IPPROTO_IP
  *  IPPROTO_TCP
- *      TCP_MAXSEG
- *      TCP_NODELAY disables TCP's Nagle algorithm; default enabled; Nagle algo
- *       -rithm is to reduce packets smaller than the MSS on a WAN.
- *       E.g. we send "Hi@Lef" 250ms for each char, and the RTT is 600ms. 
+ *    TCP_MAXSEG
+ *    TCP_NODELAY disables TCP's Nagle algorithm; default enabled; Nagle algo
+ *      -rithm is to reduce packets smaller than the MSS on a WAN.
+ *      E.g. we send "Hi@Lef" 250ms for each char, and the RTT is 600ms. 
  *       +---------------------------------------------------------------------+
  *       | TCP_NODELY=1, disables Nagle, send data regularly
  *       |                        0--H-->
@@ -138,6 +138,31 @@
  *        1. Use writev() instead of two calls to write()
  *        2. Copy data A and B into a single buffer with write() once
  *  IPPROTO_SCTP
+ *    SCTP_EVENTS with (const struct sctp_event_subscribe *) opt_val
+ *      @see http://osxr.org/linux/source/include/uapi/linux/sctp.h#393
+ *      struct sctp_event_subscribe{
+ *        __u8 sctp_data_io_event; // allow to see the sctp_sndrcvinfo{}
+ *        __u8 sctp_association_event;
+ *        __u8 sctp_address_event;
+ *        __u8 sctp_send_failure_event;
+ *        __u8 sctp_peer_error_event;
+ *        __u8 sctp_shutdown_event;
+ *        __u8 sctp_partial_delivery_event;
+ *        __u8 sctp_adaptation_layer_event;
+ *        __u8 sctp_authentication_event;
+ *        __u8 sctp_sender_dry_event;
+ *      };
+ *      struct sctp_sndrcvinfo {
+ *        __u16 sinfo_stream;       // stream number
+ *        __u16 sinfo_ssn;
+ *        __u16 sinfo_flags;
+ *        __u32 sinfo_ppid;         // peer id
+ *        __u32 sinfo_context;
+ *        __u32 sinfo_timetolive;
+ *        __u32 sinfo_tsn;
+ *        __u32 sinfo_cumtsn;
+ *        sctp_assoc_t sinfo_assoc_id;
+ *      };
  * @arg int opt_nm
  * @arg void *opt_val
  * @return int 0 on success; -1 on error with errno
@@ -156,5 +181,5 @@ union opt_val{
   struct linger linger_val; 
   struct timeval timeval_val
 } opt_val;
-int getsockopt(int sockfd, int lvl, int opt_nm, void *opt_val, socklen_t *optlen)
-int setsockopt(int sockfd, int lvl, int opt_nm, const void *opt_val, socklen_t optlen)
+int getsockopt(int sockfd, int lvl, int opt_nm, void *opt, socklen_t *optlen)
+int setsockopt(int sockfd, int lvl, int opt_nm, const void *opt, socklen_t optlen)
