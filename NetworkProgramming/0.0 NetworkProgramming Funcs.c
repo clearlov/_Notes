@@ -55,8 +55,10 @@ int memcmp(const void *ptr1, const void *ptr2, size_t nbytes);
 int inet_pton(sa_family_t LefAddrFamily, const char *ip_str, void *dst_struct)
 
 /**
- * @arg numeric_addr_ptr struct sockaddr_in/sockaddr_in6 s; &s.sin_family
+ * @arg numeric_addr_ptr is struct sockaddr_in/sockaddr_in6;
  * @return object ptr to result if OK, NULL on error
+ * @note
+ *  inet_ntop(i4.sin_family, &i4, rtn_str, sizeof(rtn_str));
  */
 #define INET_ADDR_STRLEN    16  /* for IPv4 dotted-decimal */
 #define INET6_ADDR_STRLEN   46  /* for IPv6 hex string */

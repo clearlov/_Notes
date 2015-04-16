@@ -2,6 +2,7 @@
 /**
  * @var   --> @field  @constant  @define
  * @arg   --> @argument/@param
+ * @arg/return  --> value-result
  * @return  --> @returns
  * @throw  
  * @todo

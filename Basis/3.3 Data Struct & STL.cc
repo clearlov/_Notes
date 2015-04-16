@@ -27,8 +27,10 @@ vector<int> canonical{1,2,3,4};
 list<T> canonical()
 
 
-
-deque<>
+/**
+ * 
+ */
+deque<T> 
 
 /**
  * non-repeatable

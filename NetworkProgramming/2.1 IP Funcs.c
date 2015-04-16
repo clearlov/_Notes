@@ -1,5 +1,109 @@
 #include <netdb.h>
-struct hostent{   // host entry
+
+struct addrinfo{
+  /**
+   * @var 
+   *  AI_PASSIVE
+   *  AI_CANONNAME needs return the canonical name
+   *  AI_NUMERICHOST only accept a dotted-decimal(IPv4) or hext string for
+   *    arg const char *host
+   *  AI_NUMERICSERV only accept a decimal port for arg const char *service;
+   *  AI_V4MAPPED
+   *  AI_ALL
+   *  AI_ADDRCONFIG
+   */
+  int ai_flags; // can specify more than one times
+  /**
+   * @var
+   *  AF_UNSPEC
+   *  AF_INET6
+   *  AF_INET
+   */
+  int ai_family;
+  int ai_socktype;        // SOCK_STREAM  SOCK_DGRAM  SOCK_SEQPACKET
+  int ai_protocol;        // 0 or IPPROTO_TCP  IPPROTO_UDP  IPPROTO_SCTP
+  socklen_t ai_addrlen;
+  char *ai_canonname;
+  struct sockaddr *ai_addr; // sockaddr_in{}  sockaddr_in6{}  sockaddr_un{} ...
+  struct addrinfo *ai_next;
+};
+/**
+ * Despite the fact that getaddrinfo() is harder than gethostbyname() and 
+ *  getservbyname(), it's still more useful.
+ * @arg const char *host is either a host name or an dotted-decimal string 
+ *  for IPv4 or a hex string for IPv6
+ * @arg const char *service is either a service name or a decimal port number
+ * @arg const struct addrinfo hints can be a null ptr
+ * @arg/return struct addrinfo **result all the storage are obtained dynamically.
+ *  e.g., from malloc(). We need freeaddrinfo() to release it.
+ * @return int 0 on success
+ */
+int getaddrinfo(const char *host, const char *service,
+                const struct addrinfo *hints, struct addrinfo **results)
+           
+/**
+ *
+ */ 
+const char *gai_strerror(int getaddrinfo_return)
+
+void freeaddrinfo(struct addrinfo *ai)
+
+/**
+ * @note its source code
+ *  struct addrinfo *host_serv(const char *host, const char *service,
+ *                              int family, int socktype){
+ *    struct addrinfo *ai_hints_, **ai_results_;
+ *    memset(ai_hints_, 0, sizeof(struct addrinfo));
+ *    ai_hints_->ai_flags = AI_CANONNAME;
+ *    ai_hints_->ai_family = family;
+ *    ai_hints_->ai_socktype = socktype;
+ *    int n;
+ *    if(0 != (n = getaddrinfo(host, service, &hints, &ai))){
+ *      printf("gai_strerror(%d): %s", n, gai_strerror(n));
+ *      return NULL;
+ *    }
+ *    return ai_results_;
+ *  }
+ */  
+struct addrinfo *host_serv(const char *host, const char *service,
+                          int family, int socktype)     
+
+/**
+ * @note its source code
+ *  int tcp_connect(const char *host, const char *service){
+ *    struct addrinfo hints, *ai4free, *ai;
+ *    memset(&hints, 0, sizeof(struct addrinfo));
+ *    hints.ai_family = AF_UNSPEC;
+ *    hints.ai_socktype = SOCK_STREAM;
+ *    int n;
+ *    if(0 != (n = getaddrinfo(host, service, &hints, &ai))){
+ *      printf("gai_strerror(%d): %s", n, gai_strerror(n));
+ *      exit(0);
+ *    }
+ *    ai4free = ai;
+ *    int connfd;
+ *    while(NULL != (ai = ai->ai_next)){
+ *      if((connfd = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol))
+ *         < 0 )
+ *        continue;
+ *      if(0 == connect(connfd, ai->ai_addr, ai->ai_addrlen))
+ *        break;  // success
+ *    }
+ *    if(ai == NULL)
+ *      exit(0);
+ *    freeaddrinfo(ai4free);
+ *    return connfd;
+ *  }
+ */
+int tcp_connect(const char *host, const char *service)
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+struct hostent{   // host entry, IPv4 only, obsoleted
   char *h_name;       // canonical[kə'nɒnɪkl] name of host \0
   char **h_aliases;   // 
   int h_addrtype;     // e.g. AF_INET
@@ -7,59 +111,25 @@ struct hostent{   // host entry
   char **h_addr_list; // 
   
 };
-
+/**
+ * IPv4 only, obsoleted, use getaddrinfo() instead
+ */
 struct hostent *gethostbyname(const char *hostnm)
 struct hostent *gethostbyaddr(const char *addr, socklen_t len, int family)
 
 
-struct servent{
+struct servent{     // IPv4 only, obsoleted
   char *s_name;
   char **s_aliases;
   int s_port;
   char *s_proto;
 };
 /**
+ * IPv4 Only, obsoleted
  * @note sh$ cat /etc/services
- *  [serv_nm] [port]/[proto_nm]
- *  domain      53/tcp
- *  domain      53/udp
- *  domaintime  9909/tcp
- *  domaintime  9909/udp
- *  http        80/tcp
- *  http        80/udp
- *  http        80/sctp
- *  https       443/tcp
- *  https       443/udp
- *  https       443/sctp
- *  netstat     15/tcp
- *  ssh         22/tcp
- *  ssh         22/udp
- *  ssh         22/sctp
  */
 struct servent *getservbyname(const char *serv_nm, const char *proto_nm)
 /**
  * @arg int port htons(port)
  */
 struct servent *getservbyport(int port, const char *proto_nm)
-
-struct addrinfo{
-  /**
-   * @var 
-   *  AI_PASSIVE
-   *  AI_CANONNAME
-   *  AI_NUMERICHOST
-   *  AI_V4MAPPED
-   *  AI_ALL
-   *  AI_ADDRCONFIG
-   */
-  int ai_flags;
-  int ai_family;          // AF_
-  int ai_socktype;        // SOCK_
-  int ai_protocol;        // 0 or IPPROTO_
-  socklen_t ai_addrlen;
-  char *ai_cononname;
-  struct sockaddr *ai_addr;
-  struct addrinfo *ai_next;
-};
-int getaddrinfo(const char *host_nm, const char *service,
-                const struct addrinfo *hints, struct addrinfo **result)
