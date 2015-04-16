@@ -1,53 +1,43 @@
-int listenfd;
-vDebug("socket()", 
-  listenfd = socket(AF_INET, SOCK_STREAM, 0)
-);
-
-
-struct sockaddr_in i4; // IPv4
-//bzero(&i4, sizeof(i4)); 
-memset(&i4, 0, sizeof(i4)); // set to 0 using bzero()
-i4.sin_family = AF_INET;
-i4.sin_port = htons(SERV_LISTEN_PORT);  // consult Little Endian and Big Endian
-// i4.sin_addr.s_addr = htonl(INADDR_ANY);
-// i4.sin_addr.s_addr = inet_addr("127.0.0.1");
-inet_pton(AF_INET, "127.0.0.1", &i4.sin_addr); 
-vDebug("bind()",
-  bind(listenfd, (const struct sockaddr*)&i4, sizeof(i4))
-);
-
-
-struct sockaddr_storage sa_s;
-socklen_t sa_s_len = sizeof(sa_s);
-memset(&sa_s, 0, sa_s_len);
-vDebug("getsockname(sa_s)",
-  getsockname(listenfd, (struct sockaddr *) &sa_s, &sa_s_len)
-);
-printf("ss_family: %d  ", sa_s.ss_family);
-
-struct sockaddr_in sa_in;
-socklen_t sa_in_len = sizeof(sa_in);
-memset(&sa_in, 0, sizeof(sa_in));
-vDebug("getsockname(sa_in)",
-  getsockname(listenfd, (struct sockaddr *)&sa_in, &sa_in_len)
-);
-//printf("family: %d  ", sa_in.sin_family);
-printf("sin_port: %d  ", sa_in.sin_port);
-if(!sa_in.sin_port > 0){
-  printf("port error");
+char *host = NULL,
+     *service = "9877";
+     
+int n;
+struct addrinfo hints, *ai, *ai4free;
+memset(&hints, 0, sizeof(struct addrinfo));
+hints.ai_flags = AI_CANONNAME;
+hints.ai_family = AF_UNSPEC;
+hints.ai_socktype = SOCK_STREAM;
+if(0 != (n = getaddrinfo(host, service, &hints, &ai))){
+  printf("getaddrinfo() error:%d(%s)", n, gai_strerror(n));
   exit(0);
 }
-
-char i4_str[INET_ADDR_STRLEN];
-inet_ntop(AF_INET, &sa_in.sin_addr, i4_str, INET_ADDR_STRLEN);
-printf("inet_ntop(sin_addr): %s\n", i4_str);
-
+ai4free = ai;
+if(ai == NULL){
+  printf("getaddrinfo() error");
+  exit(0);
+}
+int listenfd;
+const int on = 1;
+while(ai != NULL){
+  if((listenfd = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol)) < 0)
+    continue; // try next ai
+  vDebug("setsockopt()",
+    setscokopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on))
+  );
+  if(0 == bind(listenfd, ai->ai_addr, ai->ai_addrlen))
+    break;  // success
+  vDebug("close()",
+    close(listenfd)
+  );
+  ai = ai->ai_next;
+}
+freeaddrinfo(ai4free);
 
 vDebug("listen()",
   listen(listenfd, SERV_LISTEN_QUEUES)
 );
 
-ssize_t n;
+
 pid_t pid;
 struct sockaddr cli_addr;
 socklen_t cli_addr_len;
@@ -104,7 +94,7 @@ for(i=1;i<=maxi;++i){
   if((tempfd = clis[i].fd)<0)
     continue;
   if(clis[i].revents & (POLLRDNORM | POLLERR)){
-    if((n=read(tempfd, &args, sizeof(args))) <=0){
+    if(read(tempfd, &args, sizeof(args)) <=0){
       vDebug("close(tempfd)",
         close(tempfd)
       );

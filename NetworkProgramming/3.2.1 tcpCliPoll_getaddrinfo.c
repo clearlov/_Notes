@@ -1,22 +1,54 @@
-int listenfd;
+char *host = "127.0.0.1",
+     *service = "9877";
 
-vDebug("socket()",
-  listenfd = socket(AF_INET, SOCK_STREAM, 0)
+int n;
+struct addrinfo hints, *ai, *ai4free;
+if(0 != (n = getaddrinfo(host, service, &hints, &ai))){
+  printf("getaddrinfo() error: %d(%s)", n, gai_strerror(n));
+  exit(0);
+}
+ai4free = ai;
+int connfd;
+const int on = 1;
+if(ai == NULL){
+  printf("getaddrinfo() error");
+  exit(0);
+}
+while(ai != NULL){
+  if((connfd = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol)) < 0)
+    continue; // try next
+
+  if( 0== connect(connfd, ai->ai_addr, ai->ai_addrlen))
+    break; // success
+  vDebug("close()",
+    close(connfd);  // connect() error, close() socket()
+  );
+  ai = ai->ai_next;
+}
+freeaddrinfo(ai4free);
+
+struct sockaddr_storage ss;
+socklen_t len = sizeof(struct sockaddr_storage);
+vDebug("getpeername()",
+  getpeername(connfd, (struct sockaddr *)&ss, &len)
 );
+switch(ss.sa_family){
+  case AF_INET:{
+    struct sockaddr_in i4 = (struct sockaddr_in)ss;
+    char i4_str[INET_ADDR_STRLEN);
+    if(NULL != inet_ntop(i4.sin_family, &i4, &i4_str, INET_ADDR_STRLEN))
+      printf("ip:%s\n", i4_str);
+    } break;
+  default:
+    printf("unknown ss.sa_family:%d in switch(){}", ss.sa_family);
+    exit(0);
+}
 
 
-/**
- * IPv4
- */
-struct sockaddr_in i4; // IPv4
-//bzero(&i4, sizeof(i4)); 
-memset(&i4, 0, sizeof(i4)); // set to 0 using bzero()
-i4.sin_family = AF_INET;
-i4.sin_port = htons(SERV_LISTEN_PORT);  // consult Little Endian and Big Endian
-inet_pton(AF_INET, "127.0.0.1", &i4.sin_addr); 
-vDebug("connect()",
-  connect(listenfd, (struct sockaddr *)&i4, sizeof(i4))
-);
+
+
+
+
 
 
 char sendbuf[SERV_BUF_SIZE];

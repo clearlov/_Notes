@@ -65,9 +65,6 @@ void freeaddrinfo(struct addrinfo *ai)
  *    return ai_results_;
  *  }
  */  
-struct addrinfo *host_serv(const char *host, const char *service,
-                          int family, int socktype)     
-
 /**
  * @note its source code
  *  int tcp_connect(const char *host, const char *service){
@@ -95,7 +92,6 @@ struct addrinfo *host_serv(const char *host, const char *service,
  *    return connfd;
  *  }
  */
-int tcp_connect(const char *host, const char *service)
                           
                           
                           
