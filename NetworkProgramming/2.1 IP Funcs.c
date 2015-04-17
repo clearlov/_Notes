@@ -37,19 +37,7 @@ struct addrinfo{
  * @arg/return struct addrinfo **result all the storage are obtained dynamically.
  *  e.g., from malloc(). We need freeaddrinfo() to release it.
  * @return int 0 on success
- */
-int getaddrinfo(const char *host, const char *service,
-                const struct addrinfo *hints, struct addrinfo **results)
-           
-/**
- *
- */ 
-const char *gai_strerror(int getaddrinfo_return)
-
-void freeaddrinfo(struct addrinfo *ai)
-
-/**
- * @note its source code
+ * @example
  *  struct addrinfo *host_serv(const char *host, const char *service,
  *                              int family, int socktype){
  *    struct addrinfo *ai_hints_, **ai_results_;
@@ -64,9 +52,7 @@ void freeaddrinfo(struct addrinfo *ai)
  *    }
  *    return ai_results_;
  *  }
- */  
-/**
- * @note its source code
+ * @example 
  *  int tcp_connect(const char *host, const char *service){
  *    struct addrinfo hints, *ai4free, *ai;
  *    memset(&hints, 0, sizeof(struct addrinfo));
@@ -92,6 +78,21 @@ void freeaddrinfo(struct addrinfo *ai)
  *    return connfd;
  *  }
  */
+int getaddrinfo(const char *host, const char *service,
+                const struct addrinfo *hints, struct addrinfo **results)
+           
+/**
+ * @int getaddrinfo_rtn return value of getaddrinfo()
+ */ 
+const char *gai_strerror(int getaddrinfo_rtn)
+void freeaddrinfo(struct addrinfo *ai)
+
+/**
+ * @arg int flags
+ */
+int getnameinfo(const struct sockaddr *sockaddr, socklen_t addrlen,
+                char *host, socklen_t hostlen,
+                char *serv, socklen_t servlen, int flags);
                           
                           
                           

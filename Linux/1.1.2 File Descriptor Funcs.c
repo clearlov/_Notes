@@ -15,3 +15,12 @@ int fileno(FILE *fd)
  *  a+ open a file for update at end of file
  */
 FILE * fdopen(int fd, const char *mode)
+
+/**
+ * Open a file
+ * @arg int flags
+ *  O_RDONLY
+ *  O_WRONLY
+ *  O_RDWR
+ */
+int open(const char *path, int flags)

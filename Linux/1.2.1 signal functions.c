@@ -1,37 +1,27 @@
 #include <sys/types.h>
 
 /**
- *@see http://en.wikipedia.org/wiki/Unix_signal
- */
-enum signo{
-    
-    /**
-     * be sent to a parent process when a child process terminates, is 
-     *interrupted, or resumes[rɪ'zju:m] after being interruped.
-     */
-    SIGCHLD,
-    /**
-     * be sent to a process when it attempts to write to a pipe without a 
-     *  process connected to the other end.
-     * be sent to the process When a process writes to a socket that has 
-     *  received an RST. The default action of SIGPIPE is to terminate the
-     *  process.
-     * If the process ignores SIGPIPE, returns EPIPE
-     *  
-     */
-    SIGPIPE,
-    SIG_IGN,
-    SIG_DEL,
-};
 
+ */
 
 /**
+ * @see http://en.wikipedia.org/wiki/Unix_signal
  * Unix signals are normally not queued
  * Simplify:
  *  typedef void Sig(int);
  *  Sig * signal(int signo, Sig *func){}
  *  typedef void (*Sig)(int);
  *  Sig signal(int signo, Sig func){}
+ * @arg int signo
+ *  SIGHUP hangup be sent to a process when its controlling terminal is closed
+ *  SIGCHLD be sent to a parent process when a child process terminates, is 
+ *    interrupted, or resumes[rɪ'zju:m] after being interruped.
+ *  SIGPIPE be sent to a process when it attempts to write to a pipe without a process
+ *    connected to the other end. be sent to the process When a process writes 
+ *    to a socket that has received an RST. The default action of SIGPIPE is to
+ *    terminate the process. If the process ignores SIGPIPE, returns EPIPE
+ *  SIG_IGN
+ *  SIG_DEL
  */
 #include <signal.h>
 void (*signal(int signo, void(*func)(int)))(int){
