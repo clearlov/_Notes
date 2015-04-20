@@ -24,7 +24,7 @@ int daemonInit(const char *pnm, int facility){
       printf("Pid%d -> C%d\n", getpid(), pid);
       // pid = wait(&chld_status);      // terminates it's child
       // printf("child %d terminated\n", pid);
-      exit(0);    // parent terminates
+      _exit(0);    // parent terminates
   } 
   
   printf("Pid%d", getpid());    // getpid() = 5001, it's a child process
@@ -36,7 +36,7 @@ int daemonInit(const char *pnm, int facility){
   if((pid = fork()) < 0)      // child process (now another group session leader)
     return (-1);
   else if(pid)
-    exit(0);           // child group session process terminates
+    _exit(0);           // child group session process terminates
   
   /**
    * Child (now is a parent process)'s child continues

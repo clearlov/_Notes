@@ -4,7 +4,7 @@
  *  the zombie children is set to 1 (the init process). To clean the zombies, we
  *  establish a signal handler to catch SIGCHLD, and within the handler, we call
  *  wait().
- * @bookmark C++/1.1.3 functors - function objects
+ * @see C++/1.1.3 functors - function objects
  *  Common funct and SMF are all func-ptr, they're diff with a functor.
  * @arg void (*func)(int);  func = sigChld;
  * @return void() struct sigaction.sa_handle on success; SIG_ERR on error

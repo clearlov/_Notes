@@ -3,7 +3,8 @@
  *  SOL_SOCKET
  *    SO_BROADCAST
  *    SO_DEBUG TCP only
- *    SO_DONTROUTE
+ *    SO_DONTROUTE tell the kernel that the destination is on a locally attached
+ *      network and not to perform a lookup of the routing table
  *    SO_ERROR
  *    SO_KEEPALIVE if no data exchanged for 2 hours, TCP automatically sends a
  *      "keep-alive probe"(a TCP segment) to the peer, the peer must respond
@@ -82,11 +83,14 @@
  *       BandWidth-Delay Product: The capability of a pipe.
  *        BWDP = bandwidth bit/sec * RTT sec * 8 bit/byte
  *    SO_RCVLOWAT
+ *    SO_RCVTIMEO timeval{} receive timeout
+ *    SO_SNDTIMEO timeval{} send timeout
  *    SO_SNDBUF
  *    SO_SNDLOWAT
- *    SO_REUSEADDR allow a port to bind multiple address
+ *    SO_REUSEADDR allow local address reuse, a port to bind multiple address
  *      e.g. 192.168.0.10:80 127.0.0.1:80 ...
- *    SO_PORT
+ *    SO_REUSEPORT allow local port reuse
+ *    SO_TYPE get socket type
  *    SO_USELOOPBACK default ON, make socket receives a copy of everything
  *       sent on the socket. It applies only to sockets in the AF_ROUTE.
  *  IPPROTO_IP

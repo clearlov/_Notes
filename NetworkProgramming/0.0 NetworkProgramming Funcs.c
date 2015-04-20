@@ -18,26 +18,7 @@ hton{s|l}: convert unsigned short/long from host endianness(LE or BE) to network
 uint16_t htons()   /    uint32_t htonl()
 ntoh{s|l}: convert unsigned short/long from BE to host endianness (LE or BE)
 
-/**
- * Byte Manipulation[mə'nɪpjəleɪʃn]
- */
-#include <string.h>
-/**
- * byte zero
- * void bzero(void *dest, size_t nbytes);
- */
-void * memset(void * dest, int c, size_t nbytes)
 
-/**
- * void bcopy(const void *src, void *dest, size_t nbytes)
- */
-void *memcpy(void * dest, const void *src, size_t nbytes);
-
-/**
- * int bcmp(const void *ptr1, const void *ptr12, size_t nbytes);
- * @return int 0 if equal, nonzero if unequal
- */
-int memcmp(const void *ptr1, const void *ptr2, size_t nbytes);
 
 /**
  * IP address conversion

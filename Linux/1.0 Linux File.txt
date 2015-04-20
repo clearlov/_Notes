@@ -1,5 +1,17 @@
-|~ dev ~|
-hd[a-z]  
+|~ /dev devices ~|
+/hd[a-t] IDE devices
+/sd[a-z] SCSI devices
+/fd[0-7] standard 
+/md[0-31]
+/loop[0-7]
+/ram[0-15] memory
+/null 
+/zero 
+/tty[0-63]  virtual terminals
+/ttyS[0-3]  
+/tp[0-3]  
+/console
+/fb[0-31]  framebuffer
 
 |~ d ~|
 [ SWAP ] swap file, like virtual memory in Windows

@@ -26,8 +26,16 @@ enum LefProtocolType{
  */
 INADDR_ANY 
 
+/**
+ * Since we don't know whether the socket addr. is IPv4(sockaddr_in) or 
+ *  IPv6(sockaddr_in6), we use sockaddr_storage
+ */
+#include <netinet/in.h>
+struct sockaddr_storage{
+  uint8_t     ss_len;
+  sa_family_t ss_family;
+} 
 
-/******************************************************************************/ 
 #include <sys/socket.h>
 struct sockaddr{
   uint8_t     sa_len;
@@ -59,23 +67,21 @@ struct sockaddr_in6{
   uint32_t        sin6_scope_id;  // 32bit
 };
 
-/*********************** Unix *************************************************/
-//Unix
-struct sockaddr_un{
-  sa_family_t sun_familty;    // AF_UNIX
-  char sun_path[108]; // path
-};
-
-/******************************************************************************/
-/**
- * Since we don't know whether the socket addr. is IPv4(sockaddr_in) or 
- *  IPv6(sockaddr_in6), we use sockaddr_storage
+/*********************** Unix *************************************************
+ * POSIX renames the Unix domain protocols as "Local IPC(interprocess communication)"
+ *  
  */
-#include <netinet/in.h>
-struct sockaddr_storage{
-  uint8_t     ss_len;
-  sa_family_t ss_family;
-} 
+#include <sys/un.h>
+# define SUN_LEN(ptr) ((size_t) (((struct sockaddr_un *) 0)->sun_path) + strlen ((ptr)->sun_path))
+struct sockaddr_un{
+  sa_family_t sun_familty;    // AF_LOCAL
+  /**
+   * @var char sun_path[108] null-terminated path
+   * @note if sun_path[0] that the Unix domain equivalent of the IPv4 INADDR_ANY
+   *  and the IPv6 IN6ADDR_ANY_INIT constant
+   */
+  char sun_path[108];
+};
 /******************************************************************************/
 
 
@@ -154,29 +160,82 @@ int close(int fd)
 int shutdown(int listenfd, int how)
 
 
-
-
 /**
- * @arg int flags 
- *  MSG_OOB out-of-band data
- *  MSG_PEEK
- *  MSG_WAITALL
+ * +---------------------------------------------------------------------------+
+ * |                    |    fd(s)    |      optional
+ * |---------------------------------------------------------------------------+
+ * | read() write()     | any one     |  
+ * | readv() writev()   | any more    |
+ * | recv() send()      | sockfd one  | flags
+ * | recvfrom() sendto()| sockfd one  | flags/peer addr
+ * | recvmsg() sendmsg()| sockfd more | flags/peer addr/control info
+ * +---------------------------------------------------------------------------+
  */
-ssize_t recv(int listenfd, void *buf, size_t len, int flags)
+
 /**
  * Receive a msg. from a connection-mode or connectionless-mode socket. It is 
  *  normally used with connectionless-mode sockets because it permits the 
  *  application to retrieve the source address of received data.
+ * @arg int flags 
+ *  MSG_DONTROUTE only for sendto(); tell the kernel that the destination is on
+ *    a local attached network and not to perform a lookup of the routing table
+ *    setsockopt(sockfd, SO_DONTROUTE ...) is for all operation
+ *  MSG_DONTWAIT nonblocking
+ *  MSG_OOB out-of-band data
+ *  MSG_PEEK only for recvfrom()
+ *  MSG_WAITALL only for recvfrom()
  * @return >=0 on success, bytes received; -1 on error
  */
 ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
                  struct sockaddr *from, socklen_t *addrlen)
-                 
 ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
-               const struct sockaddr *sendto, socklen_t addrlen)                 
-send()
-readv() / writev()
-recvmsg() / sendmsg()
+               const struct sockaddr *sendto, socklen_t addrlen)  
+/**
+ * recvfrom(int sockfd, void *buf, size_t len, int flags, NULL, 0)
+ */               
+ssize_t recv(int sockfd, void *buf, size_t len, int flags)
+ssize_t send(int sockfd, const void *buf, size_t len, int flags)
+
+
+#include <sys/uio.h>
+struct iovec{
+  void *iov_base;   // starting address
+  size_t iov_len;   // size of transfered buffer
+};
+
+struct cmsghdr{
+  socklen_t cmsg_len;
+  /**
+   * @var cmsg_level {cmsg_type}
+   *  IPPROTO_IP for protocol IPv4
+   *    IP_RECVDSTADDR receive destination addr. with UDP datagram
+   *    IP_RECVIF receive interface index with UDP datagram
+   *  IPPROTO_IPV6
+   *    IPV6_DSTOPTS specify destination options
+   *    IPV6_HOPLIMIT
+   *    IPV6_NEXTHOP
+   *    IPV6_PKTINFO
+   *    IPV6_RTHDR
+   *    IPV6_TCLASS
+   *  SOL_SOCKET for unix domain
+   *    SCM_RIGHTS  send/receive descriptors
+   *    SCM_CREDS send/receive user credentials
+   */
+  int cmsg_level;
+  int cmsg_type;
+};
+struct msghdr{
+  void      *msg_name;    // address, e.g. sockaddr_in{}
+  socklen_t  msg_namelen;
+  struct     iovec *msg_iov;  // iovec{}s
+  int        msg_iovlen;
+  void      *msg_control;
+  socklen_t  msg_controllen;
+  int        msg_flags;
+};
+
+ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
+sendmsg(int sockfd, struct msghdr *msg, int flags)
 
 
 

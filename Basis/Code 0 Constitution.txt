@@ -1,3 +1,6 @@
+|+ Abbreviation +|
+[fn] function : accepted in keyboard
+
 |+ Doc maker +|
 /**
  * @var   --> @field  @constant  @define
