@@ -225,17 +225,45 @@ struct cmsghdr{
   int cmsg_type;
 };
 struct msghdr{
-  void      *msg_name;    // address, e.g. sockaddr_in{}
+  /**
+   * @var void *msg_name NULL pointer on a TCP socket or a connected UDP socket;
+   *  a ptr to a socket address structure on a unconnected UDP socket
+   */
+  void      *msg_name;
   socklen_t  msg_namelen;
+  /**
+   * Specify the array of input or output buffers
+   */
   struct     iovec *msg_iov;  // iovec{}s
   int        msg_iovlen;
+  /**
+   * Speicify the location and size of the optional ancillary[æn'sɪlərɪ] data.
+   *  e.g. cmsghdr{}
+   * @example a Unix domain socket for descriptor passing
+   *  cmsghdr{
+   *    cmsg_len = 16
+   *    cmsg_level = SOL_SOCKET
+   *    cmsg_type = SCM_RIGHTS
+   *  }
+   */
   void      *msg_control;
   socklen_t  msg_controllen;
   int        msg_flags;
 };
 
+struct cmsghdr *CMSG_FIRSTHDR(struct msghdr *msg_hdr)
+struct cmsghdr *CMSG_NXTHDR(struct msghdr *msg_hdr, struct cmsghdr *cmsg_hdr)
+/**
+ * @return a ptr to the first byte of data
+ */
+unsigned char *CMSG_DATA(struct cmsghdr *cms_hdr)
+unsigned int CMSG_LEN(unsigned int len)
+unsigned int CMSG_SPACE(unsigned int len)
+
+
+
 ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
-sendmsg(int sockfd, struct msghdr *msg, int flags)
+ssize_t sendmsg(int sockfd, struct msghdr *msg, int flags)
 
 
 

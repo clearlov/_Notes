@@ -1,6 +1,4 @@
-1 nibble = 4 bits
-1 byte = 2 nibble = 8 bits
-1 word = DataBus = 64(in-64bit-sys) 32(in-32bit-sys) 16(in-16bit-sys)  
+
 |+ RTT (Round Trip Time) +|
 /**
  * @link http://en.wikipedia.org/wiki/Round-trip_delay_time

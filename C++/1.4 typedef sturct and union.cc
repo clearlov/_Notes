@@ -90,7 +90,8 @@ Subtract(-100);  // false
 
 /**
  * 32 = [4####] 8 [1#24] [4####]
- * Note: struct is quite different to allocate stack address
+ *  sizeof(int) = 4 bytes; 1 bytes = 8 bits
+ * @note struct is quite different to allocate stack address
  */
 struct Allergic{
     int wound;             // 0x7f..a0        4 bytes + 4
