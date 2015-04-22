@@ -4,6 +4,7 @@
  *  fileno(stdin)  = 0 STDIN_FILEDNO  standard input
  *  fileno(stdout) = 1 STDOUT_FILENO  standard output
  *  fileno(stderr) = 2 STDERR_FILENO  standard error output
+ *    stderr has no buffer, it'll output message without blocking
  */
 int fileno(FILE * fileptr)
 
@@ -96,7 +97,13 @@ char *fgets(char *buf, int bytes_of_buf, FILE * file_ptr)
  * @return >0 on success; EOF on error
  */
 int fputs(const char *buf, FILE * file_ptr)
-
+/**
+ * @arg FILE *stream NULL on all open output streams;
+ * @example
+ *  fputs("", stdout);  or printf("")
+ *  fflush(stdout); //  flush stdout buffers ,and print all buffer out to stdout
+ */
+int fflush(FILE *stream)
 
 /**
  * Read formatted data from string and stores them according to args
@@ -112,10 +119,19 @@ int sscanf(const char *buf, const char * format, ...)
 *   char buf[] = "Hello, @LefWell 2015-03"; 
  * @return >=0 on success, args successfully wrote; <0 on failure
  */
-int sprintf(char *buf, const char * format, ...)
+int sprintf(char *buf, const char *format, ...)
 
 /**
  * Write formatted output to sized buf
  * @return >0 wrote bytes; 0 on buf be NULL; <0 on error  
  */
-int snprintf(char *buf, size_t bytes_of_buf, const char * format, ...)
+int snprintf(char *buf, size_t n, const char * format, ...)
+
+#include <stdarg.h>
+/**
+ * @example vprintf("%d %d", ap);
+ */
+int vprintf(const char *format, va_list ap)
+int vfprintf(FILE *stream, const char *format, va_list ap)
+int vsprintf(char *buf, const char *format, va_list ap)
+int vsnprintf(char *buf, size_t n, const char *format, va_list)

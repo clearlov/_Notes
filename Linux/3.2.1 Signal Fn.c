@@ -108,9 +108,9 @@ pid_t waitpid(pid_t pid, int *status_ptr, int opt);
  */
 int waitid(idtype_t idtype, id_t id, siginfo_t *siginf, int opt);
 
+#include <fcntl.h>
 
-
-
+int fcntl(int fd, int cmd, ...)
 
 
 

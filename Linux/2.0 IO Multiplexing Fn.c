@@ -12,20 +12,39 @@
  *  allset = [0=>fileno(stdin), 1, 2, 3=>serv.listenfd, 4=>select1.connfd,
  *            5=>select2.connfd];
  */
+typedef long int __fd_mask; 
+#define __NFDBITS (8 * (int)sizeof(__fd_mask))                  // 8 * 8 = 64
+#define __FD_ELT(fd) (fd / __NFDBITS)
+#define __FD_MASK(fd) ((__fd_mask) 1 << (fd % __NFDBITS))
 typedef struct{
 #ifdef __USE_XOPEN
   __fd_maskfds_bits[__FD_SETSIZE/__NFDBITS];
-#define __FDS_BITS(set)((set)->fds_bits)
+#define __FDS_BITS(set) ((set)->fds_bits)
 #else
   __fd_mask__fds_bits[__FD_SETSIZE/__NFDBITS];
-#define __FDS_BITS(set)((set)->__fds_bits)
+#define __FDS_BITS(set) ((set)->__fds_bits)
 #endif
 } fd_set;
 #define FD_SETSIZE 1024
-void FD_ZERO(fd_set *fdset);
-void FD_SET(int fd, fd_set *fdset);
-void FD_CLR(int fd, fd_set *fdset);
-void FD_ISSET(int fd, fd_set *fdset);
+/**
+ * @arg fd_set * fdset
+ */
+#define FD_ZERO(fdset)                                                  \
+  do{                                                                   \
+    unsigned int __i;                                                   \
+    fd_set *__arr = (fdset);                                            \
+    for(__i = 0; __i < sizeof(fd_set) / sizeof(__fd_mask); ++__i)       \
+      __FDS_BITS(__arr)[__i] = 0;                                       \
+  } while(0)
+    
+#define FD_SET(fd, fdset)     \
+  ((void)(__FDS_BITS(fdset)[__FD_ELT(fd)] |= __FD_MASK(fd)))
+  
+#define FD_CLR(fd, fdset)     \
+  ((void)(__FDS_BITS(fdset)[__FD_ELT(fd)] &= ~__FD_MASK(fd)))
+  
+#define FD_ISSET(fd, fdset)   \
+  ((__FDS_BITS(fdset)[__FD_ELT(fd)] & __FD_MASK(fd)) != 0)
 
 
 /**

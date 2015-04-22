@@ -97,6 +97,10 @@ pid_t setsid()
  *    LOG_USER
  *    LOG_UUCP 
  * @example syslog(LOG_INFO | LOG_LOCAL2, "re(%s, %s):%m", file1, file2); 
+ * @note In CentOS 7, syslogd 's configure file is /etc/rsyslog.conf
+ *  If the daemone receives the SIGHUP signal, it rereads its configuration file
+ *  The messages will be probably saved in /var/log
+ *  
  */
 void syslog(int prio, const char *msg, ...)
 /**

@@ -44,8 +44,11 @@ int sum(int add, ...){
   /**
    * If next argument is a char, e.g sum(100, 'A') then get 'A' by
    */
-  char fang = *((char *)ap)
-
+ /// char fang = *((char *)ap)
+  vprintf("%d %d %d", ap);      // printf  arg2 arg3 arg4
+  char buf[100];
+  vsprintf(buf, "%d %d %d", ap);
+  printf("%s", buf);
   total += va_arg(ap, int);   
   total += va_arg(ap, int);
   
