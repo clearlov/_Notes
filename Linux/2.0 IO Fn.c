@@ -4,7 +4,8 @@
  *  fileno(stdin)  = 0 STDIN_FILEDNO  standard input
  *  fileno(stdout) = 1 STDOUT_FILENO  standard output
  *  fileno(stderr) = 2 STDERR_FILENO  standard error output
- *    stderr has no buffer, it'll output message without blocking
+ *    normally stderr has no buffer, it'll output message without blocking. But
+ *    sometimes stderr is same as stdout, then it has buffer.
  */
 int fileno(FILE * fileptr)
 

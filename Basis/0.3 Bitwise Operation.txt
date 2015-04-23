@@ -45,6 +45,7 @@ bitwise XOR(^) -> logical exclusive OR:     6 ^ 12  ==>  0110 ^ 1100 = 0001 = 1
  *  Get sizeof(n) + sizeof(int) then do logical AND with `11`
  */
 #define _INITSIZEOF(n) ((sizeof(n) + sizeof(int) - 1)&~(sizeof(int) - 1))
+#define CMSG_ALIGN(len) ((len + sizeof(size_t) - 1) & (size_t)~(sizeof(size_t) -1)) 
 |- Bit Shifts -|
 right shift(>>):                            12>>2   ==>  1100>>2 = 0011 = 3
 left shift(<<):                             12<<2   ==>  1100<<2 = 110000 = 48

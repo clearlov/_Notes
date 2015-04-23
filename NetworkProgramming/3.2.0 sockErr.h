@@ -9,7 +9,7 @@ int ERR_IN_DAEMON_PROCESS;
  * Interface 
  *  arguments must be: (const char *formated_msg, ...)
  */
-static void errHandle();
+static void errHandle(int, int, const char *, va_list);
 
 /**
  * Fatal error related to system call, e.g. error in call a system function

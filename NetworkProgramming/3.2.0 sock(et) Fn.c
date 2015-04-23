@@ -198,12 +198,28 @@ ssize_t send(int sockfd, const void *buf, size_t len, int flags)
 
 
 #include <sys/uio.h>
+/**
+ * @example
+ *  char involve[] = "INVOLVE";
+ *  const char *obsess = "OBSESS";
+ *  struct args arg = {.arg1 = 1, .arg2 = 300};
+ *  struct iovec io_vec[3];
+ *  io_vec[0].iov_base = involve;
+ *  io_vec[0].iov_len = strlen(involve);
+ *  io_vec[1].iov_base = obsess;
+ *  io_vec[1].iov_len = strlen(obsess);
+ *  io_vec[2].iov_base = arg;
+ *  io_vec[2].iov_len = sizeof(arg);
+ *  struct msghdr msg_header;
+ *  msg_header.msg_iov = io_vec;
+ *  msg_header.msg_iovlen = 3;
+ */
 struct iovec{
   void *iov_base;   // starting address
   size_t iov_len;   // size of transfered buffer
 };
 
-struct cmsghdr{
+struct cmsghdr{   // cmsg header
   socklen_t cmsg_len;
   /**
    * @var cmsg_level {cmsg_type}
@@ -224,7 +240,7 @@ struct cmsghdr{
   int cmsg_level;
   int cmsg_type;
 };
-struct msghdr{
+struct msghdr{        // msg header
   /**
    * @var void *msg_name NULL pointer on a TCP socket or a connected UDP socket;
    *  a ptr to a socket address structure on a unconnected UDP socket
@@ -241,32 +257,88 @@ struct msghdr{
    *  e.g. cmsghdr{}
    * @example a Unix domain socket for descriptor passing
    *  cmsghdr{
-   *    cmsg_len = 16
-   *    cmsg_level = SOL_SOCKET
-   *    cmsg_type = SCM_RIGHTS
+   *    .cmsg_len = 16,
+   *    .cmsg_level = SOL_SOCKET,
+   *    .cmsg_type = SCM_RIGHTS,
+   *  }
+   *  -------------PADDING----------
+   *  cmsg_data[]
+   *  -------------PADDING----------
+   * @example send an int fd by msg_control
+   *  int fd;
+   *  struct msghdr msg_hdr;
+   *  char cmsg_data[CMSG_SPACE(sizeof(fd))];
+   *  struct cmsghdr *cmsg_hdr;
+   *  msg_hdr.msg_control = cmsg_data;
+   *  msg_hdr.msg_controllen = CMSG_SPACE(sizeof(fd));    // sizeof(int)
+   *  struct cmsghdr *cmsg;
+   *  cmsg = CMSG_FIRSTHDR(&msg_hdr);
+   *  cmsg->cmsg_len = CMSG_LEN(sizeof(fd));
+   *  cmsg->cmsg_level = SOL_SOCKET;
+   *  cmsg->cmsg_type = SCM_RIGHTS;
+   *  *((int *)CMSG_DATA(cmsg_hdr)) = fd;
+   *  sendmsg(fd, &msg_hdr, 0);
+   * @example receive an int fd
+   *  union {
+   *    struct cmsghdr cmsg_header;                     //  cmsghdr
+   *    // char cmsg_data[CMSG_ALIGN(sizeof(fd))];      // cmsg_data[]
+   *    char controlPadding[CMSG_SPACE(sizeof(fd))];
+   *  } control_union;
+   *  struct msghdr msg_header;
+   *  msg_header.control = control_union.controlPadding;
+   *  msg_header.controllen = CMSG_SPACE(sizeof(fd));
+   *  struct cmsghdr cmsg;
+   *  recvmsg(unixfd, &msg_header, 0);
+   *  if(NULL != (cmsg = *(CMSG_FIRSTHDR(&msg_header)) &&
+   *      cmsg.cmsg_len == CMSG_LEN(sizeof(fd))
+   *  ){
+   *    int cmsg_lvl_ = cmsg.cmsg_level;
+   *    int cmsg_type_ = cmsg.cmsg_type;
+   *    int fd = *((int *)CMSG_DATA(&cmsg));
    *  }
    */
   void      *msg_control;
   socklen_t  msg_controllen;
   int        msg_flags;
 };
+// followed by unsigned char cmsg_data[], e.g. fd
 
-struct cmsghdr *CMSG_FIRSTHDR(struct msghdr *msg_hdr)
-struct cmsghdr *CMSG_NXTHDR(struct msghdr *msg_hdr, struct cmsghdr *cmsg_hdr)
+
+
+#define CMSG_FIRSTHDR(msg_hdr)                                              \
+  ((size_t)msg_hdr->msg_controllen >= sizeof(struct cmsghdr)                \
+  ? (struct cmsghdr *)msg_hdr->msg_control : (struct *cmsghdr *)0)
+#define CMSG_NXTHDR(msg_hdr,cmsg_hdr) __cmsg_nxthdr(msg_hdr, cmsg_hdr)
 /**
  * @return a ptr to the first byte of data
  */
-unsigned char *CMSG_DATA(struct cmsghdr *cms_hdr)
-unsigned int CMSG_LEN(unsigned int len)
-unsigned int CMSG_SPACE(unsigned int len)
+#define CMSG_ALIGN(len) ((len + sizeof(size_t) - 1) & (size_t)~(sizeof(size_t) -1)) 
+#define CMSG_DATA(cmsg_hdr) ((unsigned char *)((struct cmsghdr *)cmsg_hdr + 1))
+#define CMSG_LEN(len) (CMSG_ALIGN(sizeof(struct cmsghdr)) + len)
+#define CMSG_SPACE(len) ((CMSG_ALIGN(len) + CMSG_ALIGN(sizeof(struct cmsghdr)))
 
 
 
 ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags)
 ssize_t sendmsg(int sockfd, struct msghdr *msg, int flags)
 
-
-
+/**
+ * Credentials
+ * @example
+ *  struct msghdr msg_header;
+ *  struct cmsghdr cmsg_header;
+ *  char control_padding[CMSG_SPACE(sizeof(struct cmsgcred))];
+ *  msg_header.control = control_padding;
+ *  msg_header.controllen = CMSG_SPACE(sizeof(struct cmsgcred));
+ */
+struct cmsgcred{
+  pid_t cmcred_pid;
+  uid_t cmcred_uid;
+  uid_t cmcred_euid;  // effective UID
+  gid_t cmcred_gid;
+  short cmcred_ngroups; // number of groups;
+  gid_t cmcred_groups[CMGROUP_MAX];
+};
 
 
 /**

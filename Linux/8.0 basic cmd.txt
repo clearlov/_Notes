@@ -1,8 +1,8 @@
 |~ Basic Terminal Shortcuts ~|
 [ Ctrl+L clear ]  Clear the terminal
 [ Ctrl+D ]  Logout
-[ Ctrl+p ¡ü ] last command
-[ Ctrl+n ¡ý ] next command
+[ Ctrl+p â†‘ ] last command
+[ Ctrl+n â†“ ] next command
 [ Ctrl+A ]  Cursor to start of line
 [ Ctrl+E ]  Cursor the end of line
 [ Ctrl+U ]  Cut left of the cursor 
