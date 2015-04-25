@@ -6,17 +6,8 @@
  * initiate      ----blocked--->      complete
  */
 |[
-+------------------------------------------------------------------------------+
-| streamA                            kernel                            streamB |
-+------------------------------------------------------------------------------+
-| recvfrom()  ------->                 |    <---                        dataIn |  
-|-------------------------------------BUF--------------------------------------|
-| blocking recvfrom() if BUF is empty  |    blocking dataIn if BUF is full     |
-|            wait for data             |                                       |     
-|-------------------------------------BUF--------------------------------------|
-| copy datagram from BUF to recvfrom() |        copy datagram into BUF         |
-|                   OK            <--- |                                       |
-+------------------------------------------------------------------------------+
+   stdin  --> [&buf...BUF...&buf[SERV_BUF_SIZE]] --> sockfd sendto()
+   stdout <-- [&buf[SERV_BUF_SIZE]...BUF...&buf] <-- sockfd recvfrom()
 ]|
 
 |~ Nonblocking I/O ~|

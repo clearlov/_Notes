@@ -1,9 +1,9 @@
 #include <unistd.h>
 /**
  * @note
- *  fileno(stdin)  = 0 STDIN_FILEDNO  standard input
- *  fileno(stdout) = 1 STDOUT_FILENO  standard output
- *  fileno(stderr) = 2 STDERR_FILENO  standard error output
+ *  0 STDIN_FILEDNO fileno(stdin)   standard input
+ *  1 STDOUT_FILENO fileno(stdout)  standard output
+ *  2 STDERR_FILENO fileno(stderr)  standard error output
  *    normally stderr has no buffer, it'll output message without blocking. But
  *    sometimes stderr is same as stdout, then it has buffer.
  */
@@ -24,21 +24,36 @@ int fileno(FILE * fileptr)
  */
 FILE * fdopen(int fd, const char *mode)
 
-/**
- * File-descriptor control
- *  
- */
-int fcntl(int fd, int cmd, ...)
 
 /**
  * Open a file or device
  * @arg int flags
- *  O_RDONLY
- *  O_WRONLY
- *  O_RDWR
+ *    O_NONBLOCK
+ *      
+ *    O_APPEND
+ *    O_ASYNC
+ *    O_DIRECT
+ *    O_NOATIME
+ *    O_RDONLY
+ *    O_WRONLY
+ *    O_RDWR
+ *    O_CREAT
+ *    O_EXCL
+ *    O_NOCTTY
+ *    O_TRUNC
  * @return int a file descriptor
  */
 int open(const char *path, int flags)
+
+/**
+ * File-descriptor control
+ * @arg int cmd
+ *  F_GETFD()  /  F_SETFD(int)      file descriptor flags
+ *  F_GETFL()  /  F_SETFL(int)      file status flags
+ * @see open()
+ */
+int fcntl(int fd, int cmd, ...)
+
 
 /**
  * Delete a file and possibly the file it refers to

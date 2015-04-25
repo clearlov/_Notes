@@ -1,4 +1,6 @@
 |~ PHPStorm~|
+|- Header Templates -|
+Editor -> File and Code Templates -> Includes
 |- Tab -|
 Code Style -> PHP
 Tab size Indent Continuation indent
