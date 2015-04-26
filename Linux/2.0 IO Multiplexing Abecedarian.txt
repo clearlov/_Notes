@@ -23,13 +23,17 @@ stdout <-- buf <-- sockfd receive buf <-- TCP seg.
  *  it returs
  */
 |[
-  stdin -->   *(buf+x) = &buf[x]                               0 <= y <= x <= *(buf+SERV_BUF_SIZE)
+  stdin -->   buf+x = &buf[x]                            
+              stdin -->   buf+x+x2
+                    ...   buf+x+x2+... <= buf+SERV_BUF_SIZE
           +----------------------------------------+
           | &buf | ...BUF... | &buf[SERV_BUF_SIZE] |
           +----------------------------------------+
-          --> sockfd sendto()   *(buf+y) = &buf[y]
+          --> sockfd sendto()   buf+y = &buf[y]
+                    --> sockfd  buf+y+y2
+                    ...         buf+y+y2+.. <= stdin buf
    
-  if x < low-water, sockfd sendto is blocking
+
 ]|
 
 |~ I/O Multiplexing ~|
@@ -47,8 +51,8 @@ stdout <-- buf <-- sockfd receive buf <-- TCP seg.
  *  fcntl(STDIN_FILENO, F_SETFL, val | O_NONBLOCK);
  *  fcntl(STDOUT_FILENO, F_SETFL, val | O_NONBLOCK);
  *  select(maxfds, &readfds, &writefds, NULL, NULL)
- * @example poll()
- * @note Whenever we find the need to sue nonblocking I/O, it'll be simpler to 
+ * @example
+ * @note Wheneve poll()r we find the need to sue nonblocking I/O, it'll be simpler to 
  *  split the application into either process(using fork()) or threads.
  */
 

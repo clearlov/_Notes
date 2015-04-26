@@ -120,6 +120,7 @@ int fputs(const char *buf, FILE * file_ptr)
  *  fflush(stdout); //  flush stdout buffers ,and print all buffer out to stdout
  */
 int fflush(FILE *stream)
+int fprintf(FILE *stream, const char *format, ...)
 
 /**
  * Read formatted data from string and stores them according to args
