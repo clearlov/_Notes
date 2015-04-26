@@ -19,9 +19,7 @@ vDebug("connect()",
 );
 
 
-char sendbuf[SERV_BUF_SIZE], char recvbuf[SERV_BUF_SIZE];
-struct args args;
-struct results results;
+
 ssize_t n, nwritten;
 int maxfd_add1;
 fd_set rset, wset;
@@ -62,18 +60,24 @@ fcntl(STDOUT_FILENO, F_SETFL, fl | O_NONBLOCK);
  * @note in order to prevent stdin2sendbuf crossing &sendbuf[SERV_BUF_SIZE],
  *  read(STDIN_FILENO, stdin2sendbuf, *(sendbuf+SERV_BUF_SIZE) - stdin2sendbuf)
  */
-char *stdin2sendbuf, *sendbuf2send, *recv2outbuf, *outbuf2stdout;
-stdin2sendbuf = sendbuf2send = sendbuf;
-recv2recvbuf = recvbuf2stdout = recvbuf;
+//char sendbuf[SERV_BUF_SIZE], char recvbuf[SERV_BUF_SIZE]; 
+char buf[SERV_BUF_SIZE]; 
+int send_sz = SERV_BUF_SIZE / sizeof(struct args);
+struct args args_arr[send_sz]; 
+int recv_sz = SERV_BUF_SIZE / sizeof(struct results);
+struct results results_arr[recv_sz];
+struct args *stdin2sendbuf, *sendbuf2send, *recv2outbuf, *outbuf2stdout;
+stdin2sendbuf = sendbuf2send = args_arr;
+recv2recvbuf = recvbuf2stdout = results_arr;
 int stdin_eof_to_fin = 0;
  
 maxfd_add1 = max(max(STDIN_FILENO, STDOUT_FILENO), connfd) + 1; 
 for(;;){
   FD_ZERO(&rset);
   FD_ZERO(&wset);
-  if(stdin2sendbuf < (sendbuf + SERV_BUF_SIZE))
+  if(!stdin_eof_to_fin && stdin2sendbuf < (sendbuf + send_sz))
     FD_SET(STDIN_FILENO, &rset);
-  if(recv2recvbuf < &recvbuf[SERV_BUF_SIZE])
+  if(recv2recvbuf < &results_arr[recv_sz])
     FD_SET(connfd, &rset);
   if(sendbuf2send < stdin2sendbuf)
     FD_SET(connfd, &wset);
@@ -85,8 +89,7 @@ for(;;){
   );
 
   if(FD_ISSET(STDIN_FILENO, &rset)){
-    n = read(STDIN_FILENO, stdin2sendbuf, sendbuf + SERV_SEND_BUF - stdin2sendbuf);
-    if(n < 0){
+    if((n = read(STDIN_FILENO, buf, SERV_BUF_SIZE)) < 0){
       if(errno != EWOULDBLOCK)
         err(errno, LOG_ERR, "stdin out");
     } else (n == 0){
@@ -97,26 +100,23 @@ for(;;){
           shutdown(connfd, SHUT_WR)         // send a FIN
         );
     } else {
-      if(2 != sscanf(stdin2sendbuf, "%ld %ld", &args.arg1, &args.arg2))
-        fprintf(stderr, "invalid input:%s\n", sendbuf);
-      else {
-        fprintf(stderr, "sendbuf==> %s\n", sendbuf);
-        stdin2sendbuf += sizeof(struct args);
-        FD_SET(connfd, &wset);
-      }
+      if(2 != sscanf(buf, "%ld %ld", &args.arg1, &args.arg2))
+        err(0, LOG_ERR, "stdin type error");
+      *(stdin2sendbuf++) = args;
+      FD_SET(connfd, &wset);
     }
   } 
   
   if(FD_ISSET(connfd, &wset) && ((n = stdin2sendbuf - sendbuf2send) > 0)){    
-    if((nwritten = write(connfd, sendbuf2send, n)) < 0){
+    if((nwritten = write(connfd, sendbuf2send, n * sizeof(struct args))) < 0){
       if(errno != EWOULDBLOCK)
         err(errno, LOG_ERR, "write()");
     } else {
-      sendbuf2send += nwritten;
+      sendbuf2send += nwritten / sizeof(struct args);
       if(sendbuf2send == stdin2sendbuf){
-        stdin2sendbuf = sendbu2send = sendbuf;
+        stdin2sendbuf = sendbu2send = results_arr;
         /**
-         * @todo why do twice shutdown()?
+         * In order the first shutdown() not success when sendbuf2send != stdin2sendbuf
          */
         if(stdin_eof_to_fin)
           vDebug("shutdown()",
@@ -127,26 +127,26 @@ for(;;){
   }
   
   if(FD_ISSET(connfd, &rset)){
-    n = read(connfd, recv2recvbuf, recvbuf + SERV_BUF_SIZE - recv2recvbuf);
+    n = read(connfd, (char *)recv2recvbuf, recvbuf + SERV_BUF_SIZE - recv2recvbuf);
     if(n < 0){
       if(errno != EWOULDBLOCK)
         err(errno, LOG_ERR, "");
     } else if(n==0){
       
     } else{
-      recv2recvbuf += sizeof(struct results);
+      recv2recvbuf += n / sizeof(struct results);
       FD_SET(STDOUT_FILENO, &wset);
     }
   }
   
   if(FD_ISSET(STDOUT_FILENO, &wset) && ((n = recv2recvbuf - recvbuf2stdout) > 0)){
-    if((nwritten = write(STDOUT_FILENO, recvbuf2stdout, n)) < 0){
+    if((nwritten = write(STDOUT_FILENO, recvbuf2stdout, n * sizeof(struct results))) < 0){
       if(errno != EWOULDBLOCK)
         err(errno, LOG_ERR, "");
     } else {
-      recvbuf2stdout += nwritten;
+      recvbuf2stdout += nwritten / sizeof(struct results);
       if(recvbuf2stdout == recv2recvbuf)
-        recv2recvbuf = recvbuf2stdout = recvbuf;
+        recv2recvbuf = recvbuf2stdout = results_arr;
     }
   }
   
