@@ -1,67 +1,67 @@
+/**
+ * We use 2000-line file and the same server(a 175-ms RTT from the client)
+ *  354.0 sec, while(fgets()){write();read();} 
+ *   12.3 sec, select() Multiplexing I/O (blocking I/O)
+ *    6.9 sec, fcntl() + select() nonblocking I/O
+ *    8.7 sec, fork() 
+ *    8.5 sec thread 
+ */
+|[
+stdin --> buf --> sockfd send buf -- TCP seg. 
+                                             |
+                                          [Serv]
+                                             |
+stdout <-- buf <-- sockfd receive buf <-- TCP seg.
+]|
+
+
+
 |~ Blocking I/O ~|
 /**
  * BUF kernel buffer
  * Process is blocked in the entire time from when it calls recvfrom() until 
  *  it returs
- * initiate      ----blocked--->      complete
  */
 |[
-   stdin  --> [&buf...BUF...&buf[SERV_BUF_SIZE]] --> sockfd sendto()
-   stdout <-- [&buf[SERV_BUF_SIZE]...BUF...&buf] <-- sockfd recvfrom()
-]|
-
-|~ Nonblocking I/O ~|
-/**
- * Polling: a loop calling recvfrom() on a nonblocking descriptor
- * EWOULDBLOCK?...EWOULDBLOCK?  ----blocked---> complete
- */
-|[
-+------------------------------------------------------------------------------+
-| streamA                              |                                kernel |
-+------------------------------------------------------------------------------+
-| recvfrom()                           | <--EWOULDBLOCK--  if BUF is empty     |
-| while(true){receiv();}               |                 ...                   |
-| receivfrom()                         | <--EWOULDBLOCK--  if BUF is empty     |
-|--------------------------------------+---------------------------------------|
-|                                      |    if datagram ready, copy datagram   |
-|                                      | <--OK--          copy finish          |
-+------------------------------------------------------------------------------+
+  stdin -->   *(buf+x) = &buf[x]                               0 <= y <= x <= *(buf+SERV_BUF_SIZE)
+          +----------------------------------------+
+          | &buf | ...BUF... | &buf[SERV_BUF_SIZE] |
+          +----------------------------------------+
+          --> sockfd sendto()   *(buf+y) = &buf[y]
+   
+  if x < low-water, sockfd sendto is blocking
 ]|
 
 |~ I/O Multiplexing ~|
 /**
- * select() is readable? ---blocked--->ready;  initiate---blocked--->complete
+ * I/O Multiplexing is blocking I/O
+ * @example select(maxfds, &readfds, NULL, NULL, NULL)
  */
-|[
-+------------------------------------------------------------------------------+
-| streamA                              |                                kernel |
-+------------------------------------------------------------------------------+
-| select()                             |  
-|       block in select()              |      if BUF empty, no datagram ready  |
-|                                      | <--readable--    if datagram ready    |
-|--------------------------------------+---------------------------------------|
-| recvfrom(block)                      |                         copy datagram |
-|                                      | <--OK--                   copy finish |
-+------------------------------------------------------------------------------+
-]|
+
+
+
+|~ Nonblocking I/O called polling ~|
+/**
+ * @example
+ *  fcntl(sockfd, F_SETFL, val | O_NONBLOCK);
+ *  fcntl(STDIN_FILENO, F_SETFL, val | O_NONBLOCK);
+ *  fcntl(STDOUT_FILENO, F_SETFL, val | O_NONBLOCK);
+ *  select(maxfds, &readfds, &writefds, NULL, NULL)
+ * @example poll()
+ * @note Whenever we find the need to sue nonblocking I/O, it'll be simpler to 
+ *  split the application into either process(using fork()) or threads.
+ */
+
+ 
+ 
+
 
 |~ Signal-Driven I/O ~|
 /**
  * Use signal SIGIO to notify the descriptor is ready
  * deliver SIGIO;  initiate ---blocked--->complete
  */
-|[
-+------------------------------------------------------------------------------+
-| streamA                              |                                kernel |
-+------------------------------------------------------------------------------+
-| establish SIGIO                      |                                       |
-|       signal handler                 |                                       |
-|       signal handler                 | <--deliver SIGIO--      datagram read |
-|--------------------------------------+---------------------------------------|
-| recvfrom(block)                      |                         copy datagram |
-|                                      | <--OK--                   copy finish |
-+------------------------------------------------------------------------------+
-]|
+
 
 |~ Asynchronous[æ'sɪŋkrənəs] I/O ~|
 /**
@@ -69,17 +69,7 @@
  * Synchronous I/O: block the process until I/O operations completes
  * Asynchronous I/O: not
  */
-|[
-+------------------------------------------------------------------------------+
-| streamA                              |                                kernel |
-+------------------------------------------------------------------------------+
-| aio_read()                           |  no datagram ready, repeat aio_read() |
-|--------------------------------------+---------------------------------------|
-|                                      |                        datagram ready |
-|                                      |                         copy datagram |
-|                                      | <--deliver signal--       copy finish |
-+------------------------------------------------------------------------------+
-]|
+
 
 
 
