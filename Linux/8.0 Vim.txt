@@ -18,8 +18,7 @@ if you sure the origin file is safe, you can rm -rf the swp file manually
  * you can also use :set xxx in vim command mode
  */
 set nu " show line numbers
-"set autoindent " auto indent
-set ruler " show status at Bottom-Right
+set autoindent " auto indent
 set showmode  " show --INSET-- or --REPLACE-- at Bottom-Left
 set hlsearch " high light search, vice versus [ :set nohlsearch ]
 set tabstop=2   " The width of a TAB is set to 2.
@@ -31,6 +30,8 @@ set expandtab  " always uses spaces instead of tab characters
 set softtabstop=2   " Sets the number of columns for a TAB
 set shiftwidth=2 " size of an "indent"
 syntax on " syntax 
+set ruler " show status at Bottom-Right
+
 
 /*
  * short cuts of vim command

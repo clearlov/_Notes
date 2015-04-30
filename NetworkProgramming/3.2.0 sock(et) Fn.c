@@ -130,6 +130,13 @@ int listen(int bindfd, int max_listen_queues)
 /**
  * be used by a TCP client to establish a connection with a TCP server
  * status change: SYN_SENT(active open)
+ * @notice When connect() a nonblocking socket to a different server, and the
+ *  connection can't be established immediately. connect() returns immediately 
+ *  with an errno EINPROGRESS but the TCP three-way handshake continues.
+ * @notice nonblocking connect() is useful:
+ *  1. A connect() takes one RTT
+ *  2. Setting multiple connection()s
+ *  3. 
  */
 int connect(int sockfd, const struct sockaddr*serv_addr, socklen_t addrlen)
 

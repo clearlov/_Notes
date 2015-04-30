@@ -42,9 +42,9 @@ static void errHandle(int append_strerror, int syslog_prio, const char *formated
   vsnprintf(buf, SERV_BUF_SIZE, formated_msg, ap);
   if(append_strerror){
     int n = strlen(buf);
-    snprintf(buf+n, SERV_BUF_SIZE - n, " (%s)", strerror(errno));
+    snprintf(buf+n, SERV_BUF_SIZE - n, " errno:%d(%s)", errno, strerror(errno));
   }
-  strcat(buf, '\n');
+  strcat(buf, "\n");
     
   /**
    * Since a daemon does not have a controlling terminal, it cannot just fprintf

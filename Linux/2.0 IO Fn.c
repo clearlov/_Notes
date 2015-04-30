@@ -29,7 +29,6 @@ FILE * fdopen(int fd, const char *mode)
  * Open a file or device
  * @arg int flags
  *    O_NONBLOCK
- *      
  *    O_APPEND
  *    O_ASYNC
  *    O_DIRECT
@@ -53,6 +52,56 @@ int open(const char *path, int flags)
  * @see open()
  */
 int fcntl(int fd, int cmd, ...)
+
+
+
+#include <net/if.h>
+#define IFNAMSIZ  16
+struct ifreq{               // interface request
+  char ifr_name[IFNAMSIZ];  // interface name, e.g. "lo"
+  union {
+    struct  sockaddr ifru_addr;
+    struct  sockaddr ifru_dstaddr;
+    struct  sockaddr ifru_broadaddr;
+    /**
+     * @var 
+     *  IFF_UP
+     *  IFF_BROADCAST
+     *  IFF_MULTICAST
+     *  IFF_LOOPBACK  loop
+     *  IFF_POINTOPOINT p2p
+     */
+    short   ifru_flags;
+    int     ifru_metric;
+    cadrr_t ifru_data;
+  } ifr_ifru;
+}; 
+struct ifconf{
+  int ifc_len;      // size of buffer, value-result
+  union{
+    caddr_t ifcu_buf;       // input from user -> kernel
+    struct  ifreq *ifcu_req; // return from kernel -> user
+  } ifc_ifcu; 
+};
+/**
+ * @arg int request
+ *  [Socket]
+ *  [File]
+ *  [Interface]
+ *    SIOC G IFCONF  get ifconfig (list of all interfaces), return ifconf{}
+ *    SIOC G IFFLAGS  get interface flags, return ifreq{}
+ *    SIOC G IFMTU  get interface MTU, return ifreq{}
+ *  [ARP]
+ *  [Routing]
+ *  [STREAMS]
+ * @example
+ *  struct ifconf if_conf;
+ *  if(ioctl(sockfd, SIOCGIFCONF, &if_conf) < 0){
+ *    if(errno != EINVAL)
+ *      exit(0);   
+ *  }
+ */
+int ioctl(int fd, int request, ...)
 
 
 /**

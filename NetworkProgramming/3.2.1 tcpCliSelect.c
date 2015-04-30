@@ -92,7 +92,7 @@ for(;;){
     if((n = read(STDIN_FILENO, buf, SERV_BUF_SIZE)) < 0){
       if(errno != EWOULDBLOCK)
         err(errno, LOG_ERR, "stdin out");
-    } else (n == 0){
+    } else (n == 0){        // Ctrl + D
       fprintf(stderr, "stdin ==> EOF, wait for sendbuf2send, send a FIN\n");
       stdin_eof_to_fin = 1;
       if(sendbuf2send == stdin2sendbuf)
@@ -127,26 +127,31 @@ for(;;){
   }
   
   if(FD_ISSET(connfd, &rset)){
-    n = read(connfd, (char *)recv2recvbuf, recvbuf + SERV_BUF_SIZE - recv2recvbuf);
-    if(n < 0){
+    if((n = read(connfd, recv2recvbuf, sizeof(struct results))) < 0){
       if(errno != EWOULDBLOCK)
         err(errno, LOG_ERR, "");
     } else if(n==0){
-      
+      // it's necessary, otherwise when send a FIN, client'll be blocked by this
+      if(stdin_eof_to_fin)
+        return;   
+      else
+        err(errno, LOG_NOTICE, "Server terminated prematurely");
     } else{
-      recv2recvbuf += n / sizeof(struct results);
+      ++recv2recvbuf;
       FD_SET(STDOUT_FILENO, &wset);
     }
   }
   
   if(FD_ISSET(STDOUT_FILENO, &wset) && ((n = recv2recvbuf - recvbuf2stdout) > 0)){
-    if((nwritten = write(STDOUT_FILENO, recvbuf2stdout, n * sizeof(struct results))) < 0){
-      if(errno != EWOULDBLOCK)
-        err(errno, LOG_ERR, "");
-    } else {
-      recvbuf2stdout += nwritten / sizeof(struct results);
-      if(recvbuf2stdout == recv2recvbuf)
-        recv2recvbuf = recvbuf2stdout = results_arr;
+    while(recv2recvbuf - recvbuf2stdout > 0){
+      if(fprintf(stdout, "= %d\n", (*recvbuf2stdout).sum) < 0){
+        if(errno != EWOULDBLOCK)
+          err(errno, LOG_ERR, "");
+      } else {
+        ++recvbuf2stdout;
+        if(recvbuf2stdout == recv2recvbuf)
+          recv2recvbuf = recvbuf2stdout = results_arr;
+      }
     }
   }
   
