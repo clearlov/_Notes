@@ -1,3 +1,6 @@
+malloc(size_t sz)
+calloc(size_t n, size_t sz)
+
 /**
  *
  *@see http://www.ibm.com/developerworks/library/j-nativememory-aix/

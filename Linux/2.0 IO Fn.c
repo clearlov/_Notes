@@ -56,7 +56,15 @@ int fcntl(int fd, int cmd, ...)
 
 
 #include <net/if.h>
-#define IFNAMSIZ  16
+#define IFNAMSIZ      16
+#define ifc_buf       ifc_ifcu.ifcu_buf;
+#define ifc_req       ifc_ifcu.ifcu_req;
+#define ifr_addr      ifr_ifru.ifru_addr;
+#define ifr_dstaddr   ifr_ifru.ifru_dstaddr;
+#define ifr_broadaddr ifr_ifru.ifru_broadaddr;
+#define ifr_flags     ifr_ifru.ifru_flags;
+#define ifr_metric    ifr_ifru.ifru_metric;
+#define ifr_data      ifr_ifru.ifru_data;
 struct ifreq{               // interface request
   char ifr_name[IFNAMSIZ];  // interface name, e.g. "lo"
   union {
@@ -69,7 +77,7 @@ struct ifreq{               // interface request
      *  IFF_BROADCAST
      *  IFF_MULTICAST
      *  IFF_LOOPBACK  loop
-     *  IFF_POINTOPOINT p2p
+     *  IFF_POINTOPOINT p2p SIOCGIFDSTADDR
      */
     short   ifru_flags;
     int     ifru_metric;
@@ -88,18 +96,38 @@ struct ifconf{
  *  [Socket]
  *  [File]
  *  [Interface]
- *    SIOC G IFCONF  get ifconfig (list of all interfaces), return ifconf{}
- *    SIOC G IFFLAGS  get interface flags, return ifreq{}
- *    SIOC G IFMTU  get interface MTU, return ifreq{}
+ *    SIOC G IF CONF  get ifconfig (list of all interfaces), return ifconf{}
+ *    SIOC G IF FLAGS  get interface flags, return ifreq{}
+ *    SIOC G IF DSTADDR  get point-to-point addr. IFF_POINTOPOINT
+ *    SIOC G IF BRDADDR  get broadcast addr.
+ *      IPv4 only
+ *    SIOC G IF IFMTU  get interface MTU, return ifreq{}
  *  [ARP]
  *  [Routing]
  *  [STREAMS]
- * @example
+ * @errno
+ *  EINVAL request or argp is not valid  
+ * @example we don't know how many interfaces the server has
+ *  +--------------------------------------------------------------------------+
+ *  | sh$ ifconfig
+ *  |   enp0s3: <UP,BROADCAST,MULTICAST>  mtu 1500
+ *  |       inet 192.168.1.12  broadcast 192.168.1.255
+ *  |   lo    : <UP,MULTICAST,RUNNING>  mtu 65536
+ *  |       inet 127.0.0.1
+ *  |   ...
+ *  +--------------------------------------------------------------------------+
  *  struct ifconf if_conf;
+ *  int len = 2 * sizeof(struct ifreq);   // allocate 2 ifreq{}
+ *  char *buf = (char *)malloc(len);
+ *  if_conf.ifc_ifcu.ifcu_len = len;
+ *  if_conf.ifc_ifcu.ifcu_buf = buf;
  *  if(ioctl(sockfd, SIOCGIFCONF, &if_conf) < 0){
  *    if(errno != EINVAL)
  *      exit(0);   
  *  }
+ *  free(buf);
+ * @note above only suit for 2 interfaces. If there are 3 or more interface,
+ *  ioctl() will return errno EINVAL for less room of the argument &if_conf.
  */
 int ioctl(int fd, int request, ...)
 
