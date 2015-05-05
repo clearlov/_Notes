@@ -19,23 +19,28 @@
  *      TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
  *
  */
+#include <sys/ioctl.h> 
 #include <net/if.h>
-#define IFS_HW_ADDRLEN 8      // hardware addrlen
-struct ifs{       // interfaces
+#define IFI_HW_ADDR_LEN 8      // hardware addrlen
+struct ifInfos{       // interfaces
   char  name[IFNAMSIZ];      // INNAMSIZ defined in net/if.h, e.g. enp0s3
   short flags;
   short mtu;
   struct sockaddr *addr;    // inet & inet6
   struct sockaddr *brdaddr;   //broadcast addr.
   struct sockaddr *dstaddr;   // point-to-point addr.
-  u_char  hwAddr[IFS_HW_ADDR_LEN];  // hardware addr., e.g. an Ethernet addr.
+  u_char  hwAddr[IFI_HW_ADDR_LEN];  // hardware addr., e.g. an Ethernet addr.
   u_short hwlen;      // bytes in hardware address: 0, 6, 8
   short   index;  // index of the interfaces
-  struct ifs *next;
+  struct ifInfos *next;
 };
+/**
+ * Flags
+ */
+#define IFI_ALIAS 1
 
-void free ifs(struct ifs *i){
-  struct ifs *i_next;
+void free ifInfos(struct ifInfos *i){
+  struct ifInfos *i_next;
   for(i; i != NULL; i = i_next){
     (i->addr != NULL) && free(i->addr);
     (i->brdaddr != NULL) && free(i->brdaddr);
@@ -45,6 +50,12 @@ void free ifs(struct ifs *i){
 }
 
 /**
+ * 1 Get ifconf.ifreq s  --> enp0s3, lo ....
+ * 2 Get SIOCGIFFLAGS from each ifconf.ifreq
+ * 3 Get the information in the flags
+ * @note
+ *  malloc() ifconf.ifc_buf 
+ *  ioctl(sockfd, SIOCGIFCONF, &ifreq s);
  *  for(struct ifreq s){
  *    ioctl(sockfd, SIOCGIFFLAGS, &ifr);
  *    for(flags){
@@ -52,45 +63,94 @@ void free ifs(struct ifs *i){
  *    }
  *  }
  */
-struct ifs *getIfs(int addr_fam, int){
+struct ifInfos *getIfInfos(int addr_fam, int){
+  int sockfd, guess_len, last_ifc_len;
+  char *buf, *ptr;
+  struct ifconf ifc;
   struct ifreq *ifr, ifre;
+  /*****************************************************************************
+   * Get the ifconf.ifreq s  --> enp0s3, lo ....
+   */
+  sockfd = socket(AF_INET, SOCK_DGRAM, 0);    // UDP
+  guess_len = 50 * sizeof(struct ifreq);    // guess a number 50
+  last_ifc_len = 0;
+  for(;;){
+    buf = malloc(guess_len);
+    ifc.ifc_len = guess_len;
+    ifc.ifc_buf = buf;
+    /**
+     * ioctl(sockfd, SIOCGIFCONF, &ifc)
+     *  * ifc is a value-result, you need pass a ifc.ifc_len to it as a value.
+     *  * if passed ifc.ifc_len is lesser than the real
+     *      in some OS, ioctl() returns -1 with errno EINVAL
+     *      in some OS, ioctl() returns 0, and ifc.ifc_len will not change
+     *  * if success, ifc.ifc_len returns the real number
+     */
+    if(ioctl(sockfd, SIOCGIFCONF, &ifc) < 0){
+      if(errno != EINVAL)
+        err_exit("");
+    } else{
+      if(last_ifc_len == ifc.ifc_len)
+        break;      // sucess, buf is not freed
+      last_ifc_len = ifc.ifc_len;
+    }
+    guess_len += 10 * sizeof(struct ifreq);
+    free(buf);
+  }
+  // printf("%d ===> %d", ifc.ifc_len, ifc.ifc_len / sizeof(struct ifreq)); 
+  /**
+   * if success, ifc.ifc_len returns the real space it holds
+   *   The real space may not be multiple to sizeof(struct ifreq)
+   *    if all the ifreqs are all IPv4 (struct sockaddr), the real space is equal
+   *      multiple sizeof(struct ifreq)
+   *    if with IPv6 (struct sockaddr_in6), the real space need more space for it
+   */
  // struct sockaddr_in *i4;
  // struct sockaddr_in6 *i6;
   size_t sa_sz;
-  struct ifs *ifi;
-  switch(ifr->ifr_addr.sa_family){
-    case AF_INET:
-      sa_sz = sizeof(struct sockaddr_in);
-      ifi->addr = calloc(1, sa_sz);
-      memcpy(ifi->addr, (struct sockaddr_in *)&ifr->ifr_addr, sa_sz);
-#ifdef SIOCGIFBRDADDR
-      if(flags & IFF_BROADCAST){
-        ioctl(sockfd, SIOCGIFBRDADDR, &ifre);
-        ifi->brdaddr = calloc(1, sa_sz);
-        memcpy(ifi->brdaddr, (struct sockaddr_in)&ifre.ifr_broadaddr, sa_sz);
-      }
-#endif
-#ifdef SIOCGIFDSTADDR
-      if(flags & IFF_POINTOPOINT){
-        ifi->dstaddr = calloc(1, sizeof(struct dstaddr));
-        ioctl(sockfd, SIOCGIFDSTADDR, &ifre);
-        memcpy(ifi->dstaddr, (struct sockaddr_in *)&ifre.ifr_dstaddr, sa_sz);
-      }
-#endif
-      break;
-    case AF_INET6:
-      sa_sz = sizeof(struct sockaddr_in6);
-      ifi->addr = calloc(1, sa_sz);
-      memcpy(ifi->addr, (struct sockaddr_in6 *)&ifr->ifr_addr, sa_sz);
-#ifdef SIOGIFDSTADDR
-      if(flags & IFF_POINTOPOINT){
-        
-      }
-#endif
-      break;
-    default:
-      break;
+  struct ifInfos *ifi;
+  for(ptr = buf; ptr < buf + ifc.ifc_len;){
+    
+    /**
+     * Get all the flags' informations
+     */
+    switch(ifr->ifr_addr.sa_family){
+      case AF_INET:
+        sa_sz = sizeof(struct sockaddr_in);
+        ifi->addr = calloc(1, sa_sz);
+        memcpy(ifi->addr, (struct sockaddr_in *)&ifr->ifr_addr, sa_sz);
+        #ifdef SIOCGIFBRDADDR
+          if(flags & IFF_BROADCAST){
+            ioctl(sockfd, SIOCGIFBRDADDR, &ifre);
+            ifi->brdaddr = calloc(1, sa_sz);
+            memcpy(ifi->brdaddr, (struct sockaddr_in)&ifre.ifr_broadaddr, sa_sz);
+          }
+        #endif
+        #ifdef SIOCGIFDSTADDR
+          if(flags & IFF_POINTOPOINT){
+            ifi->dstaddr = calloc(1, sizeof(struct dstaddr));
+            ioctl(sockfd, SIOCGIFDSTADDR, &ifre);
+            memcpy(ifi->dstaddr, (struct sockaddr_in *)&ifre.ifr_dstaddr, sa_sz);
+          }
+        #endif
+        break;
+      case AF_INET6:
+        sa_sz = sizeof(struct sockaddr_in6);
+        ifi->addr = calloc(1, sa_sz);
+        memcpy(ifi->addr, (struct sockaddr_in6 *)&ifr->ifr_addr, sa_sz);
+        #ifdef SIOGIFDSTADDR
+          if(flags & IFF_POINTOPOINT){
+            
+          }
+        #endif
+        break;
+      default:
+        break;
+    }
   }
+  
+
+  
 }
 
 

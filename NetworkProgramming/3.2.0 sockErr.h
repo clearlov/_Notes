@@ -24,6 +24,13 @@ void err(int append_strerror, int syslog_prio, const char *formated_msg, ...){
   va_end(ap);
   exit(1);
 }
+void err_exit(const char *formated_msg, ...){
+  va_list ap;
+  va_start(ap, formated_msg);
+  errHandle(errno, LOG_ERR, formated_msg, ap);
+  va_end(ap);
+  exit(1);
+}
 /**
  *
  */

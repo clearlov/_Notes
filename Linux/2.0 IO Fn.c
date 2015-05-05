@@ -55,6 +55,7 @@ int fcntl(int fd, int cmd, ...)
 
 
 
+#include <sys/ioctl.h> 
 #include <net/if.h>
 #define IFNAMSIZ      16
 #define ifc_buf       ifc_ifcu.ifcu_buf;
@@ -91,22 +92,49 @@ struct ifconf{
     struct  ifreq *ifcu_req; // return from kernel -> user
   } ifc_ifcu; 
 };
+
+struct arpreq{
+  struct  sockaddr arp_pa;
+  struct  sockaddr arp_ha;
+  int     arp_flags;
+};
+#define ATF_INUSE 0x01
+#define ATF_COM   0x02
+#define ATF_PERM  0x04
+#define ATF_PUBL  0x08
+
 /**
  * @arg int request
  *  [Socket]
  *  [File]
  *  [Interface]
- *    SIOC G IF CONF  get ifconfig (list of all interfaces), return ifconf{}
- *    SIOC G IF FLAGS  get interface flags, return ifreq{}
- *    SIOC G IF DSTADDR  get point-to-point addr. IFF_POINTOPOINT
- *    SIOC G IF BRDADDR  get broadcast addr.
+ *    SIOC G/S IF CONF  get/set ifconfig (list of all interfaces), return ifconf{}
+ *    SIOC G/S IF FLAGS  get/set interface flags, return ifreq{}
+ *    SIOC G/S IF DSTADDR  get/set point-to-point addr. IFF_POINTOPOINT
+ *    SIOC G/S IF BRDADDR  get/set broadcast addr.
  *      IPv4 only
- *    SIOC G IF IFMTU  get interface MTU, return ifreq{}
+ *    SIOC G/S IF IFMTU  get/set interface MTU, return ifreq{}
+ *      Systems usually use routing sockets instead of ioctl() to access the ARP
+ *        cache.
  *  [ARP]
+ *    SIOC G/S/D ARP  get/set/delete ARP entry, return arpreq{}
  *  [Routing]
+ *    SIOC ADD/DEL RT  add/delete route
  *  [STREAMS]
- * @errno
- *  EINVAL request or argp is not valid  
+ * @return -1 on error with errno;
+ *          if with errno EINVAL, the buffer specified is not large enough to
+ *            hold the result
+ *        >=0
+ *          error on the buffer ifconf.ifc_buf is lesser than the result. 
+ *            returns 0 without changing &ifconf on some OS(e.g. Berkeley-derived)
+ *          success on some OS with change the ifconf.len to the result needs
+ *            The real space may not be multiple to sizeof(struct ifreq)
+ *            if all the ifreqs are all IPv4 (struct sockaddr), the real space
+ *              is equal multiple sizeof(struct ifreq)
+ *            if with IPv6 (struct sockaddr_in6), it needs more space for it
+ * @note This means the only way we know that our buffer is large enough is to 
+ *  issue, save the return length, issue the request again with a larger buffer,
+ *  and compare the length with the saved value.
  * @example we don't know how many interfaces the server has
  *  +--------------------------------------------------------------------------+
  *  | sh$ ifconfig
@@ -127,7 +155,8 @@ struct ifconf{
  *  }
  *  free(buf);
  * @note above only suit for 2 interfaces. If there are 3 or more interface,
- *  ioctl() will return errno EINVAL for less room of the argument &if_conf.
+ *  ioctl() will return 0 (in some OS) or -1 with errno EINVAL for less room of
+ *  the argument &if_conf.
  */
 int ioctl(int fd, int request, ...)
 
