@@ -1,26 +1,3 @@
-
-
-enum LefAddrFamily{
-  AF_INET,    // IPv4, 32bit IP + 16bit Port   
-  AF_INET6,   // IPv6  
-  AF_LOCAL,   // AF_UNIX(the historial Unix name) absolute path
-  AF_ROUTE,   // Routing sockets
-  AF_KEY      // Key socket
-};
-enum LefSockType{
-  SOCK_STREAM,    // stream TCP  
-  SOCK_DGRAM,     // datagram UDP 
-  SOCK_SEQPACKET, // sequenced packet SCTP
-  SOCK_RAW,       // raw
-};
-enum LefProtocolType{
-  IPPROTO_TCP,
-  IPPROTO_UDP,
-  IPPROTO_SCTP,
-};
-
-
-
 /**
  * INADDR_ANY is a wildcard IP addr. to the server
  */
@@ -85,13 +62,25 @@ struct sockaddr_un{
 /******************************************************************************/
 
 
-
-
-
 /**
+ * @arg int fam
+ *  AF_INET     // IPv4, 32bit IP + 16bit Port   
+ *  AF_INET6    // IPv6  
+ *  AF_LOCAL    // AF_UNIX(the historial Unix name) absolute path
+ *  AF_ROUTE    // Routing sockets
+ *  AF_KEY      // Key socket
+ * @arg int socktype
+ *  SOCK_STREAM     // stream TCP  
+ *  SOCK_DGRAM      // datagram UDP 
+ *  SOCK_SEQPACKET  // sequenced packet SCTP
+ *  SOCK_RAW        // raw
+ * @arg int ip_protocol_type
+ *  IPPROTO_TCP
+ *  IPPROTO_UDP
+ *  IPPROTO_SCTP
  * @return int sockfd
  */
-int socket(int LefAddrFamily, int LefSockType, int LefProtocolType)
+int socket(int fam, int socktype, int ip_protocol_type)
 
 /**
  * assign a local protocol address to a socket.
