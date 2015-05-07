@@ -10,14 +10,21 @@
 #define ifr_metric    ifr_ifru.ifru_metric;
 #define ifr_data      ifr_ifru.ifru_data;
 struct ifreq{               // interface request
-  char ifr_name[IFNAMSIZ];  // interface name, e.g. "lo"
+  /**
+   * interface request name, e.g. lo, enp0s3
+   * @note Under Solaris, the interface name for an alias contains a colon (e.g
+   *  "lo" "lo:" "lo:"), while under 4.4BSD, the interface name does not change
+   *  for an alias. To handle both cases, we save the last interface name in
+   *  lastname and only compare up to a colon
+   */
+  char ifr_name[IFNAMSIZ];
   union {
     struct  sockaddr ifru_addr;
     struct  sockaddr ifru_dstaddr;
     struct  sockaddr ifru_broadaddr;
     /**
      * @var 
-     *  IFF_UP
+     *  IFF_UP  interface is not up
      *  IFF_BROADCAST
      *  IFF_MULTICAST
      *  IFF_LOOPBACK  loop
@@ -51,12 +58,15 @@ struct arpreq{
  *  [Socket]
  *  [File]
  *  [Interface]
- *    SIOC G/S IF CONF  get/set ifconfig (list of all interfaces), return ifconf{}
- *    SIOC G/S IF FLAGS  get/set interface flags, return ifreq{}
+ *    SIOC G/S IF CONF  get/set ifconfig (list of all interfaces), 
+ *      result: ifconf{}
+ *    SIOC G/S IF FLAGS  get/set interface flags
+ *      value:  ifreq{ifr_name}
+ *      result: ifreq{ ifr_ifru.ifru_flags }
  *    SIOC G/S IF DSTADDR  get/set point-to-point addr. IFF_POINTOPOINT
  *    SIOC G/S IF BRDADDR  get/set broadcast addr.
  *      IPv4 only
- *    SIOC G/S IF IFMTU  get/set interface MTU, return ifreq{}
+ *    SIOC G/S IF IFMTU  get/set interface MTU
  *  [ARP]
  *    SIOC G/S/D ARP  get/set/delete ARP entry, return arpreq{}
  *      Systems usually use routing sockets instead of ioctl() to access the ARP

@@ -25,6 +25,7 @@
 struct ifInfos{       // interfaces
   char  name[IFNAMSIZ];      // INNAMSIZ defined in net/if.h, e.g. enp0s3
   short flags;
+  short ifi_flags;
   short mtu;
   struct sockaddr *addr;    // inet & inet6
   struct sockaddr *brdaddr;   //broadcast addr.
@@ -56,14 +57,24 @@ void free ifInfos(struct ifInfos *i){
  * @note
  *  malloc() ifconf.ifc_buf 
  *  ioctl(sockfd, SIOCGIFCONF, &ifreq s);
- *  for(struct ifreq s){
+ *  for(struct ifreq s){     // be careful about the non-constant size of ifreq
+ *    check do_alias (Note Solaris' alias end with a colon and BSD's not change)
  *    ioctl(sockfd, SIOCGIFFLAGS, &ifr);
  *    for(flags){
  *      ioctl(sockfd, coverted_flag, &ifre);
  *    }
  *  }
+ * @return the first/head struct ifInfos
+ *  struct ifInfos *ifi_head, ** ifis;
+ *  ifi_head = NULL;
+ *  *ifis = &ifi_head;
+ *  for(struct ifreq s){
+ *    *ifis = ifi;      // the first ifi_head ptr to the first ifi
+ *                      // the rest ifis ptr to pre ifi->next
+ *    ifis = &(ifi->next);
+ *  }
  */
-struct ifInfos *getIfInfos(int addr_fam, int){
+struct ifInfos *getIfInfos(int addr_fam, int show_alias){
   int sockfd, guess_len, last_ifc_len;
   char *buf, *ptr;
   struct ifconf ifc;
@@ -105,11 +116,64 @@ struct ifInfos *getIfInfos(int addr_fam, int){
    *      multiple sizeof(struct ifreq)
    *    if with IPv6 (struct sockaddr_in6), the real space need more space for it
    */
- // struct sockaddr_in *i4;
- // struct sockaddr_in6 *i6;
   size_t sa_sz;
   struct ifInfos *ifi;
+  char *chr_ptr, last_name[IFNAMSIZ];
+  short ifi_flags;
   for(ptr = buf; ptr < buf + ifc.ifc_len;){
+    ifr = (struct ifreq *)ptr;
+    ptr += sizeof(ifr->ifr_name);
+    #ifdef HAVE_SOCKADDR_SA_LEN
+    ptr += max(sizeof(struct ifreq), ifr->ifr_addr.sa_len)
+    #else
+    switch(ifr->ifr_addr.sa_family){
+      #ifdef IPV6
+      case AF_INET6:
+        ptr += sizeof(struct sockaddr_in6);
+        break;
+      #endif
+      default:      // IPv4
+        ptr += sizeof(struct sockaddr);
+    }
+    #endif
+
+    if(addr_fam != ifr->ifr_addr.sa_family)
+      continue;
+    
+    ifi_myflags = 0;
+    if(NULL !=(chr_ptr = strchr(ifr->sa_addr, ':')))
+      *chr_ptr = 0;
+    if(0 == strncmp(last_name,ifr->ifr_name, IFNAMSIZ)){ // alias
+      if(!show_alias)
+        continue;
+      ifi_myflags = IFI_ALIAS;
+    }
+    memcpy(last_name, ifr->ifr_name, IFNAMSIZ);
+    
+    ifr2 = *ifr;
+    /**
+     * SIOCGIFLAG
+     * @arg-return ifr2{ifr_name}    ==>    ifr2{ifr_ifru.ifru_flags}
+     */
+    ioctl(sockfd, SIOCGIFFLAGS, &ifr2);
+    flags = ifr2.ifr_flags;
+    ifi = (struct ifInfos *)calloc(1, sizeof(struct ifInfos));
+    memcpy(ifi->name, ifr->name, IFI_NAME);
+    
+    ifi.flags = flags;
+    ifi.ifi_myflags = ifi_myflags;        // or |=
+    #if defined(SIOCGIFMTU) && defined(HAVE_STRUCT_ifr2Q_IFR_MTU)
+    ioctl(sockfd, SIOCGIFMTU, &ifr2);
+    ifi->mtu = ifr2.ifr_mtu;
+    #else
+    ifi->mtu = 0;
+    #endif
+    
+    /**
+     * @todo data link hwaddr 
+     */
+    
+    
     
     /**
      * Get all the flags' informations
@@ -120,18 +184,18 @@ struct ifInfos *getIfInfos(int addr_fam, int){
         ifi->addr = calloc(1, sa_sz);
         memcpy(ifi->addr, (struct sockaddr_in *)&ifr->ifr_addr, sa_sz);
         #ifdef SIOCGIFBRDADDR
-          if(flags & IFF_BROADCAST){
-            ioctl(sockfd, SIOCGIFBRDADDR, &ifre);
-            ifi->brdaddr = calloc(1, sa_sz);
-            memcpy(ifi->brdaddr, (struct sockaddr_in)&ifre.ifr_broadaddr, sa_sz);
-          }
+        if(flags & IFF_BROADCAST){
+          ioctl(sockfd, SIOCGIFBRDADDR, &ifr2);
+          ifi->brdaddr = calloc(1, sa_sz);
+          memcpy(ifi->brdaddr, (struct sockaddr_in)&ifr2.ifr_broadaddr, sa_sz);
+        }
         #endif
         #ifdef SIOCGIFDSTADDR
-          if(flags & IFF_POINTOPOINT){
-            ifi->dstaddr = calloc(1, sizeof(struct dstaddr));
-            ioctl(sockfd, SIOCGIFDSTADDR, &ifre);
-            memcpy(ifi->dstaddr, (struct sockaddr_in *)&ifre.ifr_dstaddr, sa_sz);
-          }
+        if(flags & IFF_POINTOPOINT){
+          ifi->dstaddr = calloc(1, sizeof(struct dstaddr));
+          ioctl(sockfd, SIOCGIFDSTADDR, &ifr2);
+          memcpy(ifi->dstaddr, (struct sockaddr_in *)&ifr2.ifr_dstaddr, sa_sz);
+        }
         #endif
         break;
       case AF_INET6:
@@ -148,7 +212,7 @@ struct ifInfos *getIfInfos(int addr_fam, int){
         break;
     }
   }
-  
+  free(buf);
 
   
 }
