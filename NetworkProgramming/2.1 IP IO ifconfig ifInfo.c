@@ -132,7 +132,7 @@ struct ifInfos *getIfInfos(int addr_fam, int show_alias){
         ptr += sizeof(struct sockaddr_in6);
         break;
       #endif
-      default:      // IPv4
+      default:      // IPv4, Data-link
         ptr += sizeof(struct sockaddr);
     }
     #endif
@@ -162,6 +162,13 @@ struct ifInfos *getIfInfos(int addr_fam, int show_alias){
     
     ifi.flags = flags;
     ifi.ifi_myflags = ifi_myflags;        // or |=
+    
+    #ifdef HAVE_SOCKADDR_DL_STRUCT
+    if(ifr->ifr_addr.sa_family == AF_LINK){
+      
+    }
+    #endif
+    
     #if defined(SIOCGIFMTU) && defined(HAVE_STRUCT_ifr2Q_IFR_MTU)
     ioctl(sockfd, SIOCGIFMTU, &ifr2);
     ifi->mtu = ifr2.ifr_mtu;

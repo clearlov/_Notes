@@ -66,7 +66,7 @@ struct arpreq{
  *    SIOC G/S IF DSTADDR  get/set point-to-point addr. IFF_POINTOPOINT
  *    SIOC G/S IF BRDADDR  get/set broadcast addr.
  *      IPv4 only
- *    SIOC G/S IF IFMTU  get/set interface MTU
+ *    SIOC G/S IF MTU  get/set interface MTU
  *  [ARP]
  *    SIOC G/S/D ARP  get/set/delete ARP entry, return arpreq{}
  *      Systems usually use routing sockets instead of ioctl() to access the ARP
@@ -114,18 +114,8 @@ struct arpreq{
 int ioctl(int fd, int request, ...)
 
 
-#include <net/if_dl.h>
-struct sockaddr_dl{               // socket data link
-  uint8_t     sdl_len;
-  sa_family_t sdl_family;         // AF_LINK
-  uint16_t    sdl_index;
-  uint8_t     sdl_type;
-  uint8_t     sdl_nlen;
-  uint8_t     sdl_alen;
-  uint8_t     sdl_slen;
-  char        sdl_data[12];
-};
-#define LLADDR(s) ((caddr_t)(s->sdl_data + s->sdl_nlen))
+
+
 
 /**
  * @note

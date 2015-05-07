@@ -1,7 +1,7 @@
 
 |~ RTT (Round Trip Time) ~|
 /**
- * @link http://en.wikipedia.org/wiki/Round-trip_delay_time
+ * @see http://en.wikipedia.org/wiki/Round-trip_delay_time
  */
 the time for a signal(data packet) to be sent plus the time for an ACK to be received.
 The RTT is also known as the ping time, using the ping command.
@@ -23,6 +23,13 @@ Example:
 
 |+ IP Fragmentation +|
 /**
- * @link http://en.wikipedia.org/wiki/IP_fragmentation
+ * @see http://en.wikipedia.org/wiki/IP_fragmentation
  */
  can lead to packet loss and excessive retransmissions. 
+ 
+ 
+|+ MTU (Maximum Transmission Unit) +|
+/**
+ * @see http://en.wikipedia.org/wiki/Maximum_transmission_unit
+ */
+the size (in bytes) of the largest protocol data unit that the layer can pass onwards

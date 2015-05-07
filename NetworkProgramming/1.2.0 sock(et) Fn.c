@@ -59,15 +59,29 @@ struct sockaddr_un{
    */
   char sun_path[108];
 };
+/*******************************************************************************
+ * 
+ */
+#include <net/if_dl.h>
+struct sockaddr_dl{         // socket data link
+  uint8_t     sdl_len;
+  sa_family_t sdl_family;   // AF_LINK
+  uint16_t    sdl_index;    // system assigned index
+  uint8_t     sdl_type;     // IFT_ETHER
+  uint8_t     sdl_nlen;     // interface name length, starting in sdl_data[0]
+  uint8_t     sdl_alen;     // link-layer addr len
+  uint8_t     sdl_slen;     // selector len
+  char        sdl_data[12]; // contains interface name and link-layer addr.
+};
+#define LLADDR(s) ((caddr_t)(s->sdl_data + s->sdl_nlen)) 
 /******************************************************************************/
-
 
 /**
  * @arg int fam
  *  AF_INET     // IPv4, 32bit IP + 16bit Port   
  *  AF_INET6    // IPv6  
  *  AF_LOCAL    // AF_UNIX(the historial Unix name) absolute path
- *  AF_ROUTE    // Routing sockets
+ *  AF_ROUTE    // Routing sockets, sa_family = AF_LINK
  *  AF_KEY      // Key socket
  * @arg int socktype
  *  SOCK_STREAM     // stream TCP  
