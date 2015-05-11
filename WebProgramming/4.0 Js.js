@@ -2,8 +2,8 @@
  * typeof():  
  *  number / string / boolean
  *  undefined
- *  object: null v={} v=new Object() v=[] v=new Array() function F(){}
- *  function( v = function(){} )
+ *  object: null v={} v=new Object() v=[] v=new Array() 
+ *  function  function( v = function(){} ) function F(){}
  * .constructor:    
  *  Number / String / Boolean
  *  Object: v={}   v=new Object()
