@@ -1,6 +1,0 @@
-In IEEE 754,
-S for Sign, E for Exponent, M for Mantissa
-float      S (1 minus/0 plus) 1 bit, E 8 bits, M 23 bits
-double     S (1 minus/0 plus) 1 bit, E 11 bits, M 52 bits
-
-  

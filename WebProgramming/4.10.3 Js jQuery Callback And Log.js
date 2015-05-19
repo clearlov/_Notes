@@ -27,17 +27,9 @@ $.makeArray(mixed arr_or_json)
 int $.inArray(mixed val, arr[, int fromIndex])
 $.unique(arr)
 
-boolean $.browser.[msie | opera | safari | mozilla]
-string $.browser.version
 
 $.param(mixed arr_or_json[, bool trandition])
 decodeURIComponent
 
 $.error = console.error;
 
-$(nodes).ajaxStart(callback(event, request, settings))
-$(nodes).ajaxError(callback(event, request, settings))
-$(nodes).ajaxSend(callback(event, request, settings))
-$(nodes).ajaxStop(callback(event, request, settings))
-$(nodes).ajaxSuccess(callback(event, request, settings))
-$(nodes).ajaxComplete(callback(event, request, settings))

@@ -109,10 +109,10 @@ sh$ ps aux | egrep '(nginx|php-fpm)'
 [ mv ] filename1 filename2   == rename file
  
 ` [ rm ] [?] filename1 filename2 
-	[ -i ]  ask for cofirmation each file
-	[ -f ] force deletion of a file without confirmation
-	[ -r ] folder  = delete everything in a folder
-	rm -i *.cpp
+    [ -i ]  ask for cofirmation each file
+    [ -f ] force deletion of a file without confirmation
+    [ -r ] folder  = delete everything in a folder
+    rm -i *.cpp
 [ rmdir ]
 
 [ touch ] filename =  update the changed date of a file
@@ -121,7 +121,7 @@ sh$ ps aux | egrep '(nginx|php-fpm)'
 |~ search ~|
 |- whereis -|
 ` [whereis] <APPLICATION>   = search the application's location
-	e.g. whereis PHP  /  whereis MySQL
+    e.g. whereis PHP  /  whereis MySQL
 |- find is fast search -|
 ` [ find -name ] "filename"  
 ` [ find -name ] "text"  =  search for files who start with the word text
@@ -142,8 +142,8 @@ sh$ ps aux | egrep '(nginx|php-fpm)'
 ` [ grep -r ] text directory/  = search for file names with occurrence of the text
 
 [ grep ] text filename [?]  =  search for text in file
-	-i  =  ignore case
-	-I  =  exclude binary files
+    -i  =  ignore case
+    -I  =  exclude binary files
 [ sed 's/^M$//' ] source-file [ > ] save-file  =  stream editor for filtering 
  EOL of DOS (CR/LF) to Linux's.
 
@@ -153,7 +153,7 @@ sh$ ps aux | egrep '(nginx|php-fpm)'
 [ ps -u ] accoutName [ | grep ] application
 [ top ] dynamic process list
 [ kill ] [?] pid  =  kill a process
-	 -9  =  violent kill
+     -9  =  violent kill
 [ killall ]  =  kill multiple process's, e.g. killall locate
 [ halt ] halt the computer
 
@@ -170,57 +170,57 @@ d---------       /* first char 'd' indicates it's a directory */
 
 
 ` [ chmod ] [?] <FILENAME>
-	chmod 700 vince.cpp   ===>    -rwx------ 
-	chmod 644 vince.cpp
-	
+    chmod 700 vince.cpp   ===>    -rwx------ 
+    chmod 644 vince.cpp
+    
 [ chmod ] [WHO][OPT][MODE] <FILENAME>
-	[WHO] u=user /  g = group  /  o = other users  /  a = all
-	[OPT] + = add a privilege  /  - = cancel   /  =  assign
-	[MODE]  r / w / x
-	chmod g+w vince.cpp       ===>   -rwxrw---
-	chmod go+x vince.cpp      ===>   -rwxrwx--x
-	chmod g-r,o+w vince.cpp   ===>   -rwx-wx-wx
-	chmod go=r                ===>   -rwxr--r--
-	
+    [WHO] u=user /  g = group  /  o = other users  /  a = all
+    [OPT] + = add a privilege  /  - = cancel   /  =  assign
+    [MODE]  r / w / x
+    chmod g+w vince.cpp       ===>   -rwxrw---
+    chmod go+x vince.cpp      ===>   -rwxrwx--x
+    chmod g-r,o+w vince.cpp   ===>   -rwx-wx-wx
+    chmod go=r                ===>   -rwxr--r--
+    
 [ chown ] [?] USER-NAME directory
-	-R  :  all the sub-folders and files
-	chown -R bob:bob /home/vince
-	
+    -R  :  all the sub-folders and files
+    chown -R bob:bob /home/vince
+    
 [ chgrp ] <GROUP-NAME> <FILENAME>
 
 |- archive and compress -|
 [ tar ] [?] save.tar folder/   or  compressed.tar
-	-c  =  creates an archive
-	-v  =  verbose
-	-f  =  assembles the archive into one file
-	-x  =  extract files
-	-r  =  append files to end of an archive
-	-z  =  filter the archive through gzip
-	e.g. 
-		tar -cv compress.tar vince.txt   			    ==> compress 
-`		tar -cvf compress.tar /home/vince/Downloads   	==> compress
-		tar -zcvf compress.tar.gz /home/vince/Downloads ==> compress with gzip
-		tar -xvf decompress.tar   						==> decompress
-`		tar -zxvf decompress.tar.gz						==> decompress gzip
-	
+    -c  =  creates an archive
+    -v  =  verbose
+    -f  =  assembles the archive into one file
+    -x  =  extract files
+    -r  =  append files to end of an archive
+    -z  =  filter the archive through gzip
+    e.g. 
+        tar -cv compress.tar vince.txt                   ==> compress 
+`        tar -cvf compress.tar /home/vince/Downloads       ==> compress
+        tar -zcvf compress.tar.gz /home/vince/Downloads ==> compress with gzip
+        tar -xvf decompress.tar                           ==> decompress
+`        tar -zxvf decompress.tar.gz                        ==> decompress gzip
+    
 
-	
+    
 [ gzip zip] filename folder/ =  gzip file or zip file
 [ gunzip unzip] filename  =  decompress file
-	
+    
 [ rar ] [?] save.rar folder/   or compressed.rar 
-		-x  =  decompress
-		-a  =  compress
-	
+        -x  =  decompress
+        -a  =  compress
+    
 |+ execute programs in the bg or fg +|
 add an '&' at the end of a command, to execute in bg
-	e.g. 
-	
+    e.g. 
+    
 |~ chain command ~|
 [ ; ] chain commands
-	e.g. ll -a; echo "Vince";
-	e.g. find -type f | while read i; do echo "$i"; done
+    e.g. ll -a; echo "Vince";
+    e.g. find -type f | while read i; do echo "$i"; done
 
 [ sleep ] seconds  =  pause between commands
-	e.g. ll -a; sleep 4; echo "Vince";
+    e.g. ll -a; sleep 4; echo "Vince";
 

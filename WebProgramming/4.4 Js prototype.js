@@ -21,6 +21,7 @@ Jujube.prototype.boil = function(){
     console.log('prototype boil will not run, because of this.boil');
 }
 
+
 var j = new Jujube(100);
 /******************************************************************************
 * the sequence of new a function

@@ -6,6 +6,7 @@
 db> show variables like '%slow%';
 db> show global status like '%slow%';
 
+    
 
 
 |+ Partition +|

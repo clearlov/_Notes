@@ -1,3 +1,11 @@
+$(nodes).ajaxStart(callback(event, request, settings))
+$(nodes).ajaxError(callback(event, request, settings))
+$(nodes).ajaxSend(callback(event, request, settings))
+$(nodes).ajaxStop(callback(event, request, settings))
+$(nodes).ajaxSuccess(callback(event, request, settings))
+$(nodes).ajaxComplete(callback(event, request, settings))
+
+
 $.ajaxSetup({"setting global default value of below"});
 $.ajax({
     type: default 'GET' | 'POST' ,
@@ -49,27 +57,20 @@ $.ajax().done(function(){})
 
 /**
  * @arg string event [click | submit]
+ * @note using it to replace .bind(), 使用 on() 方法的事件处理程序适用于当前或未来的元素（比如由脚本创建的新元素）
  */
-$('nodes').on("event", function(){})
-/**
- * Only first event
- */
-$('nodes').one('event', function(){})
-$('nodes').bind("events_delimited_by_space", function(){})
-$('nodes').unbind()
-
-$('p').bind('mouseenter mouseleave', function(){});
-$('p').bind({
-    mouseenter:function(){},
-    mouseleave:function(){},
-})
+$(nodes).on(events[, child_selector] [, arg_of_fn], function(){})
+$(nodes).one(events[, child_selector] [, arg_of_fn], function(){})
 
 /**
  * Remove events on $('nodes').on()
  */
-$('nodes').off(["events_delimited_by_space"])
+$(nodes).off(events[, selector][, fn])
 
-
+// 取消form表单提交或a打开的超连接
+event.preventDefault();
+// 同样也支持取消(A)事件冒泡
+event.stopPropagation();
 
 
 $('nodes').show([int speed_microsec][, "swing" | "linear"][, fn(){}])

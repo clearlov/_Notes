@@ -1,3 +1,13 @@
+.valueOf()
+.toString()
+
+var coil = {
+  i: 10,
+  valueOf: function(){console.log('valueOf()');return this.i+30;},
+  toString: function(){console.log('toString()');return this.valueOf() + 10}
+};
+
+
 /**
  * typeof():  
  *  number / string / boolean

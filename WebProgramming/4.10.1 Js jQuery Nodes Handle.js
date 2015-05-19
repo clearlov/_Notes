@@ -9,7 +9,7 @@ boolean $.contains(container, contained)
 $(nodes).append("html_to_the_end_of_inner_nodes")
 $(nodes).appendTo("tag_append_to_the_out_of_nodes")
 $(nodes).prepend("html_to_the_begin_of_inner_nodes")
-$(nodes).prepend("tag_to_the_inner_of_inner_nodes")
+$(nodes).prependTo("tag_to_the_inner_of_inner_nodes")
 
 // <p id="preach"></p><div class="preacher"></div>
 
