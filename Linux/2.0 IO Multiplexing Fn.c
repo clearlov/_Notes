@@ -27,7 +27,7 @@ typedef struct{
 } fd_set;
 #define FD_SETSIZE 1024
 /**
- * @arg fd_set * fdset
+ * @param fd_set * fdset
  */
 #define FD_ZERO(fdset)                                                  \
   do{                                                                   \
@@ -48,9 +48,9 @@ typedef struct{
 
 
 /**
- * @arg int maxfd_add1 the maximum no. of fds across all the sets, plus 1
- * @arg fd_set any of these args can be as a null ptr
- * @arg const struct timeval *timeout wait for any of the ready descriptors
+ * @param int maxfd_add1 the maximum no. of fds across all the sets, plus 1
+ * @param fd_set any of these args can be as a null ptr
+ * @param const struct timeval *timeout wait for any of the ready descriptors
  *  NULL ptr: wait forever
  * @return >0 on ready descriptors; 0 on timeout; -1 on error
  * @discuss when a socket is ready for reading
@@ -74,7 +74,7 @@ int select(int maxfd_add1,
             fd_set *readset, fd_set *writeset, fd_set *exceptset,
             const struct timeval *timeout);
 /**
- * @arg sigmask 
+ * @param sigmask 
  */
 struct timespec{
   long tv_sec;
@@ -102,8 +102,8 @@ int pselect(int maxfd_add1,
  * |POLLHUP   | |Y| Hangup has occurred
  * |POLLNVAL  | |Y| fd is not an open file
  * +---------------------------------------------------------------------------+
- * @arg nfds_t unsigned long fds type
- * @arg int timeout
+ * @param nfds_t unsigned long fds type
+ * @param int timeout
  *  <0 | INFTIM  infinite time, wait forever
  * @return >0 fds that have a nonzero revents; 0 no fd ready; -1 on error
  * @example

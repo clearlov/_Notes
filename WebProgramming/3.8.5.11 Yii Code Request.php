@@ -43,7 +43,7 @@ class Response extends \yii\base\Response
   sendCookies()
   sendContent()
   /**
-   * @arg array $opt 
+   * @param array $opt 
    *  mimeType: 
    *  inline: bool, whether the browser should open the file within the browser 
    *    window. Defaults to false, meaning a download dialog will pop up.

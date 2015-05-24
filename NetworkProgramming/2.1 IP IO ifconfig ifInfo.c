@@ -153,7 +153,7 @@ struct ifInfos *getIfInfos(int addr_fam, int show_alias){
     ifr2 = *ifr;
     /**
      * SIOCGIFLAG
-     * @arg-return ifr2{ifr_name}    ==>    ifr2{ifr_ifru.ifru_flags}
+     * @param-return ifr2{ifr_name}    ==>    ifr2{ifr_ifru.ifru_flags}
      */
     ioctl(sockfd, SIOCGIFFLAGS, &ifr2);
     flags = ifr2.ifr_flags;

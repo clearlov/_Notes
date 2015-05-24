@@ -56,7 +56,7 @@ $.ajax().done(function(){})
         .fail(function(){});
 
 /**
- * @arg string event [click | submit]
+ * @param string event [click | submit]
  * @note using it to replace .bind(), 使用 on() 方法的事件处理程序适用于当前或未来的元素（比如由脚本创建的新元素）
  */
 $(nodes).on(events[, child_selector] [, arg_of_fn], function(){})

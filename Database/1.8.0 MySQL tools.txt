@@ -1,5 +1,5 @@
 /**
- * @arg $cmd
+ * @param $cmd
  *  ping
  *  status
  *  processlist
@@ -8,7 +8,7 @@ sh$ mysqladmin -uroot -p -h localhost $cmd
 
 /**
  * http://dev.mysql.com/doc/refman/5.7/en/mysqldump.html
- * @arg $opt
+ * @param $opt
  *  --single-transaction 
  *  --lock-tables
  *  --lock-all-tables

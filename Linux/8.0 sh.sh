@@ -1,17 +1,20 @@
 #!/bin/bash
+########################## Stream #################################
+read -p "Your Name:" -t 10 name
+    -p "Hint: "     # hint
+    -t 10           # 10 sec
 
 ########################## FILE ###################################
-FILENAME="$(pwd)/lef.cc"
-if [ -f ${FILENAME} -a ${FILENAME##*.} ]
+filename="$(pwd)/lef.cc"
+if [ -f ${filename} -a ${filename##*.} ]
 then
-    echo ${FILENAME##*.}     # get the extension
+    echo ${filename##*.}     # get the extension
 fi
 
 
 ######################### STRING ##################################
-read NAME
-echo "Hello, $NAME"
-${NAME^^}       # uppercase()
+echo "Hello, $name"
+${name^^}       # uppercase()
 
 
 ######################### PROCESS #################################
@@ -67,7 +70,7 @@ echo ${#SCORES[0]}   # strlen(SCORES[0])
 echo ${#DATE}  # strlen($DATE)
 echo ${DATE:0:3}   # substr($DATE)
 
-echo ${DATE:-"2015-05-05"}   # DATE ? DATE : "2015-05-05"
+echo ${DATE:-"2015-05-05"}   # DATE || "2015-05-05"
 echo ${USER:=1}             # if(!USER) USER = 1
 echo ${DATE_UPTIME:?"error msg"}
 echo ${DATE:+"DATE"}           # DATE && "DATE"

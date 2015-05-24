@@ -1,6 +1,6 @@
 |~ Row-Level Lock(InnoDB/BDB) ~|
 /**
- * @arg $transaction_characteristic
+ * @param $transaction_characteristic
  *  WITH CONSITENT SNAPSHOT
  *  READ WRITE
  *  READ ONLY
@@ -73,7 +73,7 @@ ERROR 1213 (40001): Deadlock found when trying to get lock;
 
 |~ Table-Level Lock(MyISAM) ~|
 /**
- * @arg $lock_type
+ * @param $lock_type
  *  READ [LOCAL]                         select
  *   prohibit write in this table
  *   prohibit read/write in other tables, 

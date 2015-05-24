@@ -1,6 +1,6 @@
 <?php
 /**
- * @arg $pad_type
+ * @param $pad_type
  *  STR_PAD_RIGHT
  *  STR_PAD_LEFT
  *  STR_PAD_BOTH
@@ -25,7 +25,7 @@ int strcasecmp($str1, $str2)
 
 /**
  * Extract [k=>v] to $prefixk = $v
- * @arg int $extract_type
+ * @param int $extract_type
  *  EXTR_OVERWRITE
  *  EXTR_SKIP
  *  EXTR_PREFIX_SAME

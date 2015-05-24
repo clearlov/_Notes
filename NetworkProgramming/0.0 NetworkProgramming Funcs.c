@@ -29,14 +29,14 @@ ntoh{s|l}: convert unsigned short/long from BE to host endianness (LE or BE)
  * Convert IP addr. from 'Dotted Decimal Notation' to Binary, 
  * and assign to 'in_addr' or 'in6_addr' struct
  * dst_strct: 'in_addr' or 'in6_addr' struct , depended on LefAddrFamily
- * @arg const char * ip_str INADDR_ANY indicates all IP
+ * @param const char * ip_str INADDR_ANY indicates all IP
  * @note long INADDR_ANY is not const char *
  *      i4.sin_addr.s_addr = htonl(INADDR_ANY);   // ok
  */
 int inet_pton(sa_family_t LefAddrFamily, const char *ip_str, void *dst_struct)
 
 /**
- * @arg numeric_addr_ptr is struct sockaddr_in/sockaddr_in6;
+ * @param numeric_addr_ptr is struct sockaddr_in/sockaddr_in6;
  * @return object ptr to result if OK, NULL on error
  * @note
  *  inet_ntop(i4.sin_family, &i4, rtn_str, sizeof(rtn_str));

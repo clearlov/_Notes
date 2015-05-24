@@ -12,7 +12,7 @@
  *  Sig * signal(int signo, Sig *func){}
  *  typedef void (*Sig)(int);
  *  Sig signal(int signo, Sig func){}
- * @arg int signo
+ * @param int signo
  *  SIGHUP hangup be sent to a process when its controlling terminal is closed
  *  SIGCHLD be sent to a parent process when a child process terminates, is 
  *    interrupted, or resumes[rɪ'zju:m] after being interruped.
@@ -58,11 +58,11 @@ struct sigaction {
 
 /**
  * Examine and change a signal action
- * @arg int signo specifies the signal and can be any valid signal except
+ * @param int signo specifies the signal and can be any valid signal except
  *  SIGKILL and SIGSTOP.
- * @arg const struct sigaction *act if non-NULL, the new action for signal 
+ * @param const struct sigaction *act if non-NULL, the new action for signal 
  *  signo is installed from act
- * @arg struct sigaction *old_act if non-NULL, the previous action is saved
+ * @param struct sigaction *old_act if non-NULL, the previous action is saved
  *  in old_act
  */
 int sigaction(int signo, 
@@ -86,14 +86,14 @@ int sigaction(int signo,
  */
 pid_t wait(int *status_ptr);
 /**
- * @arg pid_t pid 
+ * @param pid_t pid 
  *  >0  it specifies the pid of a child process for which status is requested
  *  0  status is requested for any child process whose process group ID is equal to that of the calling process 
  *  -1  status is requested for any child process. In this respect, waitpid() is
  *      then equivalent to wait().
  *  <-1 status is requested for any child process whose process group ID is equal to the absolute value of pid.
- * @arg int *status_ptr a value-result
- * @arg int opt bitwise-inclusive OR of zero or defined in the <sys/wait.h>
+ * @param int *status_ptr a value-result
+ * @param int opt bitwise-inclusive OR of zero or defined in the <sys/wait.h>
  *  WNOHANG waitpid() not block (suspend execution of the calling thread) if
  *      there're runing children that have not yet terminated
  *  WCONTINUED

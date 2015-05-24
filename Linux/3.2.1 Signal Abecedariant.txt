@@ -1,11 +1,11 @@
 |~ File Descriptor ~|
 /**
- * @arg lo localhost
- * @arg -nn display in type IP.port
+ * @param lo localhost
+ * @param -nn display in type IP.port
  */
 sh$ sudo tcpdump -i lo -nn
 /**
- * @arg Flags
+ * @param Flags
  *  S SYN Synchronize[ˈsɪŋkrəˌnaɪz]
  *  F FIN Finish
  *  P PUSH

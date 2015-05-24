@@ -18,14 +18,14 @@ pid_t fork()
 
 /**
  * Terminate
- * @arg/return int status C specifies EXIT_SUCESS and EXIT_FAILURE
+ * @param/return int status C specifies EXIT_SUCESS and EXIT_FAILURE
  *  it is returned to its parent with a status &0377, can be collected with wait()
  */
 void exit(int status)
 /**
  * Terminate immediately, any open fds belonging to the process are closed; any 
  *  children are inherited by process 1, init, and its parent is sent a SIGCHLD
- * @arg/return int status is returned to its parent 
+ * @param/return int status is returned to its parent 
  */
 void _exit(int status)
 
@@ -45,8 +45,8 @@ void _exit(int status)
 pid_t wait(int *status)
 /**
  * Pause process and waiting for signal or terminates of a child process
- * @arg/return int *status
- * @arg int opts 0 or more that split with OR
+ * @param/return int *status
+ * @param int opts 0 or more that split with OR
  *  WNOHANG return 0 immediately if no child has exited or child's pid on exited
  * @return int pid wait for
  *  <-1 any child whose GID equals abs(pid)
@@ -70,7 +70,7 @@ pid_t setsid()
 /**
  * Since a daemon does not have a controlling terminal, it cannot just fprintf
  *  to stderr. Using syslog() instead
- * @arg prio combines a level and a facility
+ * @param prio combines a level and a facility
  *  level
  *    0 LOG_EMEG
  *    1 LOG_ALERT
@@ -105,7 +105,7 @@ pid_t setsid()
 void syslog(int prio, const char *msg, ...)
 /**
  * it can be perpended or appended to syslog()
- * @arg int opts
+ * @param int opts
  *  LOG_CONS
  *  LOG_NDELAY
  *  LOG_PERROR
@@ -116,7 +116,7 @@ void close()
 
 /**
  * exec list: Replace the current process image with a new process image
- * @arg const char *arg must be terminated by a (char *)0 or (char *)NULL.
+ * @param const char *arg must be terminated by a (char *)0 or (char *)NULL.
  * @return -1 only on error
  * @example
  *  ls -al /etc/passwd

@@ -30,11 +30,11 @@ struct addrinfo{
 /**
  * Despite the fact that getaddrinfo() is harder than gethostbyname() and 
  *  getservbyname(), it's still more useful.
- * @arg const char *host is either a host name or an dotted-decimal string 
+ * @param const char *host is either a host name or an dotted-decimal string 
  *  for IPv4 or a hex string for IPv6
- * @arg const char *service is either a service name or a decimal port number
- * @arg const struct addrinfo hints can be a null ptr
- * @arg/return struct addrinfo **result all the storage are obtained dynamically.
+ * @param const char *service is either a service name or a decimal port number
+ * @param const struct addrinfo hints can be a null ptr
+ * @param/return struct addrinfo **result all the storage are obtained dynamically.
  *  e.g., from malloc(). We need freeaddrinfo() to release it.
  * @return int 0 on success
  * @example
@@ -88,7 +88,7 @@ const char *gai_strerror(int getaddrinfo_rtn)
 void freeaddrinfo(struct addrinfo *ai)
 
 /**
- * @arg int flags
+ * @param int flags
  */
 int getnameinfo(const struct sockaddr *sockaddr, socklen_t addrlen,
                 char *host, socklen_t hostlen,
@@ -127,6 +127,6 @@ struct servent{     // IPv4 only, obsoleted
  */
 struct servent *getservbyname(const char *serv_nm, const char *proto_nm)
 /**
- * @arg int port htons(port)
+ * @param int port htons(port)
  */
 struct servent *getservbyport(int port, const char *proto_nm)

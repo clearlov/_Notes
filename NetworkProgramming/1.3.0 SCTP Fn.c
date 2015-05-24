@@ -9,7 +9,7 @@ typedef __s32 sctp_assoc_t;// http://osxr.org/linux/source/include/uapi/linux/sc
 
 /**
  * Add or remove bind a set of addresses on a socket
- * @arg int flags
+ * @param int flags
  *  SCTP_BINDX_ADD_ADDR
  *  SCTP_BINDX_REM_ADDR
  */
@@ -27,12 +27,12 @@ int sctp_getladdrs(int sockfd, sctp_assoc_t id, struct sockaddr **addrs)
 void sctp_freeladdrs(struct sockaddr *addrs)
 
 /**
- * @arg int flags
+ * @param int flags
  *  SCTP_UNORDERED un-ordered
  *  SCTP_ADDR_OVER in the one-to-many
  *  SCTP_ABORT
  *  SCTP_EOF
- * @arg uint32_t timetolive in milliseconds
+ * @param uint32_t timetolive in milliseconds
  */
 ssize_t  sctp_sendmsg(int sockfd, const void *msg, size_t msglen, 
                  struct sockaddr *to, socklen_t tolen,

@@ -1,5 +1,5 @@
 /**
- * @arg int lvl{opt}
+ * @param int lvl{opt}
  *  SOL_SOCKET
  *    SO_BROADCAST
  *    SO_DEBUG TCP only
@@ -167,8 +167,8 @@
  *        __u32 sinfo_cumtsn;
  *        sctp_assoc_t sinfo_assoc_id;
  *      };
- * @arg int opt_nm
- * @arg void *opt_val
+ * @param int opt_nm
+ * @param void *opt_val
  * @return int 0 on success; -1 on error with errno
  * @example
  *  socklen_t len;

@@ -1,5 +1,5 @@
 /**
- * @arg/return int fds[0] refers to the read end; fds[1] to the write end;
+ * @param/return int fds[0] refers to the read end; fds[1] to the write end;
  * @note Data written to the write end is buffered by the kernel until it's read
  *  +----[r0 parent 1w]-----+
  *  |                       |
@@ -10,11 +10,11 @@
 int pipe(int fds)
 
 /**
- * @arg int socktype 
+ * @param int socktype 
  *  SOCK_STREAM stream pipe which is full-duplex (both descriptors can be read
  *    and written)
  *  SOCK_DGRAM
- * @arg/return int sockfds[2] are returned as sockfds[0] sockfds[1] both sockfds
+ * @param/return int sockfds[2] are returned as sockfds[0] sockfds[1] both sockfds
  *  can write and read
  *  +----[rw0 parent 1rw]------+
  *  |                          |

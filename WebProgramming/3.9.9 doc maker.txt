@@ -6,7 +6,7 @@ $StealthMode->steal = 'do good by stealth';
 |+ Use reflection +|
 /**
  * @see http://php.net/manual/en/class.reflectionexception.php
- * @arg string|object
+ * @param string|object
  */
 $reflect = new ReflectionObject($StealthMode); // new ReflectionObject('Stealth')
 /**

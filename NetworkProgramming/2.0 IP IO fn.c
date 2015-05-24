@@ -54,7 +54,7 @@ struct arpreq{
 #define ATF_PUBL  0x08
 
 /**
- * @arg int request
+ * @param int request
  *  [Socket]
  *  [File]
  *  [Interface]

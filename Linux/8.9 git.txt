@@ -85,7 +85,7 @@ sh$ git clone git@c......git
 
 /** 
  * List branches of local, asterisk indicates the current branch
- *  @arg $opt
+ *  @param $opt
  *  -a list all branches (local + remote)
  *  -r list remote branches
  */
@@ -135,7 +135,7 @@ sh$ git commit -am "$comments"   /* automaticlly cache */
 sh$ git push [$remote_host=origin] [$local_branch=master]:[$remote_branch]
 /**
  * git pull $remote_branch $local_branch
- *  @arg $branch NULL on all branches;
+ *  @param $branch NULL on all branches;
  */
 sh$ git fetch [$remote_host=origin] [$branch]
 /* git log -p master..origin/master */

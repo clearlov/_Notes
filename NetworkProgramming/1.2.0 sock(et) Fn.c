@@ -77,18 +77,18 @@ struct sockaddr_dl{         // socket data link
 /******************************************************************************/
 
 /**
- * @arg int fam
+ * @param int fam
  *  AF_INET     // IPv4, 32bit IP + 16bit Port   
  *  AF_INET6    // IPv6  
  *  AF_LOCAL    // AF_UNIX(the historial Unix name) absolute path
  *  AF_ROUTE    // Routing sockets, sa_family = AF_LINK
  *  AF_KEY      // Key socket
- * @arg int socktype
+ * @param int socktype
  *  SOCK_STREAM     // stream TCP  
  *  SOCK_DGRAM      // datagram UDP 
  *  SOCK_SEQPACKET  // sequenced packet SCTP
  *  SOCK_RAW        // raw
- * @arg int ip_protocol_type
+ * @param int ip_protocol_type
  *  IPPROTO_TCP
  *  IPPROTO_UDP
  *  IPPROTO_SCTP
@@ -118,7 +118,7 @@ int bind(int sockfd, const struct sockaddr* addr, socklen_t addr_len)
  * When the process calls accept(), the first entry on the completed queue is 
  *  returned to the process, or if the queue is empty, the process is put to
  *  sleep until an entry is placed onto the completed queue.
- * @arg int max_listen_queues 
+ * @param int max_listen_queues 
  *  It is multiplied by 1.5 in MacOS and added 3 in Linux.
  *  e.g. listen(listenfd, 2048) --> 3072 queues in MacOS and 2051 queues in Linux
  *  Provide enough number of queues for SYN flooding.
@@ -147,9 +147,9 @@ int connect(int sockfd, const struct sockaddr*serv_addr, socklen_t addrlen)
  * When a process is blocked in "slow system call"(will ever return, like 
  *  for(;;) and read()) and the process catches a signal and the signal handler
  *  returns, the system call can return EINTR(interrupted system call).
- * @arg cli_addr is used to return the protocol addr. of the connected peer
+ * @param cli_addr is used to return the protocol addr. of the connected peer
  *  process (the client).
- * @arg addrlen is a value-result arg.
+ * @param addrlen is a value-result arg.
  *  value: sizeof(cli_addr)
  *  result: actual number of bytes stored by the kernel in the socket addr. structure
  * @return integer connected socket file descriptor 
@@ -160,7 +160,7 @@ int accept(int listenfd, struct sockaddr* cli_addr, socklen_t addrlen)
 
 int close(int fd)
 /**
- * @arg int how
+ * @param int how
  *  0 SHUT_RD stop reading data; reject it when further data arrives
  *  1 SHUT_WR stop writing data;contents of socket send buffer sent to other end
  *    followed by FIN. discard any data waiting to be sent; stop looking for 
@@ -186,7 +186,7 @@ int shutdown(int listenfd, int how)
  * Receive a msg. from a connection-mode or connectionless-mode socket. It is 
  *  normally used with connectionless-mode sockets because it permits the 
  *  application to retrieve the source address of received data.
- * @arg int flags 
+ * @param int flags 
  *  MSG_DONTROUTE only for sendto(); tell the kernel that the destination is on
  *    a local attached network and not to perform a lookup of the routing table
  *    setsockopt(sockfd, SO_DONTROUTE ...) is for all operation
@@ -352,7 +352,7 @@ struct cmsgcred{
 
 
 /**
- * @arg socklen_t * addrlen  is quite different with socklen addrlen
+ * @param socklen_t * addrlen  is quite different with socklen addrlen
  * @example if unknown IPv4 or IPv6, use sockaddr_storage
  *  struct sockaddr_storage sa_s;  
  *  socklen_t sa_s_len = sizeof(sa_s); 

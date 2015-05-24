@@ -11,7 +11,7 @@ long sysconf(int nm)
  *  generate a SIGALRM signal for the process after the number of realtime 
  *  seconds specified by seconds have elapsed. Processor scheduling delays may
  *  prevent the process from handling the signal as soon as it is generated.
- * @arg unsigned sec 0 on no new alarm() is scheduled; others on any previously
+ * @param unsigned sec 0 on no new alarm() is scheduled; others on any previously
  *  set alarm() is canceled
  * @return unsigned >0 the seconds remaining until any previously scheduled 
  *  alarm was due to be delivered; 0 on no previously scheduled alarm

@@ -10,9 +10,9 @@ const zend_function_entry <MODULE>_functions[] = {
     /**
      * PHP METHOD
      * use PHP_METHOD(<CLASS>, <METHOD>) to write code
-     * @arg ZEND_ACC_CTOR   :  a constructor function
-     * @arg ZEND_ACC_DTOR   :  a de-constructor function
-     * @arg ZEND_ACC_PUBLIC :  the privilege is public
+     * @param ZEND_ACC_CTOR   :  a constructor function
+     * @param ZEND_ACC_DTOR   :  a de-constructor function
+     * @param ZEND_ACC_PUBLIC :  the privilege is public
      */
     PHP_ME(<CLASS>, __construct, arg_construct, ZEND_ACC_CTOR|ZEND_ACC_PUBLIC)
     PHP_ME(<CLASS>, clone, NULL, ZEND_ACC_PUBLIC)
