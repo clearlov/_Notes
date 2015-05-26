@@ -1,42 +1,42 @@
 class Implement{
-    Implement(const Implement&);             // no copy
-    Implement &operator =(const Implement&); // no copy
-    protected:
-    /**
-     * size_t = sizeof(Implement)
-     * 'operator new' and 'operator delete' are SMF(not ptr this)
-     */
-    void *operator new(size_t)throw(){} //disable: Implement *i=new Implement();
-        
-    void *operator new[](size_t respirate){
-        return ::new(respirate);  // call global new()
-    }
-    void operator delete(void *){}        // disable: delete i;
-    void operator delete[](void* respire) throw(){
-        ::delete(respire);
-    }
-    
-    ~Implement();  // disable: delete i;   delete'll call distruct func 
-    public:
-    /**
-     * Covariant Return Type (Prototype)
-     * what if rtn 'B*' or 'B&' in base class, derived class can rtn 
-        'D*' or 'D&' instead
-     * * virutal and friend are exclusion
-     *      virtual friend int exclude() = 0;  // Error:
-     *      B{virtual void exclude()=0;} D{friend void exclude(){}}  // Error:
-     */
-    virtual Implement *clone() const = 0;   // 'B *'
-    virtual int rear() = 0;
+  Implement(const Implement&);             // no copy
+  Implement &operator =(const Implement&); // no copy
+  protected:
+  /**
+   * size_t = sizeof(Implement)
+   * 'operator new' and 'operator delete' are SMF(not ptr this)
+   */
+  void *operator new(size_t)throw(){} //disable: Implement *i=new Implement();
+      
+  void *operator new[](size_t respirate){
+    return ::new(respirate);  // call global new()
+  }
+  void operator delete(void *){}        // disable: delete i;
+  void operator delete[](void* respire) throw(){
+      ::delete(respire);
+  }
+  
+  ~Implement();  // disable: delete i;   delete'll call distruct func 
+  public:
+  /**
+   * Covariant Return Type (Prototype)
+   * what if rtn 'B*' or 'B&' in base class, derived class can rtn 
+      'D*' or 'D&' instead
+   * * virutal and friend are exclusion
+   *      virtual friend int exclude() = 0;  // Error:
+   *      B{virtual void exclude()=0;} D{friend void exclude(){}}  // Error:
+   */
+  virtual Implement *clone() const = 0;   // 'B *'
+  virtual int rear() = 0;
 };
 class Heritor : public Implement{
-    public:
-    /**
-     * Implement * Implement::clone()
-        static_cast<Implement>Heritor
-     */
-    Heritor *clone() const;                 // 'D *' to 'B *' covariant
-    int rear(){return 100;}
+  public:
+  /**
+   * Implement * Implement::clone()
+      static_cast<Implement>Heritor
+   */
+  Heritor *clone() const;                 // 'D *' to 'B *' covariant
+  int rear(){return 100;}
 };
 
 
@@ -50,18 +50,18 @@ class Heritor : public Implement{
  */
 
 class Recollect{
-    private:
-        int x;
-    public:
-        Recollect(){cout << "Recollect::Recollect()" << endl;}
-        Recollect(int j){
-            x=j;
-            cout << "Recoolect::Recollect(int) :" << j << endl;
-        }
-        virtual Blackout *insomnia() const = 0; // Factory Method
-        void setX(int i):x(i){}
-        void getX(){return x;}
-        bool checkX(int y){return x == y;}
+  private:
+    int x;
+  public:
+    Recollect(){cout << "Recollect::Recollect()" << endl;}
+    Recollect(int j){
+      x=j;
+      cout << "Recoolect::Recollect(int) :" << j << endl;
+    }
+    virtual Blackout *insomnia() const = 0; // Factory Method
+    void setX(int i):x(i){}
+    void getX(){return x;}
+    bool checkX(int y){return x == y;}
 };
  
  
