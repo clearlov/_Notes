@@ -14,9 +14,9 @@
 class Assay{
     public:
     Assay(){};
-    virtual Assay * pistol = 0;
-    virtual int infrared = 0;
-    virtual void pipeDream = 0;
+    virtual Assay * pistol() = 0;
+    virtual int infrared() = 0;
+    virtual void pipeDream() = 0;
 };
 
 
