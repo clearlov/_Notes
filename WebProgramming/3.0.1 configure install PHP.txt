@@ -125,7 +125,7 @@ sh$ sudo source /etc/profile
 |- xdebug / xhprof -|
 sh$ sudo cd xdebug
 sh$ sudo phpize
-sh$ sudo +|configure --enable-xdebug --with-php-config=/usr/local/php/bin/php-config
+sh$ sudo ./configure --enable-xdebug --with-php-config=/usr/local/php/bin/php-config
 sh$ sudo make
 sh$ sudo make install
 
@@ -141,18 +141,47 @@ sh$ sudo +|configure --with-php-config=/usr/local/php/bin/php-config
 
 
 |~ Extensions Installation ~|
-|+ Opcache +|
-sh$ cd ext/opcache
-sh$ phpize
-sh$ sudo ./configure --enable-opcache --with-php-config=/usr/local/php/bin/php-config
-sh$ sudo make
-sh$ sudo make install
 
 |+ Xdebug +|
 sh$ phpize
 sh$ ./configure --enable-xdebug --with-php-config=/usr/local/php/bin/php-config
 sh$ sudo make
 sh$ sudo make install
+
+|+ ImageMagick +|
+/**
+ * @see http://www.tuicool.com/articles/vmuyyy
+ * brew install php56-imagick
+ */
+|- ImageMagick -|
+wget ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick.tar.gz 
+
+./configure –prefix=/usr/local/ImageMagick 
+make 
+sudo make install 
+
+|- imagick.so -|
+wget http://pecl.php.net/get/imagick-3.1.2.tgz
+
+yum install gtk-devel gtk2-devel     /* brew install pkg-config */
+export PKG_CONFIG_PATH=/usr/local/ImageMagick/lib/pkgconfig
+
+
+./configure –with-php-config=/usr/local/php/bin/php-config –with-imagick=/usr/local/ImageMagick 
+
+Note:
+  err: checking for MagickWand.h header file… configure: error: Cannot locate header file MagickWand.h
+
+ ln -s /usr/local/ImageMagick/include/ImageMagick-6 /usr/local/ImageMagick/include/ImageMagick 
+ make clean
+ phpize
+./configure –with-php-config=/usr/local/php/bin/php-config –with-imagick=/usr/local/ImageMagick
+ make && make install
+
+  
+
+
+
 
 |+ Install Limbcrypt/Mcrypt/Mhash +|
 /**
