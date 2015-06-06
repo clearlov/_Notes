@@ -56,7 +56,7 @@ sh$ php —ini
 
 |+ php-fpm +|
 |— php-fpm stop -|
-sh$ kill -INT `cat /usr/local/php/var/run/php-fpm.pid`
+sh$ kill -INT `cat /usr/local/var/run/php-fpm.pid`
 |— php-fpm restart -|
-sh$ kill -INT `cat /usr/local/php/var/run/php-fpm.pid`
+sh$ kill -INT `cat /usr/local/var/run/php-fpm.pid`
 
