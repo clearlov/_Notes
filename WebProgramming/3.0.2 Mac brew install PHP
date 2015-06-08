@@ -18,7 +18,12 @@ sh$ brew tap josegonzalez/homebrew-php
 sh$ brew search php
 sh$ brew options php56
 
-sh$ brew install php56 --prefix=/usr/local/php --with-config-file-path=/usr/local/php/lib --with-config-file-scan-dir=/usr/local/php/etc/conf.d --with-bz2 --with-curl --with-gd --with-mysql --with-mysqli --with-openssl --with-pcre-regex --with-pear --with-zlib --enable-bcmath --enable-fpm --enable-gd-native-ttf --enable-libxml --enable-mbstring --enable-pdo --enable-sockets --enable-inline-optimization --enable-xml --enable-zip --enable-opcache --enable-cgi --enable-json
+sh$ brew install php56 --prefix=/usr/local/php --with-config-file-path=/usr/local/php/lib --with-config-file-scan-dir=/usr/local/php/etc/conf.d \
+
+--with-gd --enable-gd-native-ttf --with-png --with-zlib-dir=/usr/local/lib/zlib --with-ttf --with-jpeg-dir=/usr/local/lib/jpeg-6b --with-freetype-dir=/usr/local/lib/freetype --with-xpm-dir=/usr/X11R6 --enable-exif \
+
+
+--with-bz2 --with-curl --with-mysql --with-mysqli --with-openssl --with-pcre-regex --with-pear --with-zlib --enable-bcmath --enable-fpm --enable-libxml --enable-mbstring --enable-pdo --enable-sockets --enable-inline-optimization --enable-xml --enable-zip --enable-opcache --enable-cgi --enable-json 
 
 
 /**

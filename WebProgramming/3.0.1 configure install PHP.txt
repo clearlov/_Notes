@@ -62,6 +62,12 @@ sh$ sudo ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/
 sh$ sudo make
 sh$ sudo make install
 
+# export PATH=/usr/local/php/bin:$PATH
+sh$ sudo vim /etc/profile
+/* add at the end */
+export PATH="/usr/local/php/bin:$PATH"
+sh$ sudo source /etc/profile
+
 sh$ php -i | grep php.ini
 |[
 Configuration File (php.ini) Path => /usr/local/php/lib
@@ -110,11 +116,7 @@ sh$ sudo vim /usr/local/php/bin/php-config
 |[
 extension_dir='/usr/lib64/php/modules'
 ]|
-# export PATH=/usr/local/php/bin:$PATH
-sh$ sudo vim /etc/profile
-/* add at the end */
-export PATH="/usr/local/php/bin:$PATH"
-sh$ sudo source /etc/profile
+
 
 
 
