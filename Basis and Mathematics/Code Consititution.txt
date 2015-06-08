@@ -4,8 +4,8 @@
 |+ Doc maker +|
 /**
  * @var   --> @field  @constant  @define
- * @param
- * @param/return  --> value-result
+ * @param       --> @arg
+ * @param  --> value-result
  * @return  --> @returns
  * @throw  
  * @todo
@@ -40,7 +40,7 @@ union recipe{
 ]|
 
 
-|+ Standard Operator Precedence[?pr?s?d?ns] +|
+|+ Standard Operator Precedence[ˈprɛsɪdəns] +|
 /**
  * @see http://php.net/manual/en/language.operators.precedence.php
  * @see http://en.cppreference.com/w/cpp/language/operator_precedence

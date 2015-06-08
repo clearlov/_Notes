@@ -17,7 +17,7 @@ sh$ sudo groupdel nginx
 sh$ sudo vim /etc/nginx/nginx.conf
 |[
 user www
-root /home/www/html
+root /usr/www/htdocs
 ]|
 
 sh$ sudo service nginx start
