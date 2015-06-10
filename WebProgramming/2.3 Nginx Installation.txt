@@ -42,3 +42,5 @@ sh$ nginx -t
 
 |~ ~|
 http://wiki.nginx.org/RedHatNginxInitScript
+if /etc/init.d/nginx exists, but it still displays '/etc/init.d/nginx not found' when you run sh$ sudo service nginx start still.
+sh$ dos2unix /etc/init.d/nginx     
