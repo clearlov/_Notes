@@ -2,6 +2,11 @@
 sh$ sudo /usr/sbin/groupadd -f www
 sh$ sudo /usr/sbin/useradd -g www www
 sh$ sudo passwd www 
+|- cloase port 9000 -|
+sh$ sudo netstat -anp|grep 9000
+tcp	0	0 :::9000	:::*	LISTEN	1900/php-fpm
+sh$ sudo kill 1900
+
 
 |~ Nginx ~|
 /* http://wiki.nginx.org/Install */
@@ -35,8 +40,5 @@ sh$ nginx -t
 
 
 
-
-|- cloase port 9000 -|
-sh$ sudo netstat -anp|grep 9000
-tcp	0	0 :::9000	:::*	LISTEN	1900/php-fpm
-sh$ sudo kill 1900
+|~ ~|
+http://wiki.nginx.org/RedHatNginxInitScript
