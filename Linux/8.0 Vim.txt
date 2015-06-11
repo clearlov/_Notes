@@ -17,6 +17,7 @@ if you sure the origin file is safe, you can rm -rf the swp file manually
  * vim /etc/vimrc and add the strings below 
  * you can also use :set xxx in vim command mode
  */
+set ff=unix   " covert dos file to unix  === dos2unix
 set nu " show line numbers
 set autoindent " auto indent
 set showmode  " show --INSET-- or --REPLACE-- at Bottom-Left
