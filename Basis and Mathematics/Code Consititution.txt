@@ -71,6 +71,8 @@ union recipe{
 |R| &= |= ^=
 |L| ,
 +------------------------------------------------------------------------------+ 
+
+
 |+ Set Tab 2 spaces length +|
 |- Pros -|
   Facebook sets it 1 space; Google sets it 2 spaces;
@@ -78,6 +80,16 @@ union recipe{
   * It's really good for HTML coding
 |- Cons -|
 Others set it 4 spaces
+
+
+|+ Prepend an underline to private variables +|
+|- Pros -|
+  It's python standard
+  It's accepted in PHP/C++/C that name a variable begin with an underline
+|- Cons -|
+  Facebook names a private variable to append an underline
+	https://github.com/facebook/proxygen/blob/master/proxygen/httpserver/HTTPServer.cpp
+
 
 
 |+ Only class's brace turn to next line +|
