@@ -109,6 +109,14 @@ class Constitution extends Constituency
 }
 ]|
 
+|+ Right value should be put at left when compare it +|
+if(true == isAready)     // 
+if(true = isAready)	//  compiler will indicate error
+
+if(isAready == true)	// 
+if(isAready = true)	// it's a mistake, but not easy to find
+
+
 
 |+ Use prefix form (++i/--i) rather than (i++/i--) +|
 |[
