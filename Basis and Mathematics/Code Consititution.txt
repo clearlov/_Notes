@@ -98,23 +98,6 @@ class Constitution extends Constituency
 ]|
 
 
-|+ Use prefix form (++i/--i) rather than (i++/i--) +|
-|[
-const char * suck = "sucker";
-int rear;
-for(rear = 0; *(suck++); ++rear)
-  printf("%d,%c", rear, *suck);   // [s]  0,u  1,c  2,k  3,e  4,r  5,'\0'
-printf("%d", rear); // 6   and now suck is in the addr. after '\0'
-suck -= rear + 1;   // *(suck) = s
-for(read = r; *(++suck); ++rear)
-  printf("%d,%c", rear, *suck);   // [s]  0,u  1,c  2,k  3,e  4,r
-printf("%d", rear); // 5  and now suck is in addr. '\0'
-suck -= rear + 1;   // *(suck) = s
-]|
-|- Pros -|
-In PHP and C++, when the return value is ignored, (++i/--i) is more efficient.
-This is because (i++) requires a copy of i to be made. Especially it's an iterator.
-
 |+ Declaration Order: variables, methods; private, protected, public +|
 Use the specified order of declarations within a class: private protected public; data  members (variables) before methods.
 |- Pros -|
