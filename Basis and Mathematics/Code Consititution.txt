@@ -82,11 +82,12 @@ union recipe{
 Others set it 4 spaces
 
 
-|+ Prepend an underline to private variables +|
+|+ Don't Prepend an underline to private variables +|
 |- Pros -|
+  It's quite not good for writing code when you have no design.
+|- Cons -|
   It's python standard
   It's accepted in PHP/C++/C that name a variable begin with an underline
-|- Cons -|
   Facebook names a private variable to append an underline
 	https://github.com/facebook/proxygen/blob/master/proxygen/httpserver/HTTPServer.cpp
 
