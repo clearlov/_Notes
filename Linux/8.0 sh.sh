@@ -11,7 +11,6 @@ then
     echo ${filename##*.}     # get the extension
 fi
 
-
 ######################### STRING ##################################
 echo "Hello, $name"
 ${name^^}       # uppercase()
@@ -35,19 +34,21 @@ echo ${rand}    # e.g. 32767
 
 
 
-APPELLATION="Lef Well"   
-APPELLATION=100         # redefine
-SCORES=(1,3,4,5)
-SCORES[4]=8
-CONST_NUM = 1000
+appellation="Lef Well"   
+appellation=100         # redefine
+scores=(1,3,4,5)
+scores[4]=8
+const_num = 1000
+readonly const_num            # unchangeable
+unset const_num               # unset a variable
+
 declare [-aixr] VAR 
     -a array
     -i int
     -x 
     -r readonly
 declare -i sum = $RANDOM*10/32768  # $RANDOM = [0, 32767]
-readonly CONST_NUM            # unchangeable
-unset CONST_NUM               # unset a variable
+
 
 source "./b.sh"   # run ./b.sh
 . ./b.sh          # run ./b.sh
@@ -56,16 +57,16 @@ DATE=$(date)        # DATE=`date`   call system date command
 USER=$(who | wc -l)
 DATE_UPTIME=$(date; DATE_UPTIMEtime)
 
-echo -e "\n"  # disable escape char '\'
+echo -e "\n"  # disable escape-char '\'
 echo '\n'     # 
 printf "\n"   # "\n"
 printf "%d %s\n" 100 "Lef Well"
 
-echo ${SCORES[0]}
-echo ${SCORES[*])}   # 
-echo ${SCORES[@])}   # 
-echo ${#SCORES[*]}   # sizeof(SCORES)
-echo ${#SCORES[0]}   # strlen(SCORES[0])
+echo ${scores[0]}
+echo ${scores[*])}   # 
+echo ${scores[@])}   # 
+echo ${#scores[*]}   # sizeof(scores)
+echo ${#scores[0]}   # strlen(scores[0])
 
 echo ${#DATE}  # strlen($DATE)
 echo ${DATE:0:3}   # substr($DATE)
@@ -74,7 +75,7 @@ echo ${DATE:-"2015-05-05"}   # DATE || "2015-05-05"
 echo ${USER:=1}             # if(!USER) USER = 1
 echo ${DATE_UPTIME:?"error msg"}
 echo ${DATE:+"DATE"}           # DATE && "DATE"
-echo "$APPELLATION"
+echo "$appellation"
 
 
 fn(){
@@ -111,27 +112,48 @@ command > /dev/null 2>&1
 # -x $file  is executable
 # -s $file  is filesize($file) == 0
 # -e $path  is $path exist
-if [-z $APPELLATION -a $CONST_NUM !=0]      
+if [-z $appellation -a $const_num !=0]      
 then 
-  s=`expr $CONST_NUM + 4`     #1004
-  c=`expr $CONST_NUM \* 2`
+  s=`expr $const_num + 4`     #1004
+  c=`expr $const_num \* 2`
 elif []
 else []
 fi
   
 for skill in 1 2 3 4 5      # for $str in "Hello, Lef Well!"
-do
-  echo $$       # pid of current process
-  echo $0       # pwd
-  echo $*       # all arguments that passed by command line
-  echo $@       
-  echo $n       # *(argv+n)
-  echo $#       # int argc
-  echo $?       # exit status, 0 on success; 1 on error
-done
+  do
+    echo $$       # pid of current process
+    echo $0       # pwd
+    echo $*       # all arguments that passed by command line
+    echo $@       
+    echo $n       # *(argv+n)
+    echo $#       # int argc
+    echo $?       # exit status, 0 on success; 1 on error
+  done
 
+case ${file:0:2} in
+  "cn")
+    echo "China"
+    ;;
+  "en")
+    echo "USA"
+    ;;
+  *)
+    echo "default"
+    ;;
+esac
 
-
+select opt in "Lef" "Well";
+  do
+    case $opt in
+      "Lef")
+        echo "First Name: Lef"
+        ;;
+      "Well")
+        echo "Last Name: Well"
+        ;;
+    esac
+  done
 
 
 
