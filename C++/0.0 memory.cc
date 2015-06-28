@@ -1,5 +1,7 @@
-malloc(size_t sz)
-calloc(size_t n, size_t sz)
+void malloc(size_t sz)              // allocate sz byte memory (may be used, need be initialized to 0 by memset(void *p, 0, sz))
+void calloc(size_t n, size_t sz)   // allocate n sz byte memory (already be initialized to 0)
+void free (void *p)
+void *realloc(void *p, size_t sz) 
 
 /**
  *

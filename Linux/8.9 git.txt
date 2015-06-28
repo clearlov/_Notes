@@ -1,14 +1,295 @@
+|~ FAQ ~|
+|- fatal: remote origin already exists. -|
+sh$ git remote rm origin
+sh$ git remote add origin $url
+
+|- fatal: Couldn't find remote ref master -|
+|- fatal: 'origin' does not appear to be a git repository -|
+|- fatal: Could not read from remote repository -|
+sh$ git remote add origin $url
+
+
+
+|~ Normal Use ~|
+sh$ cat .git/HEAD
+|[
+ref: refs/heads/master
+]|
+
+sh$ git log --graph --oneline
+|[
+* 0448c37 Bye, Lef Well!
+* a1b3914 Hello, Lef Well!
+]|
+sh$ git branch -v
+|[
+* master 0448c37 Bye, Lef Well!
+]|
+
 /**
- * initialized empty git respository, to create a .git file under the tempotory
- * create a `master` branch as default
+ * be in detached HEAD state
+ * @param $commit_history e.g. 0448c37
+ */
+sh$ git checkout $commit_history       
+
+sh$ cat .git/HEAD
+|[
+0448c37b30b38540307a2ac7303c3b46b954b4c2
+]|
+
+/**
+ * list the changes in HEAD index
+ */
+sh$ git reflog
+|[
+* 0448c37 HEAD{0}: checkout: moving from master to 0448c37
+* 0448c37 HEAD{1}: commit: Bye, Lef Well!
+* a1b3914 HEAD{2}: commit (initial): Hello, Lef Well!
+]|
+/**
+ * list the indexes in both HEAD and master
+ */
+sh$ git rev-parse HEAD master
+|[
+0448c37b30b38540307a2ac7303c3b46b954b4c2
+0448c37b30b38540307a2ac7303c3b46b954b4c2
+]|
+
+sh$ echo Lef>Lef.Well    &&  git commit -m "Lef Well"
+
+sh$ git rev-parse HEAD master
+|[
+deb4cf3a2fd475a4a206e0879f7401a759648546                  ---> HEAD index
+0448c37b30b38540307a2ac7303c3b46b954b4c2                  ---> master index
+]|
+
+sh$ git reflog
+|[
+* deb4cf3 HEAD{0}: commit: Lef Well
+* 0448c37 HEAD{1}: checkout: moving from master to 0448c37
+* 0448c37 HEAD{2}: commit: Bye, Lef Well!
+* a1b3914 HEAD{3}: commit (initial): Hello, Lef Well!
+]|
+
+
+
+/**
+ * 
+ */
+sh$ git diff            /* working and cached index (by add'ng) */
+|[
+#  +++  README.md
+#  ---  hello.php
+# 
+]|
+
+sh$ git diff --cached   /* cached index and depository (by commit'ng) */
+sh$ git diff HEAD|HEAD^|HEAD~2       /* working and last commit */
+sh$ git diff --stat     /* list the stat, you'll see: */
+|[
+# 1 files changed, 1 insertions(+), 0 deletions(-)
+]|
+
+/**
+ * commit history of working
+ */
+sh$ git commit -m "Mac Test"   /* not been pushed yet */
+sh$ git log --graph --oneline
+|[
+* d1d7076 win8 Test
+*   1de0acd Merge branch 'master' of https://luexu.com/lefwell/test
+|\
+| * de558f7 frome centos7
+| * 7d700a2 Hello, Lef Well
+* 91f78d8 CentOS5.6
+* 9589f36 from CentOS5.6
+]|
+sh$ git commit -m "win8 222"  /* after adding file win8_2.txt */
+|[
+* 2b86cca win8 222
+* d1d7076 win8 Test
+*   1de0acd Merge branch 'master' of https://luexu.com/lefwell/test
+|\
+| * de558f7 frome centos7
+| * 7d700a2 Hello, Lef Well
+* 91f78d8 CentOS5.6
+* 9589f36 from CentOS5.6
+]|
+
+
+/**
+ * @param 
+ *    --mixed default
+ *        1. reset HEAD index to $commit_history
+ *        2. clear cached data
+ *    --soft 
+ *        1. reset HEAD index to $commit_history
+ *    --hard
+ *        1. reset HEAD index to $commit_history
+ *        2. clear cached data
+ *        3. replace working files to $commit_history
+ * @param $commit_history default is HEAD
  */
 
-sh$ git reset $log_history     restore to history edition
-sh$ git reset --
+sh$ git reset [--mixed(default) | --hard | --soft] $commit_history
+sh$ git log --graph --oneline
+|[
+* c4ee268 win8 333
+* 2b86cca win8 222
+* d1d7076 win8 Test
+*   1de0acd Merge branch 'master' of https://bitbucket.org/lefwell/test
+|\
+| * de558f7 frome centos7
+| * 7d700a2 Hello, Lef Well
+* 91f78d8 CentOS5.6
+* 9589f36 from CentOS5.6
+]|
+sh$ cat .git/refs/heads/master
+|[
+c4ee268cc491b91b017f4506bf1261b
+]|
+sh$ echo new file>new.txt
+sh$ ls
+|[
+new.txt  CentOs/  win8_3.txt win8_2.txt win8.txt
+]|
+sh$ git reset --hard  /* git reset --hard HEAD or git reset --hard c4ee268 */
+sh$ ls
+|[
+CentOs/  win8_3.txt win8_2.txt win8.txt
+]|
+sh$ git reset HEAD^   /* git reset --mixed 2b86cca */
+sh$ ls
+|[
+CentOs/  win8_2.txt win8.txt
+]|
+sh$ git log --graph --oneline
+|[
+* 2b86cca win8 222
+* d1d7076 win8 Test
+*   1de0acd Merge branch 'master' of https://luexu.com/lefwell/test
+|\
+| * de558f7 frome centos7
+| * 7d700a2 Hello, Lef Well
+* 91f78d8 CentOS5.6
+* 9589f36 from CentOS5.6
+]|
+sh$ cat .git/refs/heads/master
+|[
+2b86cca11f98b4d37355fdca55d157ab2d0e7855
+]|
+
+
+/**
+ * Using `reflog` to restore the file `reset --hard`
+ */
+sh$ git config core.logallrefupdates
+|[
+true
+]|
+sh$ tail -5 .git/logs/refs/heads/master
+|[
+e80315798b1a5de6f80d6318ceca143a902a1b11 1de0acd3bfbc1ccf0dc59ba2cf7230a pull origin master: Fas
+1de0acd3bfbc1ccf0dc59ba2cf7230128c2192fa d1d70769f6240796e75dcd1262957bb commit: win8 test
+d1d70769f6240796e75dcd1262957bc96cbd582b 2b86cca11f98b4d37355fdca55d1575 commit: win8 222
+2b86cca11f98b4d37355fdca55d157ab2d0e7855 c4ee268cc491b91b017f4506bf1261b commit: win8 3333
+c4ee268cc491b91b017f4506bf12618e1677934b 2b86cca11f98b4d37355fdca55d1575 reset: moving to HEAD^
+]|
+
+sh$ git reflog show master | head -6
+|[
+2b86cca master@{0}: reset: moving to HEAD^
+c4ee268 master@{1}: commit: win8 3333
+2b86cca master@{2}: commit: win8 222
+d1d7076 master@{3}: commit: win8 test
+1de0acd master@{4}: pull origin master: Fast-forward
+de558f7 master@{5}: pull origin master: Fast-forward
+]|
+sh$ git reset --hard master@{1}
+|[
+HEAD is now at c4ee268 win8 3333
+]|
+sh$ ls
+|[
+CentOs/  win8_3.txt win8_2.txt win8.txt
+]|
+sh$ git reflog show master
+|[
+c4ee268 master@{0}: reset: moving to master@{1}
+2b86cca master@{1}: reset: moving to HEAD^
+c4ee268 master@{2}: commit: win8 3333
+2b86cca master@{3}: commit: win8 222
+d1d7076 master@{4}: commit: win8 test
+1de0acd master@{5}: pull origin master: Fast-forward
+de558f7 master@{6}: pull origin master: Fast-forward
+7d700a2 master@{7}: commit (initial): Hello, Lef Well
+]|
+
+|~ Basic Use ~|
+
+
+
+/** 
+ * List branches of local, asterisk indicates the current branch
+ *  @param $opt
+ *  -a list all branches (local + remote)
+ *  -r list remote branches
+ */
+sh$ git branch [$opt]
+sh$ git branch $branch          /* create a branch for local */
+sh$ git checkout $branch        /* switch to branch */
+sh$ git checkout -b $branch     /* create a branch and switch to it */
+sh$ git branch -d $branch       /* delete a branch */
+sh$ git merge $branch           /* merge a branch */
+sh$ git status -s
+|[
+#   
+#  ?? index.php       // ??  means it hasn't been `git add` yet
+#  A  README.md       // A   means it has been `git add`
+#  M  glacial.html    // M   indicates the modified file after last `git push`
+#  D  hello.php       // D   indicates the deleted file after last `git push`
+#  AM  glacier.cpp    // AM  some modify happened after `git add`, when you
+#                     //         commit, it'll commit last `git add` version. 
+#  MM glaciation.html // MM  after commit a modified file and before push it,
+#                     //         you modify it once again
+]|
 
 
 
 
+
+sh$ git add [$paths] /* add files into cache */
+sh$ git rm $file /* remove files from cache and disk */
+sh$ git rm --cached $file    /* only remove files from cache */
+sh$ git mv $file_old $file_new  /* rename in disk */ 
+
+sh$ git commit -m "$comments"    /* -m "Comments" */
+sh$ git commit -am "$comments"   /* automaticlly cache */
+
+sh$ git push [$remote_host=origin] [$local_branch=master]:[$remote_branch]
+/**
+ * git pull $remote_branch $local_branch
+ *  @param $branch NULL on all branches;
+ */
+sh$ git fetch [$remote_host=origin] [$branch]
+/* git log -p master..origin/master */
+sh$ git log -p $branch..$remote_host/$romote_branch
+/* git merge origin/master */
+sh$ git merge [$remote_host=origin]/[$branch=master]
+
+/**
+ * pull remote branch and combine to local branch
+ *  git pull --rebase [$remote_host=origin] [$local_branch=master]:[$remote_branch]
+ */
+
+
+sh$ git tag -a $version /* add a tag to code when the version is stable */
+
+/**
+ * show log
+ * use :q or :G to quit or to the end
+ */
+sh$ git log [--online] [--decorate] [--graph]
 
 |~ INIT ~|
 |+ .gitignore +|
@@ -20,10 +301,23 @@ sh$ git reset --
 |[
 
 ]|
-|- add global configure -|
+|+ add global configure +|
 /**
  * ~/.gitconfig
  */
+sh$ git confit --list
+|[
+user.name=LefWell
+user.email=lef.well@gmail.com
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+remote.origin.url=https://lefwell@luexu.com/lefwell/test.git
+remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+]|
+
+
 sh$ git config --global user.name "LefWell"
 sh$ git config --global user.email "xxxxxx@xxxx.com"
 /**
@@ -79,83 +373,3 @@ sh$ git remote -v
  */
 sh$ git remote add origin git@.......git
 sh$ git clone git@c......git
-
-
-
-
-/** 
- * List branches of local, asterisk indicates the current branch
- *  @param $opt
- *  -a list all branches (local + remote)
- *  -r list remote branches
- */
-sh$ git branch [$opt]
-sh$ git branch $branch          /* create a branch for local */
-sh$ git checkout $branch        /* switch to branch */
-sh$ git checkout -b $branch     /* create a branch and switch to it */
-sh$ git branch -d $branch       /* delete a branch */
-sh$ git merge $branch           /* merge a branch */
-sh$ git status -s
-|[
-#   
-#  ?? index.php       // ??  means it hasn't been `git add` yet
-#  A  README.md       // A   means it has been `git add`
-#  M  glacial.html    // M   indicates the modified file after last `git push`
-#  D  hello.php       // D   indicates the deleted file after last `git push`
-#  AM  glacier.cpp    // AM  some modify happened after `git add`, when you
-#                     //         commit, it'll commit last `git add` version. 
-#  MM glaciation.html // MM  after commit a modified file and before push it,
-#                     //         you modify it once again
-]|
-
-
-sh$ git diff    /* list the changed lines detailly */
-|[
-#  +++  README.md
-#  ---  hello.php
-# 
-]|
-
-sh$ git diff --cached   /* list the changed lines that cached by `git add` */
-sh$ git diff HEAD       /* list the  the changes */
-sh$ git diff --stat     /* list the stat, you'll see: */
-|[
-# 1 files changed, 1 insertions(+), 0 deletions(-)
-]|
-
-
-sh$ git add [$paths] /* add files into cache */
-sh$ git rm $file /* remove files from cache and disk */
-sh$ git rm --cached $file    /* only remove files from cache */
-sh$ git mv $file_old $file_new  /* rename in disk */ 
-
-sh$ git commit -m "$comments"    /* -m "Comments" */
-sh$ git commit -am "$comments"   /* automaticlly cache */
-
-sh$ git push [$remote_host=origin] [$local_branch=master]:[$remote_branch]
-/**
- * git pull $remote_branch $local_branch
- *  @param $branch NULL on all branches;
- */
-sh$ git fetch [$remote_host=origin] [$branch]
-/* git log -p master..origin/master */
-sh$ git log -p $branch..$remote_host/$romote_branch
-/* git merge origin/master */
-sh$ git merge [$remote_host=origin]/[$branch=master]
-
-/**
- * pull remote branch and combine to local branch
- *  git pull --rebase [$remote_host=origin] [$local_branch=master]:[$remote_branch]
- */
-sh$ git fetch
-
-
-sh$ git tag -a $version /* add a tag to code when the version is stable */
-
-/**
- * show log
- * use :q or :G to quit or to the end
- */
-sh$ git log [--online] [--decorate] [--graph]
-
-
