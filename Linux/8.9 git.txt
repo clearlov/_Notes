@@ -8,6 +8,18 @@ sh$ git remote add origin $url
 |- fatal: Could not read from remote repository -|
 sh$ git remote add origin $url
 
+|- ignore the change of file mode -|
+sh$ git config --global core.filemode false
+sh$ git config core.filemode false
+sh$ cat .git/config
+|[
+[core]
+  repositoryformatversion = 0
+  fileMode = false
+]|
+
+
+
 
 
 |~ Normal Use ~|
@@ -310,12 +322,16 @@ sh$ git confit --list
 user.name=LefWell
 user.email=lef.well@gmail.com
 core.repositoryformatversion=0
-core.filemode=true
+core.filemode=true				// file mode change, e.g. chmod from 777 to 755
 core.bare=false
 core.logallrefupdates=true
 remote.origin.url=https://lefwell@luexu.com/lefwell/test.git
 remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
 ]|
+
+sh$ git config --global core.filemode false		// ignore file mode change, e.g. chmod from 777 to 755
+
+
 
 
 sh$ git config --global user.name "LefWell"
