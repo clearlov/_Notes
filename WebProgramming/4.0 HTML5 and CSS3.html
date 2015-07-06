@@ -95,10 +95,35 @@
  *  data'll be lost when reload the page
  */
 
+
 /**
  * localStorage
  *  data'll be stored forever
+ * @see http://diveintohtml5.info/storage.html
+ * interface localStorage 
+ * {
+ *    const unsigned long length;
+ *    mixed key(index);
+ *    mixed getItem(key);
+ *    void  setItem(key, value);
+ *    void  removeItem(key);
+ *    void  clear();
+ * }
  */
+
+  // check wheather the browser supports localStorage or not
+if('localStorage' in window && null !== window['localStorage']){
+  localStorage['name'] = 'Lef';  // localStorage.setItem('name', 'Lef');
+  localStorage['name'];   // localStorage.getItem('name');
+
+  localStorage.removeItem('name');    // remove one
+  localStorage.clear();               // remove all
+}
+
+
+
+
+
 
 /**
  * IndexedDB
