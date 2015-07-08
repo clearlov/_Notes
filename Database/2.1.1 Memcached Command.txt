@@ -1,7 +1,0 @@
-|- Start Memcached Server -|
-sh$ /usr/local/memcached/bin/memcached -d -m 128 -u root -p 11211
-    -d  run with daemon
-    -m  memory usage MB
-    -l  IP, default -l 127.0.0.1
-    -p  port, default -p 11211
-    -u  user
