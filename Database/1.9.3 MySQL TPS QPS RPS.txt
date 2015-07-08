@@ -5,9 +5,9 @@
 |- MySQL -|
 TPS = (Com_commit + Com_rollback) / Uptime
 |[
-show global status like 'com_commit';
-show global status like 'com_rollback';
-show global status like 'uptime';
+show global status like 'Com_commit';
+show global status like 'Com_rollback';
+show global status like 'Uptime';
 ]|
 
 
