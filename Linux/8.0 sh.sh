@@ -119,17 +119,25 @@ then
 elif []
 else []
 fi
-  
+
+
 for skill in 1 2 3 4 5      # for $str in "Hello, Lef Well!"
-  do
-    echo $$       # pid of current process
-    echo $0       # pwd
-    echo $*       # all arguments that passed by command line
-    echo $@       
-    echo $n       # *(argv+n)
-    echo $#       # int argc
-    echo $?       # exit status, 0 on success; 1 on error
-  done
+do
+  echo $$       # pid of current process
+  echo $0       # pwd
+  echo $*       # all arguments that passed by command line
+  echo $@       
+  echo $n       # *(argv+n)
+  echo $#       # int argc
+  echo $?       # exit status, 0 on success; 1 on error
+done
+
+for((i=1;i<100;++i))
+do
+  echo $i;
+done
+
+
 
 case ${file:0:2} in
   "cn")
