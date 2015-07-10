@@ -125,3 +125,18 @@ Use the specified order of declarations within a class: private protected public
 It's accepted in Facebook and it's more human readable.
 |- Cons -|
 It's contrary to Google C++ Guider "Declaration Order".
+
+
+|~ MySQL ~|
+|+ MySQL +|
+database/table  -> lowcase and underline
+field           -> camel
+
+id      [uint]
+heading [varchar()]       --> title
+summary [varchar(255)]    --> describe 
+tags    [varchar()]       --> keywords
+content [text]            --> article text
+t       [uint]            --> $_SERVER['REQUEST_TIME']
+bools   [utinyint]        --> isX
+
