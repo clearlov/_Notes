@@ -19,6 +19,53 @@ sh$ cat .git/config
 ]|
 
 
+|~ a new branch without log history ~|
+/**
+ * Create an empty branch
+ * sh$ git checkout -b new-branch      // it'll add history log to new-branch
+ *  if you want to create a new branch without any log history. 
+ */
+sh$ git symbolic-rf HEAD refs/heads/newbranch     // e.s. master that not exist
+sh$ rm .git/index
+
+/**
+ * git clean
+ *  -f force
+ *  -d include untracked dirs
+ *  -x remove files including files listed in .gitignore
+ *  -X remove only files ignored by Git
+ */
+sh$ git clean -fdx
+<copy files to the git dir which is emptied by `git clean -fdx`>
+sh$ git add .
+sh$ git commit -m "create a branch without log history"
+sh$ git push origin newbranch
+
+|~ git merge ~|
+/**
+ * git merge
+ *  --ff  fast-forward merge
+ *  --no-ff(default)   no fast-forward merge
+ *  --squash  abandon commited history log, and add one new comment
+ *    it needs one more git commit -m ""
+ * @example now at branch dev, and merge branch feature to dev
+ *    | is flow; o is a commit; ! and x indicate a deleted branch
+ *******************************************************
+ *  fea dev  *   --ff    *   --no-ff    *  --squash
+ ********************************************************
+ *   |   o   *   !   o   *   !   o      *   !   o
+ *   |   |   *   !   |   *   !   |      *   !   |
+ *   |   o   *   !   o   *   !   o      *   !   o
+ *   | / |   *   !   |   *   !   | \    *   !   | \
+ *   o   |   *   x   o   *   x   |  o   *   x   |  git merge --squash fea
+ *   |   |   *   !   |   *   !   |  |   *   !   | /  git commit -m "squashed"
+ *   o   |   *   x   o   *   x   |  o   *   x   o
+ *   | \ |   *   !   |   *   !   | /    *   !   
+ *   |       *   !   |   *   !   o      *   !    
+ *******************************************************
+ *        
+ *  
+ */
 
 
 
@@ -294,8 +341,22 @@ sh$ git merge [$remote_host=origin]/[$branch=master]
  *  git pull --rebase [$remote_host=origin] [$local_branch=master]:[$remote_branch]
  */
 
+/**
+ * git tag
+ *  [-a] $tag  add a tag at local, especiouly to stable version at master branch
+ *  -m $comment
+ *  -d $tag  remove a local tag
+ * git push
+ *  origin $tag  push tag $tag to remote
+ *  --tags  push all tags to remote
+ *  origin :refs/tags/$tag  remove a remote tag
+ */
+sh$ git tag -a "v1.0.0" -m "version 1.0.0"
+sh$ git push --tags
+sh$ git push origin v1.0.0
+sh$ git push origin :refs/tags/v1.0.0
 
-sh$ git tag -a $version /* add a tag to code when the version is stable */
+
 
 /**
  * show log
