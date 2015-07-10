@@ -1,0 +1,706 @@
+<?xml version = '1.0'?>
+<!-- 只支持 utf-8 -->
+<?xml-stylesheet type="text/xsl" href="o.xsl"?>
+<GUIDE title="掠需网编码规范">
+    <p class="revision">
+        <a href="#">Luexu.com</a>
+    </p>
+    <OVERVIEW>
+        <CATEGORY title="Comment">
+            <SUMMARY>
+                <p>
+                    <em>bol</em>
+                    布尔数；
+                    <em>int</em>
+                    整数；
+                    <em>flt</em>
+                    浮点；
+                    <em>str</em>
+                    字符串；
+                    <em>obj</em>
+                    对象；
+                    <em>arr</em>
+                    数组；
+                </p>
+                <p>
+                    <em>a:o</em>
+                    对象数组；
+                    <em>i:p</em>
+                    正整数；
+                    <em>i:n</em>
+                    负整数；
+                </p>
+                <p style="color:#a0a;font-weight:700;">禁止和谷歌标准冲突：谷歌
+                    <a href="https://code.google.com/p/google-styleguide/" target="_blank" style="color:#a0a;">
+                        https://code.google.com/p/google-styleguide/
+                    </a>
+                    文档有标准的，强制按谷歌的标准。谷歌未定义此标准的，按自定义标准
+                </p>
+                <ul>
+                    <li>
+                        <a href="htmlcss.xml" target="_blank">htmlcss 规范</a>
+                    </li>
+                    <li>
+                        <a href="js.xml" target="_blank">Javascript 规范</a>
+                    </li>
+                    <li>
+                        <a href="php.xml" target="_blank">PHP 规范</a>
+                    </li>
+                    <li>
+                        <a href="mysql.xml" target="_blank">MySQL 规范</a>
+                    </li>
+                    <li>
+                        <a href="api.xml" target="_blank">API 规范</a>
+                    </li>
+
+                </ul>
+            </SUMMARY>
+        </CATEGORY>
+    </OVERVIEW>
+
+    <CATEGORY title="编码规范">
+        <STYLEPOINT title="UTF8 + ASCII">
+            <SUMMARY>
+                <ul>
+                    <li>
+                        <code>文件格式UTF8无BOM：</code>
+                        新建的文档一律使用 UTF8 无Bom 格式
+                    </li>
+                    <li>
+                        <code>尽量只用ASCII字符：</code>
+                        除了HTML模板外，代码内部尽量只准使用ASCII编码的字符，包括注释！对于需要用到中文的，需要使用编码模式转换成ASCII字符内的编码。
+                    </li>
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <DECISION>
+                    <p>为了保证兼容性，任何注释一律使用英文（可以直接用谷歌翻译）。</p>
+                </DECISION>
+            </BODY>
+        </STYLEPOINT>
+
+        <STYLEPOINT title="驼峰强制小写">
+            <SUMMARY>
+                <ul>
+                    <li>
+                        <code>除首字母外，驼峰强制其他字母小写</code>
+                        如 varPhpMysql 禁止【varPHPMySQL】
+                    </li>
+
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <DECISION>
+                    <p>为了保证兼容性，任何注释一律使用英文（可以直接用谷歌翻译）。</p>
+                </DECISION>
+            </BODY>
+        </STYLEPOINT>
+
+        <STYLEPOINT title="避免编译通过的可能出现bug写法">
+            <SUMMARY>
+                <ul>
+                    <li>
+                        <code>避免使用 .= += 等连接字符串的写法，用换行 . + 开头的写法</code>
+                        使用 var a =''; a+= '1'; a+='2'; …… 很长的时候，如果里面一个 += 误写成 =
+                        ，那么就编译通过，但是会出现错误。如果是if后的累加，需要用临时变量赋值，即减少累加次数 ==> 如果是关联性非常强的，就直接用同一行连接，如 &lt;meta
+                        http-equiv="Content-type" content="text/html; charset='. $charset .'"&gt;
+                    </li>
+
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <p>下面是不好的案例，很容易出现误操作的问题</p>
+                <BAD_CODE_SNIPPET>
+                    var a='love';
+                    a += 'you';
+                    a += 'no';
+                    if(true){
+                    a += 'bool';
+                    }
+                    ……
+                </BAD_CODE_SNIPPET>
+                <p>下面是好的案例</p>
+                <CODE_SNIPPET>
+                    var a='love'
+                    + 'you'
+                    + 'no';
+                    + (true ? 'bool' : '')
+                    ……
+                </CODE_SNIPPET>
+
+                <p>Javascript 多if情况，不好情况</p>
+                <BAD_CODE_SNIPPET>
+
+                    var a = 'love';
+                    if(b=1)
+                    a += 'china';
+                    if(b=2)
+                    a += 'japan';
+                    if(b=3)
+                    a += 'usa';
+                    ……
+
+                </BAD_CODE_SNIPPET>
+                <p>Javascript 多if情况，建议的写法</p>
+                <CODE_SNIPPET>
+                    var a = 'love';
+                    if(b=1)
+                    var c = 'china';
+                    if(b=2)
+                    var c = 'japan';
+                    if(b=3)
+                    var c = 'usa';
+                    ……
+
+                    a += c;
+                </CODE_SNIPPET>
+
+                <p>PHP 应该避免的写法</p>
+                <BAD_CODE_SNIPPET>
+                    // PHP
+                    $a = 'love';
+                    $a .= 'you'
+                    $a .= 'no';
+                    if(true){
+                    $a .= 'bool';
+                    }
+                    ……
+
+                </BAD_CODE_SNIPPET>
+                <p>PHP 推荐的写法</p>
+                <CODE_SNIPPET>
+                    // PHP
+                    $a = 'love'
+                    . 'you'
+                    . 'no'
+                    . (true ? 'bool' : '')
+                    ……
+                </CODE_SNIPPET>
+
+                <p>PHP 多if情况，不好情况</p>
+                <BAD_CODE_SNIPPET>
+                    $a = 'love';
+                    if($b = 1)
+                    $a .= 'china';
+                    elseif($b = 2)
+                    $a .= 'japan';
+                    elseif($b = 3)
+                    $a .= 'usa';
+                    ……
+
+                </BAD_CODE_SNIPPET>
+                <p>PHP 多if情况，建议的写法</p>
+                <CODE_SNIPPET>
+                    $a = 'love';
+                    if($b = 1)
+                    $c = 'china';
+                    elseif($b = 2)
+                    $c = 'japan';
+                    elseif($b = 3)
+                    $c = 'usa';
+                    ……
+                    $a .= $c;
+                </CODE_SNIPPET>
+
+
+                <p>美观的PHP连接代码案例</p>
+                <CODE_SNIPPET>
+                    $head = $CTpl-&gt;getShdk('掠需网')
+                    . $CTpl-&gt;script([
+                    'http://sso.luexu.com/_static/e/jq2.1.1.js',
+                    'http://sso.luexu.com/_static/e/y.css',
+                    'http://sso.luexu.com/_static/e/y.js',
+                    'http://sso.luexu.com/_static/i.css'
+                    ])
+                    ;
+
+
+                    $body = $CTpl-&gt;read($dir . '/t.htm')
+                    . '&lt;div class="w"&gt;'
+                    . $CTpl-&gt;read($dir . '/u.htm')
+                    . '
+                    &lt;div class="v"&gt;
+                    '
+                    . $content
+                    . '
+                    &lt;/div&gt;
+                    '
+                    . $CTpl-&gt;read($dir . '/b.htm')
+                    . '
+                    &lt;/div&gt;
+                    '
+                    ;
+                </CODE_SNIPPET>
+            </BODY>
+        </STYLEPOINT>
+
+
+    </CATEGORY>
+
+
+    <CATEGORY title="缩写规范">
+
+        <STYLEPOINT title="保留">
+            <SUMMARY>
+                <ul>
+                    <li>
+                        <code>clear:</code>
+                        清空内部，但保留 == 赋值为空（不是NULL）
+                    </li>
+                    <li>
+                        <code>destroy:</code>
+                        彻底删除全部、包括文件
+                    </li>
+                    <li>
+                        <code>delete:</code>
+                        删除自己及其子项
+                    </li>
+                    <li>
+                        <code>remove/unset:</code>
+                        移除一个序列、数组、类的某个元素
+                    </li>
+                     <li>
+                        <code>captcha [验证码]:</code>
+                        由可视化图片的
+                    </li>
+                    
+                    <li>
+                        <code>veritool / verify tool [效验账号]:</code>
+                        发送和接收效验码的工具，如邮箱，手机号
+                    </li>
+                     <li>
+                        <code>vericode / verify code [效验码]:</code>
+                        由邮箱、手机发送的，具有时效的验证码
+                    </li>
+                    
+                    <li>
+                        <code>init [初始化]:</code>
+                        可且仅可设置一次
+                    </li>
+                    <li>
+                        <code>add [添加]:</code>
+                        如果key 或值 不存在，那么就和 set一样，如果已经存在，就添加失败
+                    </li>
+                    <li>
+                        <code>set [设置]:</code>
+                        可设置多次
+                    </li>
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <DECISION>
+
+                </DECISION>
+            </BODY>
+        </STYLEPOINT>
+    
+    
+        <STYLEPOINT title="保留">
+            <SUMMARY>
+                <ul>
+                    <li><code>domain [主域名]</code>luexu.com</li>
+                    <li><code>server_name [域名]</code>luexu.com  / sso.luexu.com</li>
+                    <li><code>referer [前一链接]</code></li>
+                    <li><code>http_host [含http / https的根网址 和端口号]</code>  http://www.luexu.com  http://sso.luexu.com:8080 （非80口，输出端口号）</li>
+                   
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <DECISION>
+
+                </DECISION>
+            </BODY>
+        </STYLEPOINT>
+
+        <STYLEPOINT title="保留">
+            <SUMMARY>
+                <ul>
+                    <li>
+                        <code>db [database] :</code>
+                    </li>
+
+                    <li>
+                        <code>tb [table] :</code>
+                    </li>
+                    <li>
+                        <code>arr [array] :</code>
+                    </li>
+                    <li>
+                        <code>int [integer] :</code>
+                    </li>
+                    <li>
+                        <code>del [delete] :</code>
+                        删除
+                    </li>
+                    <li>
+                        <code>ctrl [controller] :</code>
+                        控制器
+                    </li>
+                    <li>
+                        <code>func [function] :</code>
+                        函数
+                    </li>
+                    <li>
+                        <code>sess [session] :</code>
+                    </li>
+                    <li>
+                        <code>pwd [password] :</code>
+                    </li>
+                    <li>
+                        <code>kwd [keywords] :</code>
+                    </li>
+                    <li>
+                        <code>cmt [comment] : 评论</code>
+                    </li>
+                    <li>
+                        <code>msg [massage] : 信息</code>
+                    </li>
+                    <li>
+                        <code>fld [field] : 数据库字段</code>
+                    </li>
+                    <li>
+                        <code>lv [level] : 等级/数据库分类等级层次</code>
+                    </li>
+                    <li>
+                        <code>state : 有限的、可枚举的状态</code>
+                    </li>
+                    <li>
+                        <code>status : 不可预估的状态【MySQL保留字】</code>
+                    </li>
+                     
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <DECISION>
+                    <p>为了保证兼容性，任何注释一律使用英文（可以直接用谷歌翻译）。</p>
+                </DECISION>
+            </BODY>
+        </STYLEPOINT>
+
+        <STYLEPOINT title="文件">
+            <SUMMARY>
+                <ul>
+                    <li>
+                        <code>dir [directory]:</code>
+                        相对或绝对文件夹路径。除了根文件夹外，目录字符串一律忽略尾部的 “/”。
+                        <em>如 【E://luexu】 【/luexu】 【/】</em>
+                    </li>
+                    <li>
+                        <code>file [file] :</code>
+                        相对或绝对文件路径。
+                        <em>如 【E://luexu/a.txt】 【/luexu/a.txt】</em>
+                    </li>
+                    <li>
+                        <code>path [path] :</code>
+                        相对或绝对路径。
+                        <em>path 即可以是 dir 也可以是 file</em>
+                    </li>
+                    <li>
+                        <code>basename [basename] :</code>
+                        文件名及扩展名
+                        <em>如 【a.txt】</em>
+                    </li>
+                    <li>
+                        <code>filename [filename] :</code>
+                        文件名（无扩展名）
+                        <em>如 【a】</em>
+                    </li>
+                    <li>
+                        <code>ext [extension] :</code>
+                        扩展名
+                        <em>如 【txt】 【.txt】</em>
+                    </li>
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <DECISION>
+                    <p>为了保证兼容性，任何注释一律使用英文（可以直接用谷歌翻译）。</p>
+                </DECISION>
+            </BODY>
+        </STYLEPOINT>
+
+    </CATEGORY>
+
+    <CATEGORY title="路径命名">
+        <STYLEPOINT title="保留文件名">
+            <SUMMARY>
+                <ul>
+                    <li>
+                        <code>/_c/</code>
+                        ： 根目录下 /_c/ 公用类目录
+                    </li>
+                    <li>
+                        <code>/_c.php</code>
+                        ： 根目录下 /_c 公用类目录
+                    </li>
+                    <li>
+                        <code>/_ca/</code>
+                        ： 根目录下 /_ca/ 私有类目录
+                    </li>
+                    <li>
+                        <code>/_const/</code>
+                        ： 根目录下 /_const/ 公用常量目录
+                    </li>
+                    <li>
+                        <code>/_coutput/</code>
+                        ： 根目录下 /_const/ 公用输出的类、如captcha等
+                    </li>
+                    <li>
+                        <code>/_e/</code>
+                        ： 根目录下 /_e/ 扩展用的目录
+                    </li>
+                    <li>
+                        <code>/c-b/</code>
+                        ： 根目录下 /c-b/ 文件夹，暂时阶段的 /cgi-bin/
+                    </li>
+                    <li>
+                        <code>/cgi-bin/</code>
+                        ：
+                    </li>
+                    <li>
+                        <code>/tpl/</code>
+                        ： 模板文件
+                    </li>
+                    <li>
+                        <code>/temp/</code>
+                        ： 临时文件
+                    </li>
+
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <DECISION>
+                    <p>为了保证安全性，服务器会禁止访问任何下划线开头的文件及文件夹。</p>
+                </DECISION>
+            </BODY>
+        </STYLEPOINT>
+
+
+        <STYLEPOINT title="私有文件">
+            <SUMMARY>
+                <ul>
+                    <li>
+                        <code>私有文件以下划线开头</code>
+                        ： 如果文件或文件夹仅用于内部require/include，不被外部访问，一律以 _ 开头命名。
+                    </li>
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <DECISION>
+                    <p>为了保证安全性，服务器会禁止访问任何下划线开头的文件及文件夹。</p>
+                </DECISION>
+            </BODY>
+        </STYLEPOINT>
+
+
+    </CATEGORY>
+    <CATEGORY title="HTTP 规范">
+        <STYLEPOINT title="指定编码和mime">
+            <SUMMARY>
+                <ul>
+                    <li>
+                        <code>文章使用最后修改时间，允许缓存：</code>
+                        header('Last Modified:Sat, 30 Oct 2010 13:21:21 GMT');
+                    </li>
+                    <li>
+                        <code>登陆页面，禁止缓存：</code>
+                        header('Cache-Control:max-age=0');header('Cache-Control:private');
+                    </li>
+                    <li>
+                        <code>参数禁用大写：</code>
+                        无论是post/get，参数一律小写+下划线，值可以是任意 如 user=中国&amp;say_it=LoveYou&amp;last_year=2013
+                    </li>
+
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <DECISION>
+                    <p>为了保证兼容性，任何注释一律使用英文（可以直接用谷歌翻译）。</p>
+                </DECISION>
+            </BODY>
+        </STYLEPOINT>
+
+        <STYLEPOINT title="定义是否缓存">
+            <SUMMARY>
+                <ul>
+                    <li>
+                        <code>文章使用最后修改时间，允许缓存：</code>
+                        header('Last Modified:Sat, 30 Oct 2010 13:21:21 GMT');
+                    </li>
+                    <li>
+                        <code>登陆页面，禁止缓存：</code>
+                        header('Cache-Control:max-age=0');header('Cache-Control:private');
+                    </li>
+
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <DECISION>
+                    <p>为了保证兼容性，任何注释一律使用英文（可以直接用谷歌翻译）。</p>
+                </DECISION>
+            </BODY>
+        </STYLEPOINT>
+
+
+    </CATEGORY>
+
+    <CATEGORY title="代码规范">
+        <STYLEPOINT title="一行80字符">
+            <SUMMARY>
+                <ul>
+                    <li>每行代码长度应控制在80个字符以内，最长不超过120个字符。因为 linux
+                        读入文件一般以80列为单位，就是说如果一行代码超过80个字符，那么系统将为此付出额外操作指令。这个虽然看起来是小问题，但是对于追求完美的程序员来说也是值得注意并遵守的规范。
+                    </li>
+                    <li>一行只写一条语句：</li>
+                    <li>注释尽量用英文，不懂直接用谷歌翻译：可以提升你的英语水平哦</li>
+                    <li>禁止拼音命名</li>
+                    <li>用常量代替无意义的数字</li>
+                    <li>换行一律采用Unix 风格的 LF（\n、 0a、），不采用CR+LF</li>
+                </ul>
+
+            </SUMMARY>
+            <BODY>
+                <p>下面是不好的案例</p>
+                <BAD_CODE_SNIPPET>
+                    // 两句语句，写在一行
+                    $rect->length = 0; $rect->width = 0;
+                    // 超过80个字符
+                    $perm_count_msg->len = NO7_TO_STAT_PERM_COUNT_LEN + STAT_SIZE_PER_FRAM * strlen( $len );
+                    // 使用无意义数字，无法理解
+                    if($love == 10000){}
+                </BAD_CODE_SNIPPET>
+                <p>下面是好的案例</p>
+                <CODE_SNIPPET>
+                    $perm_count_msg->len = NO7_TO_STAT_PERM_COUNT_LEN
+                    + STAT_SIZE_PER_FRAM * strlen( $len );
+                    // 给无意义数字，定义常量
+                    define('LOVE_LEVEL', 10000);
+                    if($love == LOVE_LEVEL)
+                </CODE_SNIPPET>
+            </BODY>
+        </STYLEPOINT>
+
+        <STYLEPOINT title="定义是否缓存">
+            <SUMMARY>
+                <ul>
+                    <li>
+                        <code>文章使用最后修改时间，允许缓存：</code>
+                        header('Last Modified:Sat, 30 Oct 2010 13:21:21 GMT');
+                    </li>
+                    <li>
+                        <code>登陆页面，禁止缓存：</code>
+                        header('Cache-Control:max-age=0');header('Cache-Control:private');
+                    </li>
+
+                </ul>
+            </SUMMARY>
+            <BODY>
+                <DECISION>
+                    <p>为了保证兼容性，任何注释一律使用英文（可以直接用谷歌翻译）。</p>
+                </DECISION>
+            </BODY>
+        </STYLEPOINT>
+
+
+    </CATEGORY>
+    
+    
+     <CATEGORY title="代码原则">
+        <STYLEPOINT title="DRY">
+            <SUMMARY>
+               <p><code>Dont repeat yourself </code> 这也许是在编程开发这最最基本的一个信条，就是要告诉你不要出现重复的代码。我们很多的编程结构之所以存在，就是为了帮助我们消除重复(例如，循环语句，函数，类，等等)。一旦程序里开始有重复现象的出现(例如很长的表达式、一大堆的语句，但都是为了表达相同的概念)，你就需要对代码进行一次新的提炼，抽象。</p>
+            </SUMMARY>
+            <BODY>
+               <p><a href="http://en.wikipedia.org/wiki/Don%27t_repeat_yourself" target="_blank">http://en.wikipedia.org/wiki/Don%27t_repeat_yourself</a></p>
+            </BODY>
+        </STYLEPOINT>
+        
+         <STYLEPOINT title="Abstraction">
+            <SUMMARY>
+               <p><code>Abstraction principle </code>  跟“不要自我重复原则”相关，这一原则是说“程序中任何一段具有功能性的代码在源代码文件中应该唯一的存在。”</p>
+               
+            </SUMMARY>
+            <BODY>
+               <p class="quotation">Each significant piece of functionality in a program should be implemented in just one place in the source code. Where similar functions are carried out by distinct pieces of code, it is generally beneficial to combine them into one by abstracting out the varying parts.</p>
+               <p><a href="http://en.wikipedia.org/wiki/Abstraction_principle_(programming)" target="_blank">http://en.wikipedia.org/wiki/Abstraction_principle_(programming)</a></p>
+            </BODY>
+        </STYLEPOINT>
+        
+        <STYLEPOINT title="YAGNI">
+            <SUMMARY>
+               <p><code>You aren't gonna need it </code>  除非你真正需要用到它，否则不要轻易加上那些乱七八糟用不到的功能。</p>
+            </SUMMARY>
+            <BODY>
+               <p><a href="http://en.wikipedia.org/wiki/YAGNI" target="_blank">http://en.wikipedia.org/wiki/YAGNI</a></p>
+            </BODY>
+        </STYLEPOINT>
+        
+        <STYLEPOINT title="KISS">
+            <SUMMARY>
+               <p><code>Keep it simple, stupid </code>  简单化(避免复杂)永远都应该是你的头等目标。简单的程序让你写起来容易，产生的bug更少，更容易维护修改。在开发时有个非常好的问题你需要问问自己，“怎样才能最简单的让程序跑起来？”这能帮助我们在设计时让程序保持简单。</p>
+            </SUMMARY>
+            <BODY>
+               <p><a href="http://en.wikipedia.org/wiki/YAGNI" target="_blank">http://en.wikipedia.org/wiki/YAGNI</a></p>
+            </BODY>
+        </STYLEPOINT>
+        
+        <STYLEPOINT title="DMMT">
+            <SUMMARY>
+               <p><code>Don’t Make Me Think </code>  程序代码应该让人们花最小的努力就能读懂和理解。如果一段程序对于阅读者来说需要花费太多的努力才能理解，那它很可能需要进一步简化。无论是产品（不要让客户思考），还是编程（不要让其他合作的程序员思考），都应该遵循这条原则</p>
+            </SUMMARY>
+            <BODY>
+               <p></p>
+            </BODY>
+        </STYLEPOINT>
+        
+        <STYLEPOINT title="O/C">
+            <SUMMARY>
+               <p><code>Open/closed </code>  程序里的实体项(类，模块，函数等)应该对扩展行为开放，对修改行为关闭。换句话说，不要写允许别人修改的类，应该写能让人们扩展的类。</p>
+            </SUMMARY>
+            <BODY>
+               <p><a href="http://en.wikipedia.org/wiki/Open_Closed_Principle" target="_blank">http://en.wikipedia.org/wiki/Open_Closed_Principle</a></p>
+            </BODY>
+        </STYLEPOINT>
+        
+        <STYLEPOINT title="POLA">
+            <SUMMARY>
+               <p><code>Open/closed </code>  最少意外原则通常是使用在用户界面设计上，但这个原则同样适用于编写程序。程序代码应尽可能的不要让阅读者感到意外。也就是说应该遵循编码规范和常见习惯，按照公认的习惯方式进行组织和命名，不符常规的编程动作应该尽可能的避免。</p>
+            </SUMMARY>
+            <BODY>
+               <p><a href="http://en.wikipedia.org/wiki/Open_Closed_Principle" target="_blank">http://en.wikipedia.org/wiki/Open_Closed_Principle</a></p>
+            </BODY>
+        </STYLEPOINT>
+        
+        <STYLEPOINT title="Single responsibility">
+            <SUMMARY>
+               <p><code>Single responsibility </code>  一个代码组件(例如类或函数)应该只执行单一的预设的任务。</p>
+            </SUMMARY>
+            <BODY>
+            <p>Martin defines a responsibility as a reason to change, and concludes that a class or module should have one, and only one, reason to change. As an example, consider a module that compiles and prints a report. Such a module can be changed for two reasons. First, the content of the report can change. Second, the format of the report can change. These two things change for very different causes; one substantive, and one cosmetic. The single responsibility principle says that these two aspects of the problem are really two separate responsibilities, and should therefore be in separate classes or modules. It would be a bad design to couple two things that change for different reasons at different times.</p><p>The reason it is important to keep a class focused on a single concern is that it makes the class more robust. Continuing with the foregoing example, if there is a change to the report compilation process, there is greater danger that the printing code will break if it is part of the same class.</p>
+               <p><a href="http://en.wikipedia.org/wiki/Single_responsibility_principle" target="_blank">http://en.wikipedia.org/wiki/Single_responsibility_principle</a></p>
+            </BODY>
+        </STYLEPOINT>
+        
+        <STYLEPOINT title="Single responsibility">
+            <SUMMARY>
+               <p><code>Coupling </code>  一个代码片段(代码块，函数，类等)应该最小化它对其它代码的依赖。这个目标通过尽可能少的使用共享变量来实现。“低耦合是一个计算机系统结构合理、设计优秀的标志，把它与高聚合特征联合起来，会对可读性和可维护性等重要目标的实现具有重要的意义。”</p>
+            </SUMMARY>
+            <BODY>
+               <p><a href="http://en.wikipedia.org/wiki/Coupling_(computer_programming)" target="_blank">http://en.wikipedia.org/wiki/Coupling_(computer_programming)</a></p>
+            </BODY>
+        </STYLEPOINT>
+        
+        <STYLEPOINT title="Single responsibility">
+            <SUMMARY>
+               <p><code>Coupling </code>  只有当你的程序没有其它问题，只是比你预期的要慢时，你才能去考虑优化工作。只有当其它工作都做完后，你才能考虑优化问题，而且你只应该依据经验做法来优化。“对于小幅度的性能改进都不该考虑，要优化就应该是97%的性能提升：过早优化是一切罪恶的根源”</p>
+            </SUMMARY>
+            <BODY>
+               <p><a href="http://en.wikipedia.org/wiki/Program_optimization" target="_blank">http://en.wikipedia.org/wiki/Program_optimization</a></p>
+            </BODY>
+        </STYLEPOINT>
+        
+
+    </CATEGORY>
+
+
+</GUIDE>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lef Well</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <style>
+    
+    input[name="lef"]{ border:1px solid #ff0}
+    input[name^="begin_with"]{}
+    input[name*="preg_with"]{}
+    input[name$="end_with"]{}
+    h1:first-child{font:700 28px "微软雅黑"; text-shadow:#00a 3px 3px 5px}
+    h1:last-child{}
+    h1:nth-child(2){}
+    :not(p){}
+    :not(.class){}
+    header > h1.title{background:linear-gradient(30deg, #fff, #069);}
+    form.search-bar + input{background:#099}
+    form.search-bar ~ input{background:#990}
+  </style>
+</head>
+<body>
+<div>
+  <header>
+    <h1 class="title">Hello, Lef Well!</h1>
+  </header>
+  
+  <nav>
+  </nav>
+  
+  <div>
+    <form class="search-bar">
+      <input type="text" name="lef" placeholder="Lef Well">
+      <input type="password" name="well" pattern="\w+" required>
+      <input type="email" name="email" multiple>
+      
+      <p></p>
+      <input type="search" name="search">
+      <input type="url" name="url">
+      <input type="tel" name="tel">
+      
+      <p></p>
+      <input type="number" name="age" min="20" max="30" step="2">
+      <input type="range" name="age" min="20" max="30" step="2">
+      
+      <p></p>
+      <input type="date">
+      <input type="week">
+      <input type="month">
+      <input type="time">
+      <input type="datetime">
+      <input type="datetime-local">
+      
+      <p></p>
+      <datalist>
+        <option value="1" label="V1">
+        <option value="2" label="V2">
+      </datalist>
+      
+      <p></p>
+      <progress value="40" max="100">
+      <meter min="0" max="100" value="50">
+      
+    </form>
+  </div>
+  
+  <div>
+    <section>
+      <article>
+        <header>
+          <h1>Title of an Article</h1>
+          <time datetime="2015-05-26" pubdate>2015-05-26</time>
+        </header>
+        <p>Hello, I'm <mark>Lef</mark> Well! <mark>Lef</mark> is short for Liberty, Equality and Fraternity.</p>
+        <p>Tag &lt;cite&gt; is used to cite the titles of books, videos, songs and so on. e.g. I love the book <cite>Unix Network Programming</cite></p>
+        <footer>
+          <p></p>
+        </footer>
+      </article>
+    </section>
+    
+    <aside>
+    </aside>
+  </div>
+  
+  <footer>
+  <small>Copyright &copy; 2015 Lef Well</small>
+  </footer>
+</div>
+<script>
+/**
+ * sessionStorage
+ *  data'll be lost when reload the page
+ */
+
+
+/**
+ * localStorage
+ *  data'll be stored forever
+ * @see http://diveintohtml5.info/storage.html
+ * interface localStorage 
+ * {
+ *    const unsigned long length;
+ *    mixed key(index);
+ *    mixed getItem(key);
+ *    void  setItem(key, value);
+ *    void  removeItem(key);
+ *    void  clear();
+ * }
+ */
+
+  // check wheather the browser supports localStorage or not
+if('localStorage' in window && null !== window['localStorage']){
+  localStorage['name'] = 'Lef';  // localStorage.setItem('name', 'Lef');
+  localStorage['name'];   // localStorage.getItem('name');
+
+  localStorage.removeItem('name');    // remove one
+  localStorage.clear();               // remove all
+}
+
+
+
+
+
+
+/**
+ * IndexedDB
+ */
+
+/**
+ * FileReader
+ */
+</script>
+</body>
+</html>

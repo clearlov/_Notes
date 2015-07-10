@@ -1,0 +1,141 @@
+|+ Abbreviation +|
+[fn] function : accepted in keyboard
+
+|+ Doc maker +|
+/**
+ * @var   --> @field  @constant  @define
+ * @param       --> @arg
+ * @param  --> value-result
+ * @return  --> @returns
+ * @throw  
+ * @todo
+ * @see   --> @link @tutorial
+ * @author
+ * @version
+ * @example
+ * @extends --> @derive
+ * @note  -->  @note   @remind @note     
+ * int array bool string
+ 
+ *******************************
+ * @alias Treat a member as if it had a different name.
+ * 
+ */
+|[
+
+char leadPoisoning(int &value_result){
+}
+
+int fart = 5;               // @var
+#define profound 100        // @var  --> @define
+const int markdown = 10;    // @var  --> @constant
+
+enum fuzzy{
+  PERHAPS,    // @var   --> @constant
+};
+union recipe{
+  size_t cuisine;         // @var  --> @field
+};
+
+]|
+
+
+|+ Standard Operator Precedence[ˈprɛsɪdəns] +|
+/**
+ * @see http://php.net/manual/en/language.operators.precedence.php
+ * @see http://en.cppreference.com/w/cpp/language/operator_precedence
+ * @see http://en.cppreference.com/w/c/language/operator_precedence
+ */
+
++------------------------------------------------------------------------------+
+|L| X++ X-- type()  Cls.prop ClsPtr->prop  
++------------------------------------------------------------------------------+
+|R| !(logic NOT) ~(bitwise NOT)
+|R| *(ptr)  &(address-of)
++------------------------------------------------------------------------------+
+|R| * / %
+|R| +(Addition) -(substraction)
+|R| << >>
+|L| <  >  <=  >=
+| | ==  !==   ===  !==
+|L| &(bitwise AND)
+|L| ^
+|L| |
+|L| &&
+|L| ||
+| | ?:
+|R| = 
+|R| +=  -= 
+|R| *=  /=  .=  %= 
+|R| <<=  >>= 
+|R| &= |= ^=
+|L| ,
++------------------------------------------------------------------------------+ 
+
+
+|+ Set Tab 2 spaces length +|
+|- Pros -|
+  Facebook sets it 1 space; Google sets it 2 spaces;
+  4 spaces is not good for doc commentary. 1 is so short;
+  * It's really good for HTML coding
+|- Cons -|
+Others set it 4 spaces
+
+
+|+ Don't Prepend an underline to private variables +|
+|- Pros -|
+  It's quite not good for writing code when you have no design.
+|- Cons -|
+  It's python standard
+  It's accepted in PHP/C++/C that name a variable begin with an underline
+  Facebook names a private variable to append an underline
+	https://github.com/facebook/proxygen/blob/master/proxygen/httpserver/HTTPServer.cpp
+
+
+
+|+ Only class's brace turn to next line +|
+|[
+class Sewer: public Drain,
+             public Drainage
+{
+  int sewage;
+  public:
+  void Sewerage();
+}
+
+class Constitution extends Constituency
+                   implement Constituent
+{
+  
+}
+]|
+
+|+ Right value should be put at left when compare it +|
+if(true == isAready)     // 
+if(true = isAready) //  compiler will indicate error
+
+if(isAready == true) // 
+if(isAready = true) // it's a mistake, but not easy to find
+
+
+
+|+ Declaration Order: variables, methods; private, protected, public +|
+Use the specified order of declarations within a class: private protected public; data  members (variables) before methods.
+|- Pros -|
+It's accepted in Facebook and it's more human readable.
+|- Cons -|
+It's contrary to Google C++ Guider "Declaration Order".
+
+
+|~ MySQL ~|
+|+ MySQL +|
+database/table  -> lowcase and underline
+field           -> camel
+
+id      [uint]
+heading [varchar()]       --> title
+summary [varchar(255)]    --> describe 
+tags    [varchar()]       --> keywords
+content [text]            --> article text
+t       [uint]            --> $_SERVER['REQUEST_TIME']
+bools   [utinyint]        --> isX

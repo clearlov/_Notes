@@ -1,0 +1,189 @@
+
+1. If a method c++ an be static, declare it static. Speed improvement is by a factor of 4. 如果一个C++方法可静态化，就对它做静态声明。速率可提升至4倍。
+ Unset your variables to free memory, especially large arrays. 注销那些不用的变量尤其是大数组，以便释放内存。
+ 如果你想知道脚本开始执行(译注：即服务器端收到客户端请求)的时刻，使用$_SERVER['REQUEST_TIME']要好于time()。
+ 检查是否能用strncasecmp,strpbrk,stripos函数代替正则表达式完成相同功能。
+ str_replace函数比preg_replace函数快，但strtr函数的效率是str_replace函数的四倍。
+  如果一个字符串替换函数，可接受数组或字符作为参数，并且参数长度不太长，那么可以考虑额外写一段替换代码，使得每次传递参数是一个字符，而不是只写一行代码接受数组作为查询和替换的参数。
+  递增一个全局变量要比递增一个局部变量慢2倍。
+  递增一个对象属性(如：$this->prop++)要比递增一个局部变量慢3倍。
+  递增一个未预定义的局部变量要比递增一个预定义的局部变量慢9至10倍。
+ A function call with one parameter and an empty function body takes about the same time as doing 7-8 $localvar++ operations. A similar method call is of course about 15 $localvar++ operations. 调用带有一个参数的空函数，其花费的时间相当于执行7至8次的局部变量递增操作。类似的方法调用所花费的时间接近于15次的局部变量递增操作。
+ 
+ A PHP script will be served at least 2-10 times slower than a static HTML page by Apache. Try to use more static HTML pages and fewer scripts. Apache解析一个PHP脚本的时间要比解析一个静态HTML页面慢2至10倍。尽量多用静态HTML页面，少用脚本。
+ 
+ if (strlen($foo) < 5) { echo "Foo is too short"; }
+
+　　vs.(与下面的技巧做比较)
+
+　　if (!isset($foo{5})) { echo "Foo is too short"; }
+
+　　Calling isset() happens to be faster then strlen() because unlike strlen()， isset() is a language construct and not a function meaning that it's execution does not require function lookups and lowercase. This means you have virtually no overhead on top of the actual code that determines the string's length. 调用isset()恰巧比strlen()快，因为与后者不同的是，isset()作为一种语言结构，意味着它的执行不需要函数查找和字母小写化。也就是说，实际上在检验字符串长度的顶层代码中你没有花太多开销。
+
+
+ 当执行变量$i的递增或递减时，$i++会比++$i慢一些。这种差异是PHP特有的，并不适用于其他语言，所以请不要修改你的C或Java代码并指望它们能立即变快，没用的。++$i更快是因为它只需要3条指令(opcodes)，$i++则需要4条指令。后置递增实际上会产生一个临时变量，这个临时变量随后被递增。而前置递增直接在原值上递增。这是最优化处理的一种，正如Zend的PHP优化器所作的那样。牢记这个优化处理不失为一个好主意，因为并不是所有的指令优化器都会做同样的优化处理，并且存在大量没有装配指令优化器的互联网服务提供商(ISPs)和服务器。
+ 
+ 
+ Not everything has to be OOP, often it is too much overhead, each method and object call consumes a lot of memory. 并不是事必面向对象(OOP)，面向对象往往开销很大，每个方法和对象调用都会消耗很多内存。
+ 
+  Do not implement every data structure as a class, arrays are useful, too. 并非要用类实现所有的数据结构，数组也很有用。
+  
+  Don't split methods too much, think, which code you will really re-use. 不要把方法细分得过多，仔细想想你真正打算重用的是哪些代码?
+  
+  If you have very time consuming functions in your code, consider writing them as C extensions. 如果在代码中存在大量耗时的函数，你可以考虑用C扩展的方式实现它们。
+
+
+
+
+
+
+
+
+
+
+----------------------------
+PHP 查看内存
+    echo memory_get_usage(), '<br />'; // 313864 (bytes)
+    $tmp = str_repeat('http://aaa/', 4000);
+    echo memory_get_usage(), '<br />'; // 406048 (bytes)
+    unset($tmp);
+    echo memory_get_usage(); // 313952 (bytes)
+要想减少内存的占用，可以使用 PHP unset() 函数把不再需要使用的变量删除。类似的还有：PHP mysql_free_result() 函数，可以清空不再需要的查询数据库得到的结果集，这样也能得到更多可用内存。
+PHP memory_get_usage()还可以有个参数，$real_usage，其值为布尔值。默认为 FALSE，表示得到的内存使用量不包括该函数（PHP 内存管理器）占用的内存；当设置为 TRUE 时，得到的内存为不包括该函数（PHP 内存管理器）占用的内存。
+用microtime函数就可以分析程序执行时间
+memory_get_usage可以分析内存占用空间 
+SQL的效率可以使用打开慢查询查看日志分析
+SQL 找到有瓶颈的使用EXPLAIN 来分析
+
+
+
+
+$a = 'abc';
+// 性能差
+function a($str){return $str . 'd';}
+$a = a($a);
+
+// 高效
+function b(&$str){ $str .='d';}
+b($a);
+
+
+
+
+
+
+$reflector = new ReflectionClass('ClassName');
+$properties = $reflector->getProperties();   // 获取所有 public /private/protected 变量
+$properties = $reflector->getProperties();
+
+ReflectionClass::__construct — 构造一个 ReflectionClass 类
+ReflectionClass::export — 导出一个类
+ReflectionClass::getConstant — 获取定义过的一个常量
+ReflectionClass::getConstants — 获取一组常量
+ReflectionClass::getConstructor — 获取类的构造函数
+ReflectionClass::getDefaultProperties — 获取默认属性
+ReflectionClass::getDocComment — 获取文档注释
+ReflectionClass::getEndLine — 获取最后一行的行数
+ReflectionClass::getExtension — 根据已定义的类获取所在扩展的 ReflectionExtension 对象
+ReflectionClass::getExtensionName — 获取定义的类所在的扩展的名称
+ReflectionClass::getFileName — 获取定义类的文件名
+ReflectionClass::getInterfaceNames — 获取接口（interface）名称
+ReflectionClass::getInterfaces — 获取接口
+ReflectionClass::getMethod — 获取一个类方法的 ReflectionMethod。
+ReflectionClass::getMethods — 获取方法的数组
+ReflectionClass::getModifiers — 获取修饰符
+ReflectionClass::getName — 获取类名
+ReflectionClass::getNamespaceName — 获取命名空间的名称
+ReflectionClass::getParentClass — 获取父类
+ReflectionClass::getProperties — 获取一组属性
+ReflectionClass::getProperty — 获取类的一个属性的 ReflectionProperty
+ReflectionClass::getShortName — 获取短名
+ReflectionClass::getStartLine — 获取起始行号
+ReflectionClass::getStaticProperties — 获取静态（static）属性
+ReflectionClass::getStaticPropertyValue — 获取静态（static）属性的值
+ReflectionClass::getTraitAliases — 返回 trait 别名的一个数组
+ReflectionClass::getTraitNames — 返回这个类所使用 traits 的名称的数组
+ReflectionClass::getTraits — 返回这个类所使用的 traits 数组
+ReflectionClass::hasConstant — 检查常量是否已经定义
+ReflectionClass::hasMethod — 检查方法是否已定义
+ReflectionClass::hasProperty — 检查属性是否已定义
+ReflectionClass::implementsInterface — 接口的实现
+ReflectionClass::inNamespace — 检查是否位于命名空间中
+ReflectionClass::isAbstract — 检查类是否是抽象类（abstract）
+ReflectionClass::isCloneable — 返回了一个类是否可复制
+ReflectionClass::isFinal — 检查类是否声明为 final
+ReflectionClass::isInstance — 检查类的实例
+ReflectionClass::isInstantiable — 检查类是否可实例化
+ReflectionClass::isInterface — 检查类是否是一个接口（interface）
+ReflectionClass::isInternal — 检查类是否由扩展或核心在内部定义
+ReflectionClass::isIterateable — 检查是否可迭代（iterateable）
+ReflectionClass::isSubclassOf — 检查是否为一个子类
+ReflectionClass::isTrait — 返回了是否为一个 trait
+ReflectionClass::isUserDefined — 检查是否由用户定义的
+ReflectionClass::newInstance — 从指定的参数创建一个新的类实例
+ReflectionClass::newInstanceArgs — 从给出的参数创建一个新的类实例。
+ReflectionClass::newInstanceWithoutConstructor — 创建一个新的类实例而不调用它的构造函数
+ReflectionClass::setStaticPropertyValue — 设置静态属性的值
+ReflectionClass::__toString — 返回 ReflectionClass 对象字符串的表示形式。
+
+
+
+
+ReflectionClass implements Reflector {
+/* 常量 */
+const integer IS_IMPLICIT_ABSTRACT = 16 ;
+const integer IS_EXPLICIT_ABSTRACT = 32 ;
+const integer IS_FINAL = 64 ;
+/* 属性 */
+public $name ;
+/* 方法 */
+public __construct ( mixed $argument )
+public static string export ( mixed $argument [, bool $return = false ] )
+public mixed getConstant ( string $name )
+public array getConstants ( void )
+public ReflectionMethod getConstructor ( void )
+public array getDefaultProperties ( void )
+public string getDocComment ( void )
+public int getEndLine ( void )
+public ReflectionExtension getExtension ( void )
+public string getExtensionName ( void )
+public string getFileName ( void )
+public array getInterfaceNames ( void )
+public array getInterfaces ( void )
+public ReflectionMethod getMethod ( string $name )
+public array getMethods ([ int $filter ] )
+public int getModifiers ( void )
+public string getName ( void )
+public string getNamespaceName ( void )
+public object getParentClass ( void )
+public array getProperties ([ int $filter ] )
+public ReflectionProperty getProperty ( string $name )
+public string getShortName ( void )
+public int getStartLine ( void )
+public array getStaticProperties ( void )
+public mixed getStaticPropertyValue ( string $name [, mixed &$def_value ] )
+public array getTraitAliases ( void )
+public array getTraitNames ( void )
+public array getTraits ( void )
+public bool hasConstant ( string $name )
+public bool hasMethod ( string $name )
+public bool hasProperty ( string $name )
+public bool implementsInterface ( string $interface )
+public bool inNamespace ( void )
+public bool isAbstract ( void )
+public bool isCloneable ( void )
+public bool isFinal ( void )
+public bool isInstance ( object $object )
+public bool isInstantiable ( void )
+public bool isInterface ( void )
+public bool isInternal ( void )
+public bool isIterateable ( void )
+public bool isSubclassOf ( string $class )
+public bool isTrait ( void )
+public bool isUserDefined ( void )
+public object newInstance ( mixed $args [, mixed $... ] )
+public object newInstanceArgs ([ array $args ] )
+public object newInstanceWithoutConstructor ( void )
+public void setStaticPropertyValue ( string $name , string $value )
+public string __toString ( void )
+}

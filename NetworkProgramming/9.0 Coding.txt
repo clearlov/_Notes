@@ -1,0 +1,5 @@
+CR  \r  13  --> Carriage Return
+LF  \n  10  --> Line-Feed in Linux
+CRLF    --> Line-Break in Linx/Win
+
+HTTP Header is k-v data, and use CRLF. Be careful about CRLF injection 

@@ -1,0 +1,83 @@
+<?xml version = '1.0'?>
+<!-- 这个样式必须是同个域名下，否则无效 -->
+<?xml-stylesheet type="text/xsl" href="o.xsl"?>
+<GUIDE title="PHP 规范">
+<p class="revision"><a href="#">Luexu.com</a></p>
+  <OVERVIEW>
+
+   <CATEGORY title="Comment">
+        <SUMMARY>
+		<p><em>bol</em> 布尔数； <em>int</em> 整数； <em>flt</em> 浮点； <em>str</em> 字符串； <em>obj</em> 对象； <em>arr</em> 数组；</p>
+		<p><em>a:o</em> 对象数组； <em>i:p</em> 正整数； <em>i:n</em> 负整数；</p>
+		<ul>
+        <li><a href="js.xml" target="_blank">Javascript 规范</a></li>
+        <li><a href="mysql.xml" target="_blank">MySQL 规范</a></li>
+		</ul>
+        </SUMMARY>
+    </CATEGORY>
+
+  </OVERVIEW>
+  
+
+<CATEGORY title="变量命名">
+<STYLEPOINT title="类内部">
+      <SUMMARY>
+        <ul>
+         <li><code>引用文件使用绝对路径</code> include __DIR__ . '/../../abc.php';【类似相对路径的，上两层目录】</li>
+        <li><code>默认必写public</code> public static $a;</li>
+        <li><code>引用命名空间，要以 \ 开头</code> $a = new \namespace\class();</li>
+        <li><code>临时变量小写+下划线</code> user=100; $a_temporary_var = 100;   js_var =                                                                                                                                                                                                                               100;</li>
+        <li><code>常量大写+下划线</code> define('CONST_VAR' ,100);  const CONST_VAR = 100;</li>
+        <li><code>函数参数小写+下划线</code> function(var_a, var_b){}</li>
+        <li><code>PHP 的内建值 true、false 和null必须全部采用小写字母书写。</code></li>
+         <li><code>类型转换用小写</code> (int) (integer 取消) (bool) (boolean取消) (float) (double) (real) (array) (object)</li>
+        <li>对于只含有 php 代码的文件，我们将在文件结尾处忽略掉 "?&gt;" 。这是为了防止多余的空格或者其它字符影响到代码。</li>
+        <li>禁止使用tab，使用四个空格代替</li>
+        <li>每行代码长度应控制在80个字符以内，最长不超过120个字符。因为 linux 读入文件一般以80列为单位，就是说如果一行代码超过80个字符，那么系统将为此付出额外操作指令。这个虽然看起来是小问题，但是对于追求完美的程序员来说也是值得注意并遵守的规范。</li>
+        <li> 每行结尾不允许有多余的空格</li>
+        <li>配置和函数等其他类库文件之外的文件一般是分别以“.inc.php“和”.php“为后缀，且文件名命名使用小写字母和下划线的方式，多个单词之间以下 划线分隔，例如config.inc.php ， common.php，install_function.php 。</li>
+        <li>纯字符串只准用单引号连接，禁用双引号！</li>
+         
+         <li><code>echo 用逗号连接</code> echo 使用逗号作为连接符号</li>
+         <li><code>换行输出，采用PHP常量</code> 如要【输出】换行用 echo $msg, PHP_EOL;  而不是 echo $msg, "\r\n"; 为了兼容多平台的字符串，可以用"\r\n"</li>
+         <li><code>除了特殊符号，如 "\r\n"外，字符串一律用单引号扩起</code> $str = 'love';  $str = 'love \'Luexu.com\' ?'; $str = 'Love "Luexu.com" ?'; ==> 禁止出现 $str = "love 'Luexu.com' ?";</li>
+         <li><code>非类名文件，全小写+下划线</code> echo 使用逗号作为连接符号</li>
+         
+         <li><code>多用 switch 取代if</code> 使用选择分支语句(译注：即switch case)好于使用多个if，else if语句。
+PS：php中switch支持数值和字符串变量，比C的switch要好用，建议使用。</li>
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+          <p>对于只含有 php 代码的文件，我们将在文件结尾处忽略掉 "?&gt;" 。这是为了防止多余的空格或者其它字符影响到代码。   </p>
+        </DECISION>
+         <CODE_SNIPPET>
+            &lt;?php
+                $foo = 'foo';
+          </CODE_SNIPPET>
+      </BODY>
+    </STYLEPOINT>
+    
+   <STYLEPOINT title="类内部">
+      <SUMMARY>
+        <ul>
+         <li><code>禁用C开头命名类：</code> C开头属于公用类，只有写公用类的程序员才可使用</li>
+        <li><code>一个PHP文件只准一个类：</code> 一个PHP文件内，只准一个类，且是PHP文件同名类</li>
+         <li><code>禁用下划线开头命名：</code> PHP5后，开始出现 __unset __construct 等魔术方法，以及$_GET $_POST等一个下划线开头的内置，所以禁止一切下划线行为，避免以后PHP扩展</li>
+        <li>不允许用 var 符号来声明变量，类成员变量必须以 private，protected 和 public 来声明。</li>
+        <li><code>类名用大写字母开头驼峰式：</code> class CTrim  CTrim.php</li>
+        <li><code>常量大写+下划线：</code> const LUEXU_CONST = 1;  const LOVE = 'you';</li>
+        <li><code>小写字母开头+驼峰式</code> private static $varStatic;    protected $varProtected;  private function checkUser()</li>
+ 
+        </ul>
+      </SUMMARY>
+      <BODY>
+        <DECISION>
+          <p>大写字母开头命名类，比较主流；由于PHP有private，所以不用再用下划线、大小写区分公有私有，使用智能点IDE也是一样</p>
+        </DECISION>
+      </BODY>
+    </STYLEPOINT>
+</CATEGORY>
+
+
+</GUIDE>

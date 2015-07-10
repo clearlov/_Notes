@@ -1,0 +1,25 @@
+hhvm 文档，命名为 .hh，而php 文档，命名为 .php
+
+Primitive, basic types: int, float, string, bool, array (However, do not use the aliases double, integer, boolean, real)
+
+User-defined classes: Foo, Vector<some type>
+
+Mixed: mixed
+
+Void: void
+
+Nullable or optional: ?someType (e.g., ?int, ?bool)
+
+Typed arrays: array<Foo>, array<string, array<string, Foo>>
+
+Tuples: tuple(type1, type2, ....) (e.g., tuple(string, int) )
+
+XHP elements :x:frag, :x:base, :div, and the catch-all :xhp.
+
+generics: Foo<T>
+
+closures: (function(type1, type2, ...): return_type)
+
+resources: resource
+
+The array type may only be used in the Hack default (i.e., // partial) or // decl modes. When using arrays in // strict mode, Hack will throw an error about using a collection class such as a Vector or Map.

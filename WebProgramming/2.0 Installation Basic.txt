@@ -1,0 +1,15 @@
+sh$ sudo yum update
+sh$ sudo yum -y install gcc gcc-c++ autoconf automake zlib zlib-devel openssl openssl¨Cdevel pcre pcre-devel make cmake
+
+sh$ sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+sh$ sudo ntpdate us.pool.ntp.org
+
+sh$ sudo vim /etc/selinux/config
+/* change SELINUX=enforcing to */
+SELINUX=permissive
+
+sh$ sudo vim /etc/profile
+|[
+# add
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/php/bin
+]|

@@ -1,0 +1,35 @@
+如果单句的情况下，if else 不带括号只能执行一句
+if(true)
+    echo 'love';
+else 
+    echo 'hate';
+echo ' do you';
+
+上面输出  love do you
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+必须要注意的是 elseif 与 else if 只有在类似使用花括号{}的情况下才认为是完全相同。
+如果用类似上面冒号来定义 if/elseif 条件，那就不能用两个单词的 else if，否则 PHP 会产生解析错误。
+所以尽量使用 elseif 而不用else if
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+if(true):
+    echo 'love';
+else:
+    echo 'hate';
+    echo ' do you';
+endif;
+
+上面输出  love，上面格式特别适合html+php
+
+<?php
+    if(true):
+?>
+HTML...............
+<?php
+    else:
+?>
+HTML...............
+<?php
+    endif;
+?>

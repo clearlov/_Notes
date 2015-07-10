@@ -1,0 +1,8 @@
+function a(){ echo 'a';return true; }
+
+function b(){ echo 'b';return true; }
+
+if(a() || b()){
+    // 这里会输出 a ，不会执行 b()
+}
+
