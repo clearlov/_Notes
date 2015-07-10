@@ -126,6 +126,7 @@ It's accepted in Facebook and it's more human readable.
 |- Cons -|
 It's contrary to Google C++ Guider "Declaration Order".
 
+
 |~ MySQL ~|
 |+ MySQL +|
 database/table  -> lowcase and underline
@@ -136,5 +137,5 @@ heading [varchar()]       --> title
 summary [varchar(255)]    --> describe 
 tags    [varchar()]       --> keywords
 content [text]            --> article text
-t       [uint]
+t       [uint]            --> $_SERVER['REQUEST_TIME']
 bools   [utinyint]        --> isX
