@@ -1,3 +1,27 @@
+/**
+ * @note
+ *  HPMSQL-\d: page \d of "High Performance MySQL, 3rd"
+ */
+
+|~ Data Type Optimizing ~|
+|- Simples is good -|
+HPMYSQL-116
+Comparing integers is better than character, because character sets and collations (sorting rules) make character comparisons complicated.
+|- Avoid NULL if possible  -|
+
+
+|+ String Types +|
+HPMYSQL-130
+Avoid string types for identifiers if possible, using integer types instead.
+Random strings (e.g. MD5() SHA1() or UUID()) can slow INSERT and some types of SELECT queries.
+  the inserted value has to go int a random location in indexes
+If you do store UUID, you should convert the UUID to 16-byte numbers with UNHEX() and store them in a BINARY(16) column. You can retrieve the values in hexadecimal format with the HEX() function.
+
+
+
+
+
+
 [!] ipv6 用 varbinary / binary  16[!]
 update sso_user_login_log set  ip =0x7F0000011234567568634254362534634563456345645634563363463456;    -->  0x  字节  或者  使用 unhex('')【性能低，弃用】
 
