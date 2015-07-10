@@ -112,10 +112,10 @@ class Constitution extends Constituency
 
 |+ Right value should be put at left when compare it +|
 if(true == isAready)     // 
-if(true = isAready)	//  compiler will indicate error
+if(true = isAready) //  compiler will indicate error
 
-if(isAready == true)	// 
-if(isAready = true)	// it's a mistake, but not easy to find
+if(isAready == true) // 
+if(isAready = true) // it's a mistake, but not easy to find
 
 
 
@@ -139,4 +139,3 @@ tags    [varchar()]       --> keywords
 content [text]            --> article text
 t       [uint]            --> $_SERVER['REQUEST_TIME']
 bools   [utinyint]        --> isX
-
