@@ -25,7 +25,7 @@ sh$ cat .git/config
  * sh$ git checkout -b new-branch      // it'll add history log to new-branch
  *  if you want to create a new branch without any log history. 
  */
-sh$ git symbolic-rf HEAD refs/heads/newbranch     // e.s. master that not exist
+sh$ git symbolic-ref HEAD refs/heads/newbranch     // e.s. master that not exist
 sh$ rm .git/index
 
 /**
@@ -37,8 +37,8 @@ sh$ rm .git/index
  */
 sh$ git clean -fdx
 <copy files to the git dir which is emptied by `git clean -fdx`>
-sh$ git add .
-sh$ git commit -m "create a branch without log history"
+sh$ git add .  && git commit -m "create a branch without log history"
+      // or git merge origin/xxxx
 sh$ git push origin newbranch
 
 |~ git merge ~|
