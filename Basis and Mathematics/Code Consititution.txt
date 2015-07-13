@@ -1,3 +1,15 @@
+|~ Terms ~|
+/**
+ * MUST / MUST NOT / SHOULD / SHOULD NOT
+ * @see http://tools.ietf.org/html/rfc2119
+ *  MUST/REQUIRED/SHALL
+ *  MUST NOT/ SHALL NOT
+ *  SHOULD/RECOMMENDED
+ *  SHOULD NOT/NOT RECOMMENDED
+ * @see http://tools.ietf.org/html/rfc4949
+ *  
+ */
+
 |+ Abbreviation +|
 [fn] function : accepted in keyboard
 

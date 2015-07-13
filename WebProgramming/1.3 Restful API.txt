@@ -1,0 +1,10 @@
+|~ Suggetion ~|
+GET (select)
+POST (create)
+PUT/PATCH (update)
+DELETE (delete)
+
+?limit=10
+?offset=10
+?page=2&perpg=100
+?sortby=name&order=asc
