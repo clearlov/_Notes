@@ -25,6 +25,20 @@ sh$ cat .git/config
  * sh$ git checkout -b new-branch      // it'll add history log to new-branch
  *  if you want to create a new branch without any log history. 
  */
+
+/**
+ * Read, modify and delete symbolic refs
+ * @see https://www.kernel.org/pub/software/scm/git/docs/git-symbolic-ref.html
+ *  A symbolic ref is a regular file that stores a string that begins with ref: refs/...
+ *    It's relative to the .git/<name> directory. E.g., .git/HEAD is a regular file whose contents is ref:
+ *    refs/heads/master
+ * @note
+ *  git symbolic-ref <name, e.g. HEAD>          // read current working branch
+ *  git symbolic-ref [-m <reason>] <name> <ref>       // modify
+ *  git symoblic-ref --delete [-q] <name>
+ * @exaple
+ * sh$ git symbolic-ref HEAD    // show current working branch, e.g. refs/heads/lef
+ */
 sh$ git symbolic-ref HEAD refs/heads/newbranch     // e.s. master that not exist
 sh$ rm .git/index
 
@@ -67,6 +81,18 @@ sh$ git push origin newbranch
  *  
  */
 
+
+|~ .git directory ~|
+.git/HEAD  a regular file whose contents is refs/heads/master
+.git/index  the binary index files of all real files in working branch
+|[
+  sh$ git ls-files --stage       // list the .git/index
+  chmod         index                                   file of the index
+  100644 63c918c667fa005ff12ad89437f2fdc80926e21c 0   .gitignore
+  100644 5529b198e8d14decbe4ad99db3f7fb632de0439d 0   lef.md
+  ...
+  100644 2511aef8d89ab52be5ec6a5e46236b4b6bcd07ea 0   LefPHP/public/index.php
+]|
 
 
 |~ Normal Use ~|
