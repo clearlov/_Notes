@@ -110,7 +110,7 @@ n[ >> ] insert a tab before line n
 [ :1, 3 w ] filename = delete lines outer 1 to 3, and rename file name to filename
 ` [ :!  Ctrl+z] command = pause vim, do another command
 /* [ :! ls /home ] it'll do ls /home then turn to vim */
-` [ :e! ] restore file
+` [ :e! ] reload and refresh current file buffers
 ` [ :w !sudo tee % ] save a read-only file
     %   means current file
     %:h     header, /var
@@ -195,8 +195,8 @@ n[ yy ] copy n lines below
 
 [ Shift+% ] move to the outer brackets
 
-|+ edite multiple files +|
-vim filename1 filename2 ...   /* open multiple files to buffer */
+|+ edit multiple files +|
+vim $filename1 $filename2 ...   /* open multiple files to buffer */
 [ :n ] turn to next file (filename2 or next)
 [ :2n ] turn to the file next to next file
 [ :N ] turn to previous file
@@ -204,9 +204,9 @@ vim filename1 filename2 ...   /* open multiple files to buffer */
 [ :args ] the buffer status of current files (quoted with [])
 [ :ls ] list all the files, % indicates the file in editing
 
-[ :sp ] filename  = separate both this file and filename in one windows
-[ :vsp ] filename = separate vertically 
-` [ :set diff ] ~ [ :vsp ] filename  =  show difference between these files
+[ :sp ] $filename  = separate both this file and filename in one windows
+[ :vsp ] $filename = separate vertically 
+` [ :set diff ] ~ [ :vsp ] $filename  =  show difference between these files
 [ :resize +1  Ctrl+w+\+ ]  =  resize  horizontal size (expend)
 [ :resize -1  Ctrl+w+\- ]  = resize horizontal size (shorten)
 [ :vertical resize +1 ]  = vertically resize +1
