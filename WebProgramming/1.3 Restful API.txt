@@ -1,3 +1,10 @@
+|~ Error ~|
+|- 405 when transfer by PUT/PATCH/DELETE/OPTION -|
+You need to transfer to the full path with `index.php`. For example,
+`curl -i -X PUT 'http://www.luexu.com/'` displays 405 METHOD NOT ALLOWED error. 
+Meanwhile, `curl -i -X PUT 'http://www.luexu.com/index.php'` runs well
+So you'd better add `rewrite ^(.*)/$	$1/index.php last;
+
 |~ Suggetion ~|
 GET (select)
 POST (create)
