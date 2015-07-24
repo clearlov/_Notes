@@ -17,6 +17,17 @@ Random strings (e.g. MD5() SHA1() or UUID()) can slow INSERT and some types of S
   the inserted value has to go int a random location in indexes
 If you do store UUID, you should convert the UUID to 16-byte numbers with UNHEX() and store them in a BINARY(16) column. You can retrieve the values in hexadecimal format with the HEX() function.
 
+|- ALTER TABLE may cause table rebuilds -|
+HPMYSQL-171
+MySQL’s ALTER TABLE performance can become a problem with very large tables.MySQL performs most alterations by making an empty table with the desired newstructure, inserting all the data from the old table into the new one, and deleting the old table.
+When you have to ALTER TABLE, you can:
+1. shadow copy approach
+     build a new table, and then perform a rename and drop to swap the two.
+2. Online Schema Change tool from facebook
+     https://launchpad.net/mysqlatfacebook
+Not all ALTER TABLE operations cause table rebuilds.
+sh$ ALTER TABLE tb MODIFY COLUMN fld TINYINT(3) NOT NULL DEFAULT 0;
+sh$ ALTER TABLE tb ALTER COLUMN fld SET DEFAUTL 0;
 
 
 
