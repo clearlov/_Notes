@@ -1,4 +1,7 @@
 /**
+ * @see https://facebook.github.io/react/docs/tags-and-attributes.html
+ */
+/**
  * @warning distinguish the `this` is map
  * this.[state|prop].vars.map(function(item, i){}, hanle_this = each item);
  */
@@ -32,17 +35,24 @@ render: function(){
 }
 
 /**
- * class hanle
+ * Class and Inline Styles handle
+ * @see http://facebook.github.io/react/tips/inline-styles.html
+ * @see http://facebook.github.io/react/docs/class-name-manipulation.html
  */
 render: function(){
+  var style = {
+    color: '#f00',
+    backgroundImage: 'url(lef_well.png)',
+  };
   var cs = React.addons.classSet;
   var cls = cs({
     'p': true,
     'a': this.props.isA,
     'mg': this.props.needMarginBottom
   });
+  var cls2 = cs('p', 'a', 'mg');  // class="p a mg"
   // <div class="p"> or <div class="p a"> or  <div class="p a mg"> ...
-  return <div className={cls}></div>
+  return <div style={style} className={cls}></div>
 }
 
 /**
