@@ -13,9 +13,10 @@ if you sure the origin file is safe, you can rm -rf the swp file manually
 ~/.viminfo  the log of vim
 
 |~ /etc/vimrc ~|
-/* 
+/**
  * vim /etc/vimrc and add the strings below 
  * you can also use :set xxx in vim command mode
+ * @notice Mac /usr/share/vim/vimrc
  */
 set ff=unix   " covert dos file to unix  === dos2unix
 set nu " show line numbers
@@ -211,3 +212,10 @@ vim $filename1 $filename2 ...   /* open multiple files to buffer */
 [ :resize -1  Ctrl+w+\- ]  = resize horizontal size (shorten)
 [ :vertical resize +1 ]  = vertically resize +1
 [ :vertical resize -1 ]
+
+|~ Extensions ~|
+|- ctags -|
+
+
+
+

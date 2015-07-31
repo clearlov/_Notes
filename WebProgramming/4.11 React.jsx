@@ -7,14 +7,14 @@
  */
 handle: function(){},
 render: function(){
-  var this_ = this;
+  var parent = this;
   return (
     <div>{
       this.state.items.map(function(item, i){
-        var bound_handle = this_.handle.bind(item, i);    // notice `this_`
+        var bound_handle = parent.handle.bind(item, i);    // notice `parent`
         return (
           <a href="javascript:void(0)" onClick=bound_handle>Lef</a>
-          <a href="javascript:void(0)" onClick=this_.handle>Well</a>
+          <a href="javascript:void(0)" onClick=parent.handle>Well</a>
         );
       });
     }</div>
@@ -88,17 +88,16 @@ render: function(){
  */
 var Rcc = React.createClass({
   getInitialState: function(){},
-  handleClick: function(e){
-  
+  handleClick: function(i){
+    alert(i); 
   },
   render: function(){
     return (
       <div>
         {
           this.state.items.map(function(item, i){
-            var bound_click = this.handleClick.bind(this, i);
             return (
-              <div onClick={bound_click}></div>
+              <div onClick={this.handleClick.bind(this,i)}></div>
               <div onClick={this.handleClick}></div>
             ); 
           }, this)
