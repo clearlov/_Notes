@@ -88,8 +88,8 @@ render: function(){
  */
 var Rcc = React.createClass({
   getInitialState: function(){},
-  handleClick: function(i){
-    alert(i); 
+  handleClick: function(e, i){
+    console.log(e.target); 
   },
   render: function(){
     return (
