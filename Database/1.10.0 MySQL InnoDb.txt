@@ -1,0 +1,88 @@
+|~ Thread ~|
+db> show variable like 'innodb_version'\G;
+db> show variable like 'innodb_%io_threads'\G;
+|[
+  innodb_read_io_thread     4
+  innodb_write_io_thread    4
+]|
+db> show engine innodb status\G;
+|[
+  --------
+  FILE I/O
+  --------
+  I/O thread 0 state: waiting for completed aio requests (insert buffer thread)
+  I/O thread 1 state: waiting for completed aio requests (log thread)
+  I/O thread 2 state: waiting for completed aio requests (read thread)
+  I/O thread 3 state: waiting for completed aio requests (read thread)
+  I/O thread 4 state: waiting for completed aio requests (read thread)
+  I/O thread 5 state: waiting for completed aio requests (read thread)
+  I/O thread 6 state: waiting for completed aio requests (write thread)
+  I/O thread 7 state: waiting for completed aio requests (write thread)
+  I/O thread 8 state: waiting for completed aio requests (write thread)
+  I/O thread 9 state: waiting for completed aio requests (write thread)
+]|
+
+|~ Memory ~|
+|+ Innodb Buffer Pool +|
+/**
+ * Innodb Buffer Pool buffers data from disk to CPU and CPU to disk
+ *  select
+ *    if exists in buffer pool, read from buffer pool; otherwise from disk;
+ *  update
+ *    modify data in buffer pool, then flush to disk periodically.   
+ *    
+ *******************************************************************************
+ *  Redo log_buffer   *   *  data page         |         index page
+ **********************   *----------------- Innodb ----------------------------
+ *  innodb_additional *   *---------------- Buffer Pool ------------------------
+ *  _mem_pool_size    *   * insert buffer | lock info | hash index | dictionary
+ **********************   ******************************************************
+ */
+db> show variables like 'innodb_buffer_pool_size'\G;
+
+
+/**
+ * show the status of last 9 seconds
+ */
+db> show engine innodb status\G;
+|[
+  =====================================
+  Per second averages calculated from the last 9 seconds
+  ----------------------
+  BUFFER POOL AND MEMORY
+  ----------------------
+  Buffer pool size   8191    // amount of buffer frames, each buffer frame is 16K, 8191*16/1024=128M
+  Free buffers       7771    // free buffer frames,  
+  Database pages     419     // in use (8191-7771)
+  Old database pages 0
+  Modified db pages  0
+]|
+
+|- LRU-list (Latest Recent Used) -|
+/**
+ * LRU
+ *******************************************************************************
+ * head(frequent) |------------------------------*---------------| tail(seldom)
+ *                       [new data]          midpoint   [old data]
+ *******************************************************************************
+ */
+db> show variables like 'innodb_old_blocks_pct'\G;      // midpoint
+|[
+  innodb_old_blocks_pct   37         // 37% of the total buffer pool from the tail
+]|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
