@@ -10,6 +10,7 @@
  *    0300-036F     Combining Diacritics Marks
  *    4E00-9FBF     Chinese-Japanese-Korean Unified Ideographs(Chinese)
  *    ...
+ *    E000-F8FF     from ` ` to ``
  *  Plane 1
  *    10000-1FFFF   
  *    1F601-1F64F   Emoji
@@ -23,10 +24,10 @@
  *  iOS uses BE, Win/Linux uses LE;
  * Emoji  [\u1F601-\u1F64F] 
  *  e.g.
- *    \x25  and \u0025 both are  character '%'
+ *    \x25  and \u0025 both are  character `%`
  *    \ud83d\ude22  is a crying face
  *    \ud83d\ude04  is a smiling face, LOL
- * I try to range it in ([\uE000-\uF8FF])|([\uD83C\uD83D][\uDC00-\uFFFF])
+ * I try to range it in ([\uD83C\uD83D][\uDC00-\uFFFF])
  * @see http://www.msxindl.com/tools/unicode16.asp
  * @see http://apps.timwhitlock.info/emoji/tables/unicode
  */
