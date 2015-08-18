@@ -1,0 +1,17 @@
+sh$ service crond start|restart|stop
+
+/**
+ * 
+ */
+sh$ vim cron.conf
+|[
+  * * * * * cmd
+  i h d m w 
+
+]|
+
+sh$ crontab -l
+|[
+  // run rouce /etc/profile && /usr/lef.sh  every 5 minutes
+  */5 * * * * source /etc/profile && /usr/lef.sh
+]|
