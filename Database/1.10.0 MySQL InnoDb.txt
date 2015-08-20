@@ -1,6 +1,6 @@
 |~ Thread ~|
-db> show variable like 'innodb_version'\G;
-db> show variable like 'innodb_%io_threads'\G;
+db> show variables like 'innodb_version'\G;
+db> show variables like 'innodb_%io_threads'\G;
 |[
   innodb_read_io_thread     4
   innodb_write_io_thread    4
@@ -51,11 +51,16 @@ db> show engine innodb status\G;
   ----------------------
   BUFFER POOL AND MEMORY
   ----------------------
-  Buffer pool size   8191    // amount of buffer frames, each buffer frame is 16K, 8191*16/1024=128M
-  Free buffers       7771    // free buffer frames,  
-  Database pages     419     // in use (8191-7771)
-  Old database pages 0
-  Modified db pages  0
+  Buffer pool size   8191   // buffer frames, 8191 frames * 16KB / 1024KB/M = 127M
+                            // each buffer frame is 16KB
+  Free buffers       7771   // free buffer frames,  
+  Database pages     419    // in use (8191-7771)
+  Pages made young  100, not young 0   // times that frames moved to the head by LRU 
+  Buffer pool hit rate 1000 / 1000     // 100% hit; Normally this should be greater than
+                                       // 95%.
+  LRU len: 519, unzip_LRU len: 10      // LRU len = ziped LRU len + unzip_LRU len
+                                       // unzip_LRU len is 16KB/frame
+                                       // ziped LRU len may be 1, 2, 4 or 8KB per frame
 ]|
 
 |- LRU-list (Latest Recent Used) -|
@@ -71,6 +76,15 @@ db> show variables like 'innodb_old_blocks_pct'\G;      // midpoint
   innodb_old_blocks_pct   37         // 37% of the total buffer pool from the tail
 ]|
 
+|- Redo Log Buffer -|
+/**
+ *  redo log data --> innodb log buffer --> ib_logfileN 
+ *  Why 8MB is enough for innodb_log_buffer_size? Because it'll flush log buffer to file:
+ *    Master Thread will flush innodb log buffer to file every second
+ *    After the submit of every affair
+ *    When it remains less than half of innodb_log_buffer_size
+ */
+db> show variables like 'innodb_log_buffer_size'\G;     // 8MB is enough
 
 
 

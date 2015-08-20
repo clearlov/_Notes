@@ -2,9 +2,62 @@
 - Avoid using NULL
 - Use count(*) to instead count(id)
 - Close 
-|- slow log -|
-db> show variables like '%slow%';
-db> show global status like '%slow%';
+
+|~ mysqlbinlog ~|
+sh# vim /etc/my.cnf
+|[
+  [mysqld]
+  log-bin=/var/log/mysql/bin.log
+]|
+db> show variables like 'log_%';
+|[
+  log_bin	ON
+]|
+db> show binary logs;
+db> show binlog events;
+|[
+  +------------+------+-------------+-----------+------------------------------------------------------+
+  | Log_name   | Pos  | Event_type  | Server_id | End_log_pos | Info                                   |                                                                                                   
+  +------------+------+-------------+-----------+-------------+----------------------------------------+
+  | bin.000001 |    4 | Format_desc |         1 |         106 | Server ver: 5.6.73-log, Binlog ver: 4  |                                                                                                      
+  | bin.000001 |  106 | Intvar      |         1 |         134 | INSERT_ID=1395                         |                                                                                                      
+  | bin.000001 |  134 | Query       |         1 |         326 | use `dbname`; INSERT INTO tb SET a=100 |
+  +------------+------+-------------+-----------+-------------+----------------------------------------+
+]|
+sh$ mysqlbinlog [--start-date='2015-08-08 00:00:00'] [--stop-date='2015-09-09 00:00:00'] /var/log/mysql/bin.00001
+sh$ mysqlbinlog [--start-position='106'] [--stop-position='134'] /var/log/mysql/bin.000001
+/**
+ * Backup
+ */
+sh$ mysqlbinlog [--start-date='2015-08-08 00:00:00'] [--stop-date='2015-09-09 00:00:00'] > mysqlbinlog.bk_20150808
+/**
+ * Restore from bin log file to MySQL
+ */
+sh$ mysqlbinlog [--start-date='2015-08-08 00:00:00'] [--stop-date='2015-09-09 00:00:00'] bin.000001 | mysql -uroot -p
+
+|~ slow_query_log ~|
+/**
+ * @see https://dev.mysql.com/doc/refman/5.1/en/slow-query-log.html
+ */
+sh# vim /etc/my.cnf
+|[
+  [mysqld]
+  long_query_time=1     // more than 1 second
+  log-slow-queries=/var/log/mysql/slow_queries.log
+]|
+ 
+db> show variables like '%query%';
+|[
+  long_query_time       1.000000                  // 1 second
+  slow_query_log        ON
+  slow_query_log_file   /var/log/mysql/slow.query
+]|
+db> show global status like '%queries%';
+|[
+  Slow_queries          0
+]|
+
+
 
     
 

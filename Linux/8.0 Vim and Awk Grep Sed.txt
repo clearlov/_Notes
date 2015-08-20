@@ -1,3 +1,40 @@
+|~ Awk ~|
+/**
+ * awk [-F '$separator'] '$regexp' $file   // default is awk -F ' ' '$regexp' $file
+ *  $0 all
+ *  $1 the first element that separated by '$separator' of current line
+ * awk print and printf
+ *  ARGC
+ *  ARGV
+ *  ENVIRON
+ *  FILENAME  the filename
+ *  FNR       
+ *  FS        file separtor
+ *  NF
+ *  NR
+ *  OFS
+ *  ORS       output record separator
+ *  RS        record separator
+ *  awk '{print "name: "$1"\t"$2}' /etc/passwd
+ *  awk -F ':' '{printf("name: %10s, path: %s\n", $0, FILENAME)}'
+ */
+sh$ cat /etc/passwd
+|[
+  root:x:0:0:root:/root:/bin/bash
+  ...
+  Lef:x:500:500::/home/Lef:/bin/bash
+]|
+sh$ cat /etc/passwd | awk -F ':' '{print $1" "$3}'
+|[
+  root 0
+  ...
+  Lef 500
+]|
+|- Calculator -|
+sh$ echo $((100*100))
+sh$ awk 'BEGIN{a=100*100;print a}'
+
+|~ Vim ~|
 /* 
  * add a backtick ` to indicate the importance
  * [ Ctrl+x ] both click Ctrl and x
@@ -12,7 +49,7 @@ do "ls -a", you'll find ".filename.swp" the temporary file.
 if you sure the origin file is safe, you can rm -rf the swp file manually
 ~/.viminfo  the log of vim
 
-|~ /etc/vimrc ~|
+|+ /etc/vimrc +|
 /**
  * vim /etc/vimrc and add the strings below 
  * you can also use :set xxx in vim command mode
@@ -44,7 +81,7 @@ set ruler " show status at Bottom-Right
 [ :set bg=] dark or light  = set background colod
 
 
-|~ Insert Mode ~|
+|+ Insert Mode +|
 |- Insert Mode -|
 [ a ] insert from next char
 [ A ] insert from last char of this line
@@ -55,10 +92,10 @@ set ruler " show status at Bottom-Right
 [ r ] replace a char ( which the cursor holds)
 [ R ] replace when the cursor moves
 
-|+ Calculate +|
+|- Calculate -|
 Insert Mode, Press Ctrl + r, then, you can calculate, e.g. input "=10*20"   
 
-|~ Command Mode ~|
+|+ Command Mode +|
 [ Ctrl+s ] lock the screen
 [ Ctrl+q ] unlock the screen
 [ :!! ]  repeat last system command
