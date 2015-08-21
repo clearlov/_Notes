@@ -1,3 +1,42 @@
+/**
+ * DDL(Database Definition Lang)  create alter drop truncate 
+ * DML(Database Manipulate Lang)  insert delete update 
+ * DCL(Database Control Lang)     grant deny revoke
+ * DQL(Database Query Lang)       select
+ * Dirty Page the recent modified pages in LRU buffer, which means the diffirent
+ *  pages from buffer to disk. It's size is modified db pages 132121 in 
+ *  SHOW ENGINE INNODB STATUS
+ */
+|[
+  DML(Delete Update Insert) changes the buffer first (dirty pages), then flush to disk asynchronously
+      |
+      |
+  *********************************************************************************************
+  *  Redo Log Buffer                     
+  *********************************************************************************************   
+                                                         |
+                                                         |
+                                           Flush Redo Log to disk Asynchronously
+     | (after flushing redo log to disk for the durability of transaction; avod the data missing when power off)
+     |
+  *********************************************************************************************
+  *  Innodb Buffer                      midpoint
+  *    LRU List    |-----------------------|-----------|     
+  *    Flush List  |-----|   dirty pages
+  *********************************************************************************************           
+     |                        
+     |
+  *********************************************************************************************
+  * Master Thread
+  *   flush redo log to ib_logfileN every second
+  *   flush dirty page from Flush List to disk asynchronously
+  *   merge insert buffer
+  *   recover undo pages
+  *********************************************************************************************
+    |
+  [Disk]
+  
+]|
 |~ Thread ~|
 db> show variables like 'innodb_version'\G;
 db> show variables like 'innodb_%io_threads'\G;
@@ -55,6 +94,7 @@ db> show engine innodb status\G;
                             // each buffer frame is 16KB
   Free buffers       7771   // free buffer frames,  
   Database pages     419    // in use (8191-7771)
+  Modified db pages  12323  // dirty pages size
   Pages made young  100, not young 0   // times that frames moved to the head by LRU 
   Buffer pool hit rate 1000 / 1000     // 100% hit; Normally this should be greater than
                                        // 95%.

@@ -4,6 +4,11 @@
 - Close 
 
 |~ mysqlbinlog ~|
+/**
+ * @see http://dev.mysql.com/doc/refman/5.7/en/mysqlbinlog.html
+ * Binary Log is use for recording all the DDL and DML sentence, including the 
+ *  update sentence that updated nothing (e.g. nothing change when use DELETE).
+ */
 sh# vim /etc/my.cnf
 |[
   [mysqld]
@@ -11,19 +16,41 @@ sh# vim /etc/my.cnf
 ]|
 db> show variables like 'log_%';
 |[
-  log_bin	ON
+  log_bin  ON
 ]|
 db> show binary logs;
+db> reset master;           // delete all the binlog of master
+db> reset slave;            // delete all the binlog of slave
+db> purge master logs before '2015-08-08 00:00:00';     // delete before a date
+db> purge master logs to 'binlog.000002';               // delete one
+db> flush logs;
 db> show binlog events;
 |[
-  +------------+------+-------------+-----------+------------------------------------------------------+
-  | Log_name   | Pos  | Event_type  | Server_id | End_log_pos | Info                                   |                                                                                                   
-  +------------+------+-------------+-----------+-------------+----------------------------------------+
-  | bin.000001 |    4 | Format_desc |         1 |         106 | Server ver: 5.6.73-log, Binlog ver: 4  |                                                                                                      
-  | bin.000001 |  106 | Intvar      |         1 |         134 | INSERT_ID=1395                         |                                                                                                      
-  | bin.000001 |  134 | Query       |         1 |         326 | use `dbname`; INSERT INTO tb SET a=100 |
-  +------------+------+-------------+-----------+-------------+----------------------------------------+
+  +------------+------+-------------+-----------+-----------------------------------------------------+
+  | Log_name   | Pos  | Event_type  | Server_id | End_log_pos | Info
+  +------------+------+-------------+-----------+-------------+---------------------------------------+
+  | bin.000001 |    4 | Format_desc |         1 |         106 | Server ver: 5.6.26-log, Binlog ver: 4                                        
+  | bin.000001 |  120 | Rotate      |         1 |         400 | bin.000002;pos=4
+  +------------+------+-------------+-----------+-------------+---------------------------------------+
 ]|
+/**
+ * Innodb is a transaction database, so any a DML sentence will be transaction
+ *  first (auto commit). 
+ */
+db> show binlog events in 'bin.000002';
+|[
+  +------------+------+-------------+-----------+-----------------------------------------------------+
+  | Log_name   | Pos  | Event_type  | Server_id | End_log_pos | Info
+  +------------+------+-------------+-----------+-------------+---------------------------------------+                            
+  | bin.000002 |   4  | Format_desc |         1 |         120 | Server ver: 5.6.26-log, Binlog ver: 4   
+  | bin.000002 | 120  | Query       |         1 |         197 | BEGIN
+  | bin.000002 | 197  | Query       |         1 |         313 | use dbname; insert into tb set value=1
+  | bin.000002 | 313  | Xid         |         1 |         344 | COMMIT /* xid=345 */
+  | bin.000002 | 344  | Rotate      |         1 |         391 | mysql-bin.000004;pos=4
+  +------------+------+-------------+-----------+-------------+---------------------------------------+
+]|
+
+
 sh$ mysqlbinlog [--start-date='2015-08-08 00:00:00'] [--stop-date='2015-09-09 00:00:00'] /var/log/mysql/bin.00001
 sh$ mysqlbinlog [--start-position='106'] [--stop-position='134'] /var/log/mysql/bin.000001
 /**
