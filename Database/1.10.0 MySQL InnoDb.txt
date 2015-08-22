@@ -20,9 +20,15 @@
      | (after flushing redo log to disk for the durability of transaction; avod the data missing when power off)
      |
   *********************************************************************************************
-  *  Innodb Buffer                      midpoint
-  *    LRU List    |-----------------------|-----------|     
-  *    Flush List  |-----|   dirty pages
+  *  Buffer Pool
+  *   Free List   |-----------------|     
+  *     if no enough space in free list, flush
+  *     allocate space
+  *   LRU List    |-----------------------[midpoint]-----------| 
+  *     if no enough space, re-allocate last recent used pages
+  *       if it's a dirty page, do checkpoint to flush the dirty page to disk
+  *       
+  *   Flush List  |-----|   dirty pages
   *********************************************************************************************           
      |                        
      |
@@ -103,7 +109,7 @@ db> show engine innodb status\G;
                                        // ziped LRU len may be 1, 2, 4 or 8KB per frame
 ]|
 
-|- LRU-list (Latest Recent Used) -|
+|- LRU-list (Least Recent Used) -|
 /**
  * LRU
  *******************************************************************************
@@ -127,7 +133,20 @@ db> show variables like 'innodb_old_blocks_pct'\G;      // midpoint
 db> show variables like 'innodb_log_buffer_size'\G;     // 8MB is enough
 
 
-
+|- Checkpoint -|
+/**
+ * Flush dirty pages to disk
+ *  Sharp Checkpoint: flush all the buffer to disk when MySQL shutdown
+ *    innodb_fast_shutdown=1    default in my.cnf
+ *  Fuzzy Checkpoint
+ *    Master Thread Checkpoint (asynchronous)
+ *      Flush part dirty pages to disk asynchronously
+ *    FLUSH_LRU_LIST Checkpoint
+ *      keep at least (innodb_lru_scan_depth) empty pages in LRU list
+ 8      
+ *    Async/Sync Flush Checkpoint
+ *    Dirty Page too much Checkpoint
+ */
 
 
 
