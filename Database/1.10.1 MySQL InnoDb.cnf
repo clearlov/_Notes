@@ -1,0 +1,14 @@
+# sh$ mysql --help | grep my.cnf
+# |[
+#             order of preference, my.cnf, $MYSQL_TCP_PORT,
+#   /etc/my.cnf /etc/mysql/my.cnf /usr/etc/my.cnf ~/.my.cnf
+#   |<--- low priority ------------------ high priority -->|
+# ]|
+
+# pct = percent
+
+
+# the midpoint of LRU list
+innodb_old_blocks_pct = 37
+
+innodb_max_dirty_pages_pct = 75

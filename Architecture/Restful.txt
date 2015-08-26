@@ -1,0 +1,123 @@
+|~ Error Code ~|
+/**
+ * Error Code
+ * Make an alias and require another one error code constant sheet if you need
+ *  another one error code design.
+ * According to the principle `human-oriental`, make it constant instead of struct.
+ * @note start with E_ will somehow conflict with PHP http://php.net/manual/en/errorfunc.constants.php
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Response_codes
+ * @see http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+ * @see http://www.restapitutorial.com/httpstatuscodes.html
+ */
+E_UNKNOWN = 0; // mostly it refers to E_OK 200,
+
+E_OK = 200;          /* GET success */
+E_CREATED = 201;     /* POST/PUT/PATCH success */
+E_ACCEPTED = 202;
+E_NON_AUTHORITATIVE_INFORMATION = 203;
+E_NO_CONTENT = 204;   /* DELETE success */
+E_RESET_CONTENT = 205;
+E_PARTIAL_CONTENT = 206;
+E_MULTI_STATUS = 207;
+
+E_MOVED_PERMANENTLY = 301;
+E_FOUND = 302;
+
+
+|- 4xx Client Error  --> show to client -|
+
+
+E_BAD_REQEUST = 400;   /* POST/PUT/PATCH bad syntax or parameters */
+E_UNAUTHORIZED = 401;  /* need authority, username or password error */
+E_PAYMENT_REQUIRED = 402;
+E_FORBIDDEN = 403;     /* diffirent to 401, authorized but forbidden */
+E_NOT_FOUND = 404;
+E_METHOD_NOT_ALLOWED = 405;
+
+/**
+ * GET the request accept-type error, e.g. request xml, but only json avaliable
+ */ 
+E_NOT_ACCEPTABLE = 406;
+E_PROXY_AUTHENTICATION_REQUIRED = 407;
+E_REQUEST_TIMEOUT = 408;
+E_CONFLICT = 409;
+/**
+ * GET this response would be sent when requested content has been deleted from server
+ */
+E_GONE = 410;
+E_LENGTH_REQUIRED = 411;
+E_RECONDITION_FAILED = 412;
+E_REQUEST_ENTITY_TOO_LARGE = 413;
+E_REQUEST_URI_TOO_LONG = 414;
+E_UNSUPPORTED_MEDIA_TYPE = 415;
+E_REQUESTED_RANGE_NOT_SATISFIABLE = 416;
+E_EXPECTATION_FAILED = 417;
+
+E_TOO_MANY_REQUEST = 421;
+E_THERE_ARE_TOO_MANY_CONNECTIONS_FROM_YOUR_INTERNET_ADDRESS = 421;
+
+E_UNPROCESSABLE_ENTITY = 422;  /* POST/PUT/PATCH failed validation */
+E_LOCKED = 423;
+E_FAILED_DEPENDENCY = 424;
+E_UNORDERED_COLLECTION = 425;
+E_UPGRADE_REQUIRED = 426;
+
+E_REQUEST_HEADER_FIELDS_TOO_LARGE = 431;
+E_NO_RESPONSE = 444;             // nginx
+E_RETRY_WITH = 449;              // microsoft
+E_CLIENT_CLOSED_REQUEST = 499;   // nginx
+
+|- 5xx Server Error --> write in to log -|
+
+E_SERVER = 500;            // alias to E_INTERNAL_SERVER_ERROR
+E_INTERNAL_SERVER_ERROR = 500;
+
+E_NOT_IMPLEMENTED = 501;
+E_BAD_GATEWAY = 502;
+E_SERVICE_UNAVAILABLE = 503;
+E_GATEWAY_TIMEOUT = 504;
+E_HTTP_VERSION_NOT_SUPPORTED = 505;
+
+E_NETWORK_READ_TIMEOUT = 598;
+E_EXTERNAL_SERVER = 599;
+
+E_UNPARSEABLE_RESPONSE_HEADERS = 600;
+
+|~ Suggestion ~|
+|- version -|
+/v1/
+
+|- response -|
+/**
+ * @see https://en.wikipedia.org/wiki/HATEOAS
+ */
+{
+  "link": {
+    "rel": "collection http://www.luexu.com/users", /* relation , collection = list */
+    "href": "",                                     /* the next url */
+    "title": "the title of this API",
+    "type": "",                                     /* API content type */
+  },
+  "errmsg": "error message",
+  "errcode": 200,
+  "res": [] | {}            /* response */
+}
+
+|~ Theory ~|
+/**
+ * GET / POST / HEAD / PUT(insert) / PATCH(update) / DELETE / TRACE / CONNECT / OPTIONS
+ */
+
+|- Restful -|
+Consumer(Client)   ------------->    Service(Server) 
+Stateless
+  There is no consumer state session in service. Consumers should send its 
+  session status to service.
+Cache
+  The service should be stateless and without cache
+  +----------+                                  +------------------------+
+  | Consumer | -------------------------------> |         Service        |
+  |  cache   | --->[Intermediary with cache]--> | stateless and no cache |
+  +----------+                                  +------------------------+
+Interface / Uniform Contract
+  URL  ------   HTTP Methods -------- media type (e.g. Content-type:json)
