@@ -8,7 +8,15 @@
 # pct = percent
 
 
-# the midpoint of LRU list
+# the midpoint of LRU list; 37%
 innodb_old_blocks_pct = 37
 
+# How long in milliseconds (ms, default 1000ms) a block inserted into the old 
+# sublist must stay there after its first access before it can be moved to the
+# new sublist. Increasing this value protects against the buffer pool being 
+# filled up by data that is referenced only for a brief period, such as during
+# a full table scan.
+innodb_old_blocks_time = 1000
+
+#
 innodb_max_dirty_pages_pct = 75

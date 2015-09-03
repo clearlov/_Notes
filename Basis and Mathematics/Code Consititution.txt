@@ -73,8 +73,8 @@ union recipe{
 |L| &(bitwise AND)
 |L| ^
 |L| |
-|L| &&
-|L| ||
+|L| &&  AND(MySQL)
+|L| ||  OR(MySQL)
 | | ?:
 |R| = 
 |R| +=  -= 

@@ -1,3 +1,15 @@
+|~ Comment ~|
+db> SELECT CONCAT('Lef', ' ', 'Well') --    /* anything after -- is comment */
+    comment
+    FROM comment
+    it's comment too.
+db> SELECT *
+    # a comment line
+    FROM tb;
+db> SELECT * /*
+    coment block
+    */ FROM tb;
+
 LIMIT row_count
 LIMIT offset, row_count
 LIMIT row_cout OFFSET offset
@@ -5,16 +17,33 @@ WHERE constraint
 
 |~ Select ~|
 
-|+ Alias +|
+|- Alias -|
 db> SELECT 
-    i AS id, t AS time  /* fld alias */
+      id_num AS id, COUNT(*) AS tb_count  /* fld alias */
     FROM 
-    login_access lo     /* tb alias */
+      table_name tb     /* tb alias */
     WHERE 
-    lo.id = 100     /* ==>  login_access.i = 100 */
-|- Having -|
-db> select * from tb where $constraint1 group by xx order by xx
-    having $constraint1
+      tb.id = 100     /* ==>  table_name.id_num = 100 */
+|- IN is faster than multiple ORs -|
+db> SELECT * FROM tb
+      WHERE
+        id IN (100, 101);       /* id = 100 OR id = 101 */
+db> SELECT * FROM tb
+      WHERE
+        id NOT IN (SELECT id FROM tb2);
+db> SELECT * FROM tb
+      WHERE
+        id BETWEEN 5 AND 10;    /* id >=5 AND id <=10 */
+|- HAVING -|
+/**
+ * WHERE before GROUP BY
+ * HAVING filter after GROUP BY 
+ */
+db> SELECT * FROM tb 
+      WHERE $constraint1
+      GROUP BY xx 
+      ORDER BY xx
+      HAVING $constraint2     /* filter data after GROUP BY */
     limit $row_count
 |- join -|    
 db> select * from $tb1 

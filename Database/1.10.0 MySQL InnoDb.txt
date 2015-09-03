@@ -31,7 +31,12 @@
   *   Free List   |-----------------|     
   *     if no enough space in free list, flush
   *     allocate space
-  *   LRU List    |-----------------------[midpoint]-----------|   (with dirty pages)
+  *                                               +<----------< new data insert into here
+  *                                      midpoint |
+  *   LRU List    |----------new-----------------*-->-->old>-->|   (with dirty pages)
+  *                |                              |  
+  *                +<---------------<------------<+   pages made young or not made young              
+  *     size: database pages, increase with data insert
   *     if no enough free pages, re-allocate last recent used pages
   *       if it's a dirty page, do checkpoint to flush the dirty page to disk
   *       
@@ -107,9 +112,10 @@ db> show engine innodb status\G;
   Buffer pool size   8191   // buffer frames, 8191 frames * 16KB / 1024KB/M = 127M
                             // each buffer frame is 16KB
   Free buffers       7771   // free buffer frames,  
-  Database pages     419    // in use (8191-7771)
+  Database pages     419    // size of LRU list, in use
   Modified db pages  12323  // dirty pages size
-  Pages made young  100, not young 0   // times that frames moved to the head by LRU 
+  Pages made young  644888, not young 0   // pages made young: pages moved from old to new
+                                          // innodb_old_blocks_time
   Buffer pool hit rate 1000 / 1000     // 100% hit; Normally this should be greater than
                                        // 95%.
   LRU len: 519, unzip_LRU len: 10      // LRU len = ziped LRU len + unzip_LRU len
@@ -129,6 +135,23 @@ db> show variables like 'innodb_old_blocks_pct'\G;      // midpoint
 |[
   innodb_old_blocks_pct   37         // 37% (pct=percent) of the total buffer pool from the tail
 ]|
+
+|- Pages Made Young -|
+/**
+ * Pages Made Young
+ *  In LRU list, new pages will be inserted in old sublist where after midpoint.
+ *  If after innodb_old_blocks_time, there's one query that hit the pages in old
+ *  sublist. These pages should be moved from old sublist to the new sublist.
+ * Why should innodb_old_blocks_time be greater than 0 ?
+ *  If innodb_old_blocks_time = 0, the pages will be made young as soon as a
+ *  query hits the pages in old sublist. Increasing this value protects against 
+ *  the buffer pool being filled up by data that is referenced only for a brief 
+ *  period, such as during a full table scan.
+ * @see https://dev.mysql.com/doc/refman/5.6/en/glossary.html#glos_full_table_scan 
+ *  
+ */
+db> show variables like 'innodb_old_blocks_time';
+
 
 |- Redo Log Buffer -|
 /**
@@ -175,10 +198,10 @@ db> show engine innodb status\G;
   Last checkpoint at  753136544
 ]|
 
-
-
-
-
-
-
+|~ Innodb Features ~|
+|+ Insert Buffer +|
+|+ Double Write +|
+|+ Adaptive Hash Index +|
+|+ Asynchronous I/O +|
+|+ Flush Neighbor Page +|
 
