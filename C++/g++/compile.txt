@@ -8,20 +8,20 @@ sh$ g++ -std=c++11
  2 
  3 
  */
-# g++ vince.cpp -o vince -O1
+# g++ lef.cpp -o lef -O1
 
 |+ -E  preprocessed +|
 /*
  * It'll preprocessed the origin cpp 
  * e.g. replace global const (#define ) to its value
  */
-# g++ -E vince.cpp -o vince.i
+# g++ -E lef.cpp -o lef.i
 
 |+ -S translate to assembler code +|
 /*
- * translate vince.i (or vince.cpp) to assembler code  ( to file vince.s)
+ * translate lef.i (or lef.cpp) to assembler code  ( to file lef.s)
  */
-# g++ -S vince.i -o vince.s
+# g++ -S lef.i -o lef.s
 
 
 |+ -c translate to not linked source file  +|
@@ -33,7 +33,7 @@ sh$ g++ -std=c++11
  * the suffix .c, .i, .s, etc., with .o.
  * Unrecognized input files, not requiring compilation or assembly, are ignored.
  */
- # g++ -c vince.s   /* same as  g++ -c vince.s -o vince.o  */
+ # g++ -c lef.s   /* same as  g++ -c lef.s -o lef.o  */
  
 |~ makefile ~|
  /*
@@ -51,15 +51,15 @@ sh$ g++ -std=c++11
 # vim makefile
 ---------------
 out: main.o hd1.o hd2.o
-	g++ main.o hd1.o hd2.o -o run
+  g++ main.o hd1.o hd2.o -o run
 main.o: main.cpp hd1.h hd2.h   /*  main.cpp include hd1.h and hd2.h */
-	g++ -c main.cpp   /* but -c not need declare heads anymore */
+  g++ -c main.cpp   /* but -c not need declare heads anymore */
 hd1.o: hd1.cpp hd1.h
-	g++ -c hd1.cpp
+  g++ -c hd1.cpp
 hd2.o: hd2.cpp hd2.h
-	g++ -c hd2.cpp
+  g++ -c hd2.cpp
 clean:
-	rm -rf *.o run
+  rm -rf *.o run
 ---------------
 # make    /* do makefile */
 # +|run 
