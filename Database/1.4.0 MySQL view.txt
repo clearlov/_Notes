@@ -1,3 +1,13 @@
+db> CREATE VIEW contact AS
+      SELECT 
+        username,
+        name,
+        CONCAT(LEFT(email, 3), '***', SUBSTRING(email, LOCATE('@', email))
+          AS email,
+        CONCAT(LEFT(phone, 3), '****', RIGHT(phone, 4))
+          AS phone
+      FROM vendor
+      
 /**
  * for privilege controlling
  * If we don't want to server programmers get the password

@@ -8,6 +8,7 @@ sh$ phpize
 /** 
  * sh$ sudo find / -name "mysql.sock" 
  * sh$ sudo find / -name "php-config" 
+ * sh$ whereis php-config
  */
 sh$ ./configure --with-php-config="/usr/local/php/bin/php-config" --with-mysql-sock="/var/lib/mysql/mysql.sock"
 sh$ make

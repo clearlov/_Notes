@@ -113,7 +113,7 @@ sh$ sudo yum update
 /* /sbin/chkconfig  –-del mysqld  */
 #chkconfig –-add mysqld
 
-sh$ sudo chkconfig mysqld on
+# sh$ sudo chkconfig mysqld on
 
 /! Can't find my.cnf !/
 # cp /usr/share/mysql/my-default.cnf /etc/my.cnf
