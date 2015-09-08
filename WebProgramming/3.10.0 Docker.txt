@@ -34,7 +34,7 @@ sh$ sudo docker images
 sh$ sudo push learn/ping          /* push this container to online */
 /********* tutorial *****************/
 
-
+|~ Build Container ~|
 /**
  * Dockerfile  (# is comment)
  *  FROM <image>:<tag>          // e.g. FROM php
@@ -55,3 +55,19 @@ sh$ sudo push learn/ping          /* push this container to online */
  *  WORKDIR <abs_path_in_container>    // workdir for RUN, CMD, ENTRYPOINT
  *  EXPOSE <port> [<posrt>...]      // e.g. EXPOSE 80
  */
+sh$ vim test.php
+|[
+  <?php
+  echo 'Hello, Lef Well';
+]|
+sh$ vim Dockerfile
+|[
+  FROM php
+  ADD test.php ./
+  EXPOSE 58880
+  WORKDIR ./
+  ENTRYPOINT ["php", "-S", "0.0.0.0:58880"]
+]|
+sh$ sudo docker build -t php/test-sample
+sh$ sudo docker run -d -p 58880:58880 php/test-sample
+sh$ curl localhost:58880

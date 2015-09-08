@@ -52,3 +52,14 @@ MD5(const char *$str)
 PASSWORD(const char *$str)
 ENCRYPT(const char *$str, const char *$salt)
 SHA(const char *$str)
+
+|~ Date ~|
+NOW()  FROM_UNIXTIME(UNIX_TIMESTAMP());    /* 2015-09-07 21:17:54 */
+CURDATE() CURRENT_DATE()      /* 2015-09-07 */
+CURTIME() CURRENT_TIME()      /* 21:17:54 */
+DATE_FORMAT()
+HOUR(NOW() | CURTIME())       /* 21*/
+
+
+INET_ATON(const char * $ip)
+INET_NTOA(int $ip)

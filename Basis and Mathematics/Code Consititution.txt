@@ -139,15 +139,14 @@ It's accepted in Facebook and it's more human readable.
 It's contrary to Google C++ Guider "Declaration Order".
 
 
-|~ MySQL ~|
-|+ MySQL +|
-database/table  -> lowcase and underline
-field           -> camel
 
-id      [uint]
-heading [varchar()]       --> title
-summary [varchar(255)]    --> describe 
-tags    [varchar()]       --> keywords
-content [text]            --> article text
-t       [uint]            --> $_SERVER['REQUEST_TIME']
-bools   [utinyint]        --> isX
+|~ ~|
+/**
+ *  S = SQL
+ *  A = API
+ */
+A     timeline       /* dynamic information list, e.g. message/timeline */
+A     batch          /* multiple. e.g. comments/show_batch */
+A     count          /* the number, e.g. comments/count */
+AS    archive        /* for backup, e.g. MySQL table: order_archive */
+AS    log            /* for logging, e.g. MySQL table: user_registry_log */
