@@ -28,7 +28,7 @@ $.ajax({
   context: document.body,  // $(this)
   beforeSend(xhr, settings){},
   complete(xhr, text_status){},
-  success:function(){},
+  success:function(response){},
   error:function(xhr, text_status, error_thrown){},
   
   timeout: int,

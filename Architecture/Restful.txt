@@ -122,3 +122,7 @@ Cache
   +----------+                                  +------------------------+
 Interface / Uniform Contract
   URL  ------   HTTP Methods -------- media type (e.g. Content-type:json)
+  
+|~ Header ~|
+Accept
+Content-type  application/json
