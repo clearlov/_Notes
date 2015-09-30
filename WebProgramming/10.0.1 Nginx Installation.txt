@@ -1,6 +1,9 @@
 |~ Add An User Under /home/www ~|
-sh$ sudo /usr/sbin/groupadd -f www
-sh$ sudo /usr/sbin/useradd -g www www
+/**
+ * It'll create add a no-login user www in group www
+ *   usermod -s /sbin/nologin <user>      
+ */
+sh$ sudo useradd -s /sbin/nologin www
 sh$ sudo passwd www 
 |- cloase port 9000 -|
 sh$ sudo netstat -anp|grep 9000
@@ -15,6 +18,10 @@ sh$ sudo rpm -ivh  http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-
 
 /* it'll list the newest stable Nginx, but not Mainline */
 sh$ sudo yum list | grep nginx
+
+/**
+ * Requires python-daemon
+ */
 sh$ sudo yum install nginx*
 
 sh$ sudo userdel nginx

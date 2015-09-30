@@ -1,5 +1,5 @@
 sh$ sudo yum update
-sh$ sudo yum -y install gcc gcc-c++ autoconf automake zlib zlib-devel openssl openssl¨Cdevel pcre pcre-devel make cmake
+sh$ sudo yum -y install gcc gcc-c++ autoconf automake zlib zlib-devel openssl openssl-devel pcre pcre-devel make cmake
 
 sh$ sudo cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 sh$ sudo ntpdate us.pool.ntp.org

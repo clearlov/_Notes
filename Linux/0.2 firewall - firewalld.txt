@@ -28,9 +28,13 @@ sh$ firewall-cmd --get-zones
 
 /* changed by firewall-cmd --set-default-zone=home */
 sh$ firewall-cmd --get-default-zone
+|[
+  public
+]|
 sh$ firewall-cmd --get-active-zones
-public
-    interfaces: enp0s3    
+|[
+  interfaces: enp0s3
+]|
 /* to get all the details about the public zone */    
 sh$ sudo firewall-cmd --zone=public --list-all
 
@@ -46,8 +50,11 @@ sh$ firewall-cmd --get-service
  */
 sh$ sudo firewall-cmd --get-service --permanent
 /* allow mysql */
+sh$ sudo firewall-cmd --add-service http
 sh$ sudo firewall-cmd --add-service http --permanent
+sh$ sudo firewall-cmd --add-service https
 sh$ sudo firewall-cmd --add-service https --permanent
+sh$ sudo firewall-cmd --add-service mysql
 sh$ sudo firewall-cmd --add-service mysql --permanent
 
 
@@ -55,8 +62,11 @@ sh$ sudo vim /usr/lib/systemd/system/firewalld.service
 
 
 /*sh$ sudo firewall-cmd --zone=public --remove-port=80/tcp */
+sh$ sudo firewall-cmd --zone=public --add-port=80/tcp
 sh$ sudo firewall-cmd --zone=public --add-port=80/tcp --permanent
+sh$ sudo firewall-cmd --zone=public --add-port=8080/tcp
 sh$ sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent
+sh$ sudo firewall-cmd --zone=public --add-port=3306/tcp
 sh$ sudo firewall-cmd --zone=public --add-port=3306/tcp --permanent
 /*
 sh$ sudo firewall-cmd --reload  will restore all the firewall rules
