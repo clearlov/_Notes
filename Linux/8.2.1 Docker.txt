@@ -1,0 +1,131 @@
+|! Installation !|
+sh$ sudo yum install docker
+
+sh$ sudo usermod -aG docker $USER         /* add you to group docker */
+sh$ sudo service docker start
+sh$ sudo chkconfig docker on  
+
+|! Linux in Docker !|
+/**
+ * docker pull <image[:tag = lasted]>
+ * @example
+ *  docker pull centos:7      --> pull a centos image and tag it with 7
+ *  docker run -it centos:7 /bin/bash
+ */
+sh$ docker pull centos
+sh$ docker images
+|[
+REPOSITORY     TAG                 IMAGE ID
+lef/nginx             latest              e7beba77db14
+nginx                  latest              ceab60537ad2
+php                     lastest           1fab6e54xadd
+centos                latest              0f73ae75014f
+]|
+/**
+ * docker run -it lef/php /bin/bash
+ */
+sh$ docker run -it centos /bin/bash
+|[
+root@0bdadfsadfas:/#                    <---------- @CONTAINER_ID
+]|
+
+
+|! Dockerfile !|
+/**
+ * @see https://docs.docker.com/reference/builder/
+ */
+ 
+MAINTAINER <author> 
+ 
+FROM <image>  
+FROM <image>:<tag>         
+FROM <image>@<digest>
+
+
+
+
+RUN <cmd>            /* run in /bin/sh -c shell form */
+RUN ["<executable>", "<param1>", "<param2>" ...]
+ 
+/**
+ *  ADD redis.tgz /user/lef/Downloads    --> decompress it
+ *  COPY redis.tgz /usr/lef/Downloads    --> /usr/lef/Downloads/redis.tgz
+ */ 
+ADD <source file or URL> <destination in docker>
+COPY <source file or URL> <destination>
+
+CMD ["<excutable>", "<param1>", "<param2>" ...]   /* command in shell */
+
+EXPOSE <port>
+
+ENTRYPOINT ["<excutable>", "<param1>", "<param2>" ...]
+ 
+WORKDIR <path in docker>      /* for RUN, CMD and ENTRYPOINT */
+
+ENV <key> <value>
+
+USER <uid>
+
+/**
+ * sh$ docker run -it --name container-test -h CONTAINER -v dir_host:dir_container
+ */
+VOLUME ["<path in both host and container>"]
+ 
+|! !|
+
+sh$ docker images
+sh$ vim test.php
+|[
+  <?php
+    echo 'Hello, Lef';
+]|
+sh$ vim /var/www/Env/php/Dockerfile
+|[
+# install php from php.net
+FROM php
+ 
+USER root
+
+WORKDIR  /
+USER root
+
+ADD php.ini /usr/local/etc/php/php.ini
+ADD php-fpm.conf /usr/local/etc/php-fpm.conf
+
+ADD composer.phar /usr/local/bin/composer
+RUN chmod 755 /usr/local/bin/composer
+
+
+
+#EXPOSE 9000
+
+RUN useradd -s /sbin/nologin www
+
+RUN mkdir -p /var/www/htdocs
+RUN chown -R www:www /var/www/htdocs
+RUN chmod -R 644 /var/www/htdocs
+WORKDIR  /var/www/htdocs
+ 
+VOLUME ["/var/www/htdocs"]
+
+USER www
+
+ENTRYPOINT ["php", "-S", "0.0.0.0:9000"]
+]|
+
+/**
+ * docker build -t <image/container> <host Docerfile dir>
+ * @note  
+ *  If `Layer already being pulled by another client. Waiting.`
+ *  sh$ sudo service docker restart
+ */
+sh$ docker build -t lef/php .
+
+
+sh$ docker images
+sh$ sudo systemctl stop php-fpm.service
+sh$ docker run -d -p 9000:9000 -v /var/www/htdocs:/var/www/htdocs -it lef/php --name php
+sh$ curl localhost:9000
+sh$ docker stop php
+sh$ docker start php
+sh$ docker kill php

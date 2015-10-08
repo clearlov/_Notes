@@ -1,4 +1,4 @@
-|~ Terms ~|
+|! Terms !|
 /**
  * MUST / MUST NOT / SHOULD / SHOULD NOT
  * @see http://tools.ietf.org/html/rfc2119
@@ -84,6 +84,35 @@ union recipe{
 |L| ,
 +------------------------------------------------------------------------------+ 
 
+|! Suggestions !|
+|+ How to put braces +|
+/**
+ *  Upper-camel and next line brace
+ *    namespace and class
+ *  Lower-camel and brace behind
+ *    non-construct/non-destruct functions
+ *  Snake
+ *    local variables
+ * Only braces of namespace and class turn to the next line
+ */
+|[
+namespace Bowtie
+{
+  class Sewer: public Drain,
+               public Drainage
+  {
+    int sewage;
+    public:
+    Sewer();
+    void sewerage(int exit_val){
+      if(EXIT_SUCCESS == exit_val)
+        printf("Success");
+      else if(EXIT_FAILUE == exit_val)
+        printf("Failue");
+    }
+  }
+}
+]|
 
 |+ Set Tab 2 spaces length +|
 |- Pros -|
@@ -101,26 +130,11 @@ Others set it 4 spaces
   It's python standard
   It's accepted in PHP/C++/C that name a variable begin with an underline
   Facebook names a private variable to append an underline
-	https://github.com/facebook/proxygen/blob/master/proxygen/httpserver/HTTPServer.cpp
+https://github.com/facebook/proxygen/blob/master/proxygen/httpserver/HTTPServer.cpp
 
 
 
-|+ Only class's brace turn to next line +|
-|[
-class Sewer: public Drain,
-             public Drainage
-{
-  int sewage;
-  public:
-  void Sewerage();
-}
 
-class Constitution extends Constituency
-                   implement Constituent
-{
-  
-}
-]|
 
 |+ Right value should be put at left when compare it +|
 if(true == isAready)     // 

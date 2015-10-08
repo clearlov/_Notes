@@ -42,8 +42,7 @@ sh$ sudo rm -f /usr/my.cnf
  * http://dev.mysql.com/doc/mysql-repo-excerpt/5.6/en/linux-installation-yum-repo.html  
 
 http://dev.mysql.com/downloads/repo/yum/ */
-sh$ wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
-sh$ sudo rpm -Uvh mysql-community-release-el7-5.noarch.rpm
+sh$ sudo rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
 
 /* You can check that the MySQL Yum repository has been successfully added by the following command: */
 sh$ yum repolist enabled | grep "mysql.*-community.*"
