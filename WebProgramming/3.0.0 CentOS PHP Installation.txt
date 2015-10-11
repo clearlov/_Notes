@@ -52,7 +52,8 @@ sh$ sudo ./configure --prefix=/usr/share/php\
     ;
     
 sh$ sudo make
-sh$ sudo make test && make install
+sh$ sudo make test
+sh$ sudo make install
     
     
 sh$ php -i | grep php.ini
