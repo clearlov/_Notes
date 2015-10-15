@@ -29,6 +29,22 @@ sh$ docker run -it centos /bin/bash
 root@0bdadfsadfas:/#                    <---------- @CONTAINER_ID
 ]|
 
+|! Commit Image !|
+/**
+ * Get an account from https://hub.docker.com/login/
+ */
+sh$ docker login
+|[
+Username: lefwell
+Password:
+Email: lef.well@gmail.com
+]|
+sh$ docker run -it lef/centos /bin/bash
+|[
+[root@eca7f80a8c3e /]#
+]|
+sh$ docker commit -m='20151015' eca7f80a8c3e lef/centos
+sh$ docker inspect lef/centos
 
 |! Dockerfile !|
 /**

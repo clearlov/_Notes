@@ -152,7 +152,9 @@ It's accepted in Facebook and it's more human readable.
 |- Cons -|
 It's contrary to Google C++ Guider "Declaration Order".
 
-
+|+ Using i++ instead of ++i +|
+|- Pros -|
+`++i` is not supported in Go-lang
 
 |~ ~|
 /**

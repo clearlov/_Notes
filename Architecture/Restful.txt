@@ -20,6 +20,7 @@ E_RESET_CONTENT = 205;
 E_PARTIAL_CONTENT = 206;
 E_MULTI_STATUS = 207;
 
+E_MULTIPLE_CHOICES = 300; /* it's unlikely to change. cache it */
 E_MOVED_PERMANENTLY = 301;
 E_FOUND = 302;
 
@@ -126,3 +127,57 @@ Interface / Uniform Contract
 |~ Header ~|
 Accept
 Content-type  application/json
+
+
+|! !|
+href  URI
+rel   relationship
+  http://www.w3.org/TR/2012/WD-html5-20121025/links.html#linkTypes
+  self          
+  alternate   相同资源的另一版本的链接
+  edit        可以编辑资源的URI
+  related     相关资源
+  previous
+  next
+  first
+  last
+  search
+title   
+type  optional, mime type
+hreflang  optional, 
+length  optional,
+
+/rels/detail
+/rels/author
+/rels/book
+
+
+HTTP/1.1 201 Created
+Location: http://www.luexu.com/hires/099
+{
+  "name": "Lef Well",
+  "id": "urn:dev:hr:hiring:099",
+  "link":{
+    "rel": "http://www.luexu.com/rels/hiring/post-ref-result",
+    "href": "http://www.example.com/hires/099/refs",
+  }
+}  
+
+|! URI templates !|
+http://www.luexu.com/segment1/{token}/segement2?param1={p1}&param2={p2}
+http://www.luexu.com/segment1/{token}/segement2;longitude={p1};latitude={p2}
+
+|[
+  "link-templates": [
+    {
+      "rel": "http://www.luexu.com/rels/detail",
+      "href": "http://www.example.com/customers/{customer-id}",
+      "title": "View Customer Detail"
+    }, {
+      "rel": "http://www.luexu.com/rels/search",
+      "href": "http://www.example.com/search/k={keyword}&p={page-number}&r={results-per-page}",
+      "title": "Search Results"
+    }
+  ]
+
+]|
