@@ -17,10 +17,15 @@ sh$ whereis libxml2
 sh$ whereis openssl
 sh$ whereis bzip2
 
+sh$ sudo mkdir -p /etc/php
+
 sh$ ./configure --help
 
+/**
+ *       --with-config-file-path=/usr/share/php/etc/php.ini \
+ */
 sh$ sudo ./configure --prefix=/usr/share/php\
-      --with-config-file-path=/usr/share/php/etc\
+      --with-config-file-scan-dir=/usr/share/php/etc \
       --with-fpm-user=www\
       --with-fpm-group=www\
       --enable-phpdbg\
@@ -57,8 +62,8 @@ sh$ sudo make install
     
 sh$ php -i | grep php.ini
 
-sh$ sudo mv php.ini-development /usr/share/php/etc/php.ini
-sh$ sudo ln -s /usr/share/php/etc/php.ini /etc/php.ini
+sh$ sudo cp php.ini-development /etc/php/php.ini
+
 sh$ sudo ln /usr/share/php/bin/phar.phar /usr/bin/phar
 sh$ sudo ln /usr/share/php/bin/php /usr/bin/php
 sh$ sudo ln /usr/share/php/bin/phpize /usr/bin/phpize
@@ -82,9 +87,7 @@ sh$ sudo chmod +x /etc/init.d/php-fpm
 sh$ sudo chkconfig --add php-fpm
 sh$ sudo chkconfig php-fpm on
 sh$ sudo service php-fpm start
-sh$ sudo cp sapi/fpm/php-fpm.conf /usr/share/php/etc/php-fpm.conf
-sh$ sudo mkdir /etc/php-fpm.d
-sh$ sudo ln /usr/share/php/etc/php-fpm.conf /etc/php-fpm.d/php-fpm.conf
+sh$ sudo cp sapi/fpm/php-fpm.conf /etc/php/php-fpm.conf
 
 
 

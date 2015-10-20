@@ -8,6 +8,7 @@ sh$ sudo chkconfig docker on
 |! Linux in Docker !|
 /**
  * docker pull <image[:tag = lasted]>
+ * @see https://docs.docker.com/reference/builder/
  * @example
  *  docker pull centos:7      --> pull a centos image and tag it with 7
  *  docker run -it centos:7 /bin/bash
@@ -57,8 +58,14 @@ FROM <image>
 FROM <image>:<tag>         
 FROM <image>@<digest>
 
-
-
+/**
+ * ONBUILD and ENTRYPOINT/CMD are NOT supported for ENV variable replacement.
+ */
+ENV BIN_NGINX /usr/bin/nginx     /* variable, or ENV BIN_NGINX=/usr/bin/nginx */
+WORKDIR ${BIN_NGINX}      
+WORKDIR $BIN_NGINX
+WORKDIR ${BIN_NGINX:-/tmp} /* WORKDIR !isset(${BIN_NGINX}) ? /tmp : '' */
+WORKDIR ${BIN_NGINX:+/tmp}   /* WORKDIR isset(${BIN_NGINX}) ? /tmp : '' */
 
 RUN <cmd>            /* run in /bin/sh -c shell form */
 RUN ["<executable>", "<param1>", "<param2>" ...]
@@ -71,10 +78,10 @@ ADD <source file or URL> <destination in docker>
 COPY <source file or URL> <destination>
 
 CMD ["<excutable>", "<param1>", "<param2>" ...]   /* command in shell */
+ENTRYPOINT ["<excutable>", "<param1>", "<param2>" ...]
 
 EXPOSE <port>
 
-ENTRYPOINT ["<excutable>", "<param1>", "<param2>" ...]
  
 WORKDIR <path in docker>      /* for RUN, CMD and ENTRYPOINT */
 

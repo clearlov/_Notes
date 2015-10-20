@@ -39,7 +39,7 @@ sh$ sudo rm -f /usr/my.cnf
 
 |~ MySQL ~|
 /*
- * http://dev.mysql.com/doc/mysql-repo-excerpt/5.6/en/linux-installation-yum-repo.html  
+ * http://dev.mysql.com/doc/mysql-repo-excerpt/5.7/en/linux-installation-yum-repo.html  
 
 http://dev.mysql.com/downloads/repo/yum/ */
 sh$ sudo rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
