@@ -112,7 +112,7 @@ command > /dev/null 2>&1
 # -x $file  is executable
 # -s $file  is filesize($file) == 0
 # -e $path  is $path exist
-if [-z $appellation -a $const_num !=0]      
+if [ -z $appellation -a $const_num !=0 ]      
 then 
   s=`expr $const_num + 4`     #1004
   c=`expr $const_num \* 2`

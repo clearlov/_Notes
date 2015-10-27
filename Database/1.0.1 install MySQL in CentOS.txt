@@ -38,11 +38,11 @@ sh$ sudo rm -f /usr/my.cnf
 
 
 |~ MySQL ~|
-/*
- * http://dev.mysql.com/doc/mysql-repo-excerpt/5.7/en/linux-installation-yum-repo.html  
+/**
+ * http://dev.mysql.com/downloads/repo/yum/  
+ */
+sh$ sudo rpm -Uvh http://repo.mysql.com//mysql57-community-release-el7-7.noarch.rpm
 
-http://dev.mysql.com/downloads/repo/yum/ */
-sh$ sudo rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
 
 /* You can check that the MySQL Yum repository has been successfully added by the following command: */
 sh$ yum repolist enabled | grep "mysql.*-community.*"
@@ -52,11 +52,12 @@ sh$ sudo yum-config-manager --disable mysql56-community
 
 sh$ sudo vim /etc/yum.repos.d/mysql-community.repo
 |[
-# Enable to use MySQL 5.6
-[mysql56-community]
-name=MySQL 5.6 Community Server
-baseurl=//repo.mysql.com/yum/mysql-5.6-community/el/7/$basearch/
-enabled=1                                                               // enabled=1
+# Note: MySQL 5.7 is currently in development. For use at your own risk.
+# Please read with sub pages: https://dev.mysql.com/doc/relnotes/mysql/5.7/en/
+[mysql57-community-dmr]
+name=MySQL 5.7 Community Server Development Milestone Release
+baseurl=http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basearch/
+enabled=1
 gpgcheck=1
 gpgkey=file:/etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
 ]|

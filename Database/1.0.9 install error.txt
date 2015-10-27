@@ -1,7 +1,7 @@
 
 
 /. ERROR 1045 (28000): 
-	Access denied for user 'root'@'localhost' (using password: NO) ./
+    Access denied for user 'root'@'localhost' (using password: NO) ./
 sh# /etc/init.d/mysql stop
 /*  --skip-grant-tables  skip grant priveleges to boot MySQL*/
 sh# mysqld_safe --user=mysql --skip-grant-tables --skip-networking & 

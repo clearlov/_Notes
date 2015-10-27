@@ -1,4 +1,4 @@
-|~ Err ~|
+|! Err !|
 |+ 502: Using POST method without anything posted +|
 |[
  2015/06/21 05:48:57 [error] 1871#0: *145 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 10.0.2.2, server: localhost, request: "POST /LefPHP/?c=Test&a=index HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "localhost:50080"
@@ -6,7 +6,7 @@
 It works well when post nothing with 'x-www-form-urlencoded' method, but 502 will be display when you post nothing with 'form-data' or 'raw' method. 
 When use POST method, the error will be caused by posting nothing to the server.
 
-|~ Err ~|
+|! Err !|
 502 Bad Gateway + 504 Gateway Time-out
 |+ Nginx => /var/log/nginx/error.log +|
 |- 502 -|
@@ -20,7 +20,7 @@ When use POST method, the error will be caused by posting nothing to the server.
 
 |+ PHP-FPM => /var/log/php/php-fpm.log +|
 WARNING:  child 25708 exited on signal 15 (SIGTERM) after 21008.883410 seconds from start
-|~ Solve ~|
+|! Solve !|
 |- nginx.conf -|
 max_fail
 fail_timeout
@@ -35,5 +35,5 @@ max_execution_time
 
 
 
-|~ ~|
+|! !|
 php-fpm.conf(request_terminate_timeout) will override php.ini(max_execution_time)

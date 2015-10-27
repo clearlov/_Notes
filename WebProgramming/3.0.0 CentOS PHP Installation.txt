@@ -11,7 +11,12 @@ rm -rf /etc/php.ini
 |! Prepare !|
 
 sh$ sudo yum update -y
-sh$ sudo yum -y install gcc gcc-c++ autoconf automake zlib zlib-devel openssl openssl-devel pcre pcre-devel make cmake libxml2 libxml2-devel openssl-devel curl curl-devel libcurl libcurl-devel libjpeg-devel libpng-devel libicu-devel openldap-devel bzip2* libtidy* freetype* gd libjpeg libjpeg-devel libpng libpng-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel
+
+/**
+ * gcc gcc-c++
+ *  zlib zlib-devel:  gzip
+ */
+sh$ sudo yum -y install gcc gcc-c++ autoconf automake zlib zlib-devel openssl openssl-devel pcre pcre-devel make cmake libxml2 libxml2-devel openssl-devel curl curl-devel libcurl libcurl-devel libjpeg-devel libpng-devel libicu-devel openldap-devel bzip2* libtidy* freetype* gd libjpeg libjpeg-devel libpng libpng-devel glibc glibc-devel glib2 glib2-devel
 
 sh$ whereis libxml2
 sh$ whereis openssl

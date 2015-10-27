@@ -8,6 +8,10 @@
  */
 CentOS7 uses firewalld to replace iptables
 
+
+sh$ sudo systemctl start firewalld.service
+sh$ systemctl enable firewalld.service
+
 /* sudo systemctl firewalld status */
 sh$ sudo firewall-cmd --state
 

@@ -1,4 +1,7 @@
 |~ PHPStorm~|
+|- Line Seperator from Win(\r\n) to Unix(\n)-|
+Editor -> Code Style
+Line separator (for new files)
 |- Header Templates -|
 Editor -> File and Code Templates -> Includes
 |- Tab -|

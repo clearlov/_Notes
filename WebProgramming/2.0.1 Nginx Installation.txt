@@ -9,8 +9,28 @@ sh$ sudo netstat -anp|grep 9000
 tcp 0 0 :::9000 :::* LISTEN 1900/php-fpm
 sh$ sudo kill 1900
 
+|! Basis !|
+/**
+ * GCC(GNU Compiler Collection) is used to compile C(gcc)/C++(gcc-c++).
+ *  It's necessary for writing Nginx HTTP module
+ */
+sh$ yum install -y gcc gcc-c++
+/**
+ * PCRE(Perl Compatible Regular Expression) is used to support regular expression
+ *  like `rewrite`.
+ */
+sh$ yum install -y pcre pcre-devel
 
-|~ Nginx ~|
+/**
+ * to support `gzip on` in nginx.conf.
+ */
+sh$ yum install -y zlib zlib-devel
+
+/**
+ * to suport https
+ */
+sh$ yum install -y openssl openssl-devel
+|! Nginx !|
 /* http://wiki.nginx.org/Install */
 sh$ sudo rpm -ivh  http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
 
