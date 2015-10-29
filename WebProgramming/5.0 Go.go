@@ -1,15 +1,33 @@
+// sh$ go build tutorial.go             --> build a tutorial file
+// sh$ ./tutorial                       --> Go! Lef Well
+
 package main
 import "fmt"
 
 var (
+  /**
+   *  (u)int2^(3 to 6) 
+   *  (u)int 
+   *  uintptr
+   *  float32 float64
+   *  complex64 complex128
+   */
   stats bool = true
+  
   projection string = "名：" + "Lef"
   intense int8 = len(projection)            // 9, a chinese char holds 3 byte
   char_e string = "Lef Well"[1]
-  interfere = 100
+  
+  interfere = ^2            // ~2 in C, -3
   prime *int
   bison [2][3]int
   relief []int = [5]int{1, 2, 3, 4, 5,}
+  
+  exonerate := 12.0
+  
+  cudgel complex64 = 3.2 + 12i
+  selfie := 3.2 + 12i           // complex128
+  refrigerator := complex(3.2, 12)    // same as selfie
   
   /**
    * array[pos_start=0:length= to end]
@@ -20,6 +38,15 @@ var (
   relic := make([]int, 2, 3)          // []int{0, 0, null, null, null}
   accelerate int = len(relic)         // 2
   academic int = cap(relic)           // 3
+  
+  sophisticate := func(sophism ...int) {
+    sophistic int64 = 0;
+    for _, sophist := range sophism {
+      sophistic = sophistic + sophist
+    }
+    return sophistic
+  }
+  
 )
 
 inter := 5
@@ -38,6 +65,20 @@ func Dispose()(weapon, equipment, quantity int){
   return "Gun", "Shovel", 100
 }
 _, _, quantities = Dispose()
+
+
+/**
+ * We can't use `==` to compare float numbers
+ * @param precision float64
+ */
+import "math" 
+func cmpFloat(f1, f2, precision float64) bool {
+  return math.Fdim(f1, f2) < p
+}
+
+
+
+
 
 
 const (
@@ -76,5 +117,3 @@ func main(){
   fmt.Println("Go! Lef Well");
 }
 
-// sh$ go build tutorial.go             --> build a tutorial file
-// sh$ ./tutorial                       --> Go! Lef Well

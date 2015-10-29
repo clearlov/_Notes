@@ -37,11 +37,11 @@ sh$ sudo rm -f /usr/my.cnf
 
 
 
-|~ MySQL ~|
+|! MySQL !|
 /**
  * http://dev.mysql.com/downloads/repo/yum/  
  */
-sh$ sudo rpm -Uvh http://repo.mysql.com//mysql57-community-release-el7-7.noarch.rpm
+sh$ sudo rpm -Uvh http://dev.mysql.com/get/mysql57-community-release-el7-7.noarch.rpm
 
 
 /* You can check that the MySQL Yum repository has been successfully added by the following command: */
@@ -49,8 +49,9 @@ sh$ yum repolist enabled | grep "mysql.*-community.*"
 
 sh$ yum repolist all | grep mysql
 sh$ sudo yum-config-manager --disable mysql56-community
+sh$ sudo yum-config-manager --enable mysql57-community
 
-sh$ sudo vim /etc/yum.repos.d/mysql-community.repo
+sh$ cat /etc/yum.repos.d/mysql-community.repo
 |[
 # Note: MySQL 5.7 is currently in development. For use at your own risk.
 # Please read with sub pages: https://dev.mysql.com/doc/relnotes/mysql/5.7/en/
@@ -62,9 +63,11 @@ gpgcheck=1
 gpgkey=file:/etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
 ]|
 sh$ yum repolist enabled | grep mysql
-sh$ sudo yum install mysql-community-server
-sh$ sudo service mysqld start
-sh$ service mysqld status
+sh$ sudo yum install -y mysql-community-server
+sh$ sudo systemctl start mysqld.service
+sh$ sudo systemctl status mysqld.service
+sh$ sudo systemctl enable mysqld.service    /* chkconfig mysqld on*/
+
 /* The program mysql_secure_installation allows you to perform important operations like setting the root password, removing anonymous users, and so on. Always run it to secure your MySQL installation: 
 to set password
 */
@@ -102,18 +105,7 @@ sh$ sudo yum update
 
 
 
-/* check mysql status */
-# /etc/rc.d/init.d/mysql status
-# /etc/rc.d/init.d/mysql start
-# /usr/bin/mysqladmin -u root -p shutdown
 
-|- auto start -|
-/* auto start list */
-# chkconfig --list
-/* /sbin/chkconfig  –-del mysqld  */
-#chkconfig –-add mysqld
-
-# sh$ sudo chkconfig mysqld on
 
 /! Can't find my.cnf !/
 # cp /usr/share/mysql/my-default.cnf /etc/my.cnf
