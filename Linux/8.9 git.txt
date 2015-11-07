@@ -1,4 +1,4 @@
-|~ FAQ ~|
+|! FAQ !|
 |- fatal: remote origin already exists. -|
 sh$ git remote rm origin
 sh$ git remote add origin $url
@@ -19,7 +19,7 @@ sh$ cat .git/config
 ]|
 
 
-|~ a new branch without log history ~|
+|! a new branch without log history !|
 /**
  * Create an empty branch
  * sh$ git checkout -b new-branch      // it'll add history log to new-branch
@@ -55,7 +55,7 @@ sh$ git add .  && git commit -m "create a branch without log history"
       // or git merge origin/xxxx
 sh$ git push origin newbranch
 
-|~ git merge ~|
+|! git merge !|
 /**
  * git merge
  *  --ff  fast-forward merge
@@ -82,7 +82,7 @@ sh$ git push origin newbranch
  */
 
 
-|~ .git directory ~|
+|! .git directory !|
 .git/HEAD  a regular file whose contents is refs/heads/master
 .git/index  the binary index files of all real files in working branch
 |[
@@ -95,7 +95,7 @@ sh$ git push origin newbranch
 ]|
 
 
-|~ Normal Use ~|
+|! Normal Use !|
 sh$ cat .git/HEAD
 |[
 ref: refs/heads/master
@@ -310,7 +310,7 @@ de558f7 master@{6}: pull origin master: Fast-forward
 7d700a2 master@{7}: commit (initial): Hello, Lef Well
 ]|
 
-|~ Basic Use ~|
+|! Basic Use !|
 
 
 
@@ -390,7 +390,7 @@ sh$ git push origin :refs/tags/v1.0.0
  */
 sh$ git log [--online] [--decorate] [--graph]
 
-|~ INIT ~|
+|! INIT !|
 |+ .gitignore +|
 /   directory
 *   widecard

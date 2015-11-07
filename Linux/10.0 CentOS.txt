@@ -1,4 +1,4 @@
-/! switch Graphical/CMD !/
+|! switch Graphical/CMD !|
 /* to cmd */
 shell# systemctl set-default multi-user.target
 /* to graphical */

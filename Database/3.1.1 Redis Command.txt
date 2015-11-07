@@ -8,22 +8,61 @@
     HSCAN iterates fields of Hash types and their associated values.
     ZSCAN iterates elements of Sorted Set types and their associated scores.
  */
-db> scan 0
+db> SCAN 0
+/**
+ * keys $pattern
+ */
+db> KEYS *      
 
-db> exists key
-db> del key1 key2...
-db> type key
-db> random key
-db> dbsize
-db> expire key seconds
-db> move key db-index      /* Move key to db-index */
 
-db> flushdb     remove all keys of current db
-db> flushall    remove all keys
+db> SET key Lef
+db> DUMP key
+|[
+  "\x00\x03Lef\x06\x00\\\xa8@8\"6@\xca"
+]|
+db> EXPIRE key 100     // 100 sec
+db> EXPIREAT key 324324234    // timestamp
+db> PEXPIRE key 1000      // milliseconds
+db> PEXPIREAT key 324324234000 
+db> TTL key       // time to live (sec)
+db> PTTL key      // millisec
 
-|~ ~|
+
+db> EXISTS key
+db> DEL key1 key2...
+db> TYPE key
+db> RANDOMKEY     // return a random key
+db> DBSIZE
+
+db> MOVE key db-index      /* Move key to db-index */
+
+db> FLUSHDB     remove all keys of current db
+db> FLUSHALL    /* remove all keys */
+
+
+|+ STRING +| bytes array <=1G  
+db> SET k v
+db> SETNX k v
+db> GET k
+db> GETSET k v      /* set k v, and get the old value */
+db> INCR k          /* set v = v + 1 */
+db> INCRBY k 5      /* set v = v + 5 */
+db> DECR k
+db> DECR k 5
+db> APPEND k append_str   /* strcat(v, append_str) */
+
+
+
 |+ LIST +| 2D array   ==> push pop
 微博关注列表、粉丝列表、消息队列
+db> lpush db-list Redis
+db> lpush db-list MySQL
+db> lpush db-list MongoDB
+db> lrange db-list 1,2
+|[
+  MySQL
+  MongoDB
+]|
 
 |+ HASH +| 
 /**
@@ -32,25 +71,44 @@ db> flushall    remove all keys
 酒店价格
 Key RatePlay+RoomType  ==> Price
 
+db> hmset user:1 Lef Well 200
+db> hgetall user:1
+|[
+  "Lef"
+  "Well"
+  "200"
+]|
 
 
 |+ SET +|  unsorted and unrepeatable
-
+db> sadd db-list Redis
+db> sadd db-list MySQL
+db> sadd db-list MongoDB
+db> smembers db-list
+|[
+  MongoDB
+  MySQL
+  Redis
+]|
 
 |+ ZSET +| sorted and unrepeatable
 典型的比如那些在线游戏的排行榜，比如一个Facebook的游戏，根据得分你通常想要：
 - 列出前100名高分选手
 - 列出某用户当前的全球排名
+/**
+ * zadd $key $score $member
+ */
+db> zadd archaeology 120 Jim
+db> zadd archaeology 145 Linda
+db> zadd archaeology 110 Tom
+db> zRangeByScore archaeology 0, 150
+|[
+  Tom
+  Jim
+  Linda
+]|
 
-|+ STRING +| bytes array <=1G  
-set k v
-setnx k v
-get k
-getset k v
-
-|~ ~|
 
 
 
-|~ ~|
 |+ Master-Slave +|
