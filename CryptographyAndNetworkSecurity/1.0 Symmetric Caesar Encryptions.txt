@@ -2,8 +2,8 @@
 Encrypt each letter (p) to the next k letter in alphabet. 
 e.g. k = 3, lefz ==> ohjc
 
-C = E(k, p) = (p + k) mod 26    // C is the encrypted letter
-p = (C - k) mod 26              // the formula to decrypt one letter
+C = E(k, p) = (p + k) mod 26    /* C is the encrypted letter */
+p = (C - k) mod 26              /* the formula to decrypt one letter */
 
 Question: 
   Known encrypted phrase 

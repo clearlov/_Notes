@@ -1,0 +1,55 @@
+﻿/**
+ * @see https://en.wikipedia.org/wiki/Matrix_(mathematics)
+ * @see https://zh.wikipedia.org/wiki/%E8%A1%8C%E5%88%97%E5%BC%8F
+ */
+
+
+det(A) = ∑[σ∈Sn]sgn(σ)[n]T[i=1]Xi,σ(i)         
+
+A = [3 5 7]          1 * n    a Row Vector
+
+    [3]   
+A = [5]            n * 1     a Column Vector
+    [7]
+
+    		   [a11 a12 .. a1n]   
+    		   [a21 a22 .. a2n]   
+A = det(A) = |A| = [...           ]   ∈ R^m*n          a Square Matrix
+    		   [...           ]
+    		   [am1 am2 .. amn]
+
+    [a11 a12]
+A = [a21 a22]  = a11 * a22 - a12 * a21
+
+
+
+
+
+    [a11 a12 a13]
+A = [a21 a22 a23] = a11*a22*a33 + a21*a32*a13 + a31*a12*a23 - a31*a22*a13 - a21*a12*a23 - a11*a32*a23
+    [a31 a32 a33]
+
+
+
+[AB]i,j = [n]∑[r=1]Ai,r * Br,j
+
+[2 3 4]   [0 1000]    [2*0+3*1+4*0 2*1000+3*100+4*10]   [3 2340]
+[1 0 0] * [1 100 ]  = [1*0+0*1+0*0 1*1000+0*100+0*10] = [0 1000]
+          [0 10  ]
+
+
+
+
+
+
+
+
+
+The transpose of an m-by-n matrix A is the n-by-m matrix A^T
+
+                    [a11 a12 .. a1m]
+(A^T)m,n = A n,m =  [...           ]
+                    [an1 an2 .. anm]
+
+
+
